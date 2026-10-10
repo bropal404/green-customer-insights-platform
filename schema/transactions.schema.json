@@ -1,0 +1,73 @@
+{
+  "file": "transactions.csv",
+  "primary_key": "transaction_id",
+  "schema_version": "2.0",
+  "columns": {
+    "transaction_id": {
+      "type": "string",
+      "description": "Primary key, e.g. TX0000001",
+      "pattern": "^TX[0-9]{7,}$",
+      "required": true
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "FK to customers.customer_id",
+      "pattern": "^C[0-9]{5}$",
+      "references": "customers.csv.customer_id",
+      "required": true
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "ISO 8601 datetime, e.g. 2023-07-28T14:32:00",
+      "format": "date-time",
+      "required": true
+    },
+    "amount": {
+      "type": "number",
+      "description": "GBP; positive = credit/income, negative = outgoing, never 0",
+      "required": true
+    },
+    "merchant_name": {
+      "type": "string",
+      "description": "Raw descriptor, e.g. SHELL OIL, OCTOPUS ENERGY DD, EMPLOYER PAYROLL",
+      "required": true
+    },
+    "mcc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "4-digit MCC kept as string with leading zeros; null if unavailable (e.g. direct debits/credits)",
+      "pattern": "^[0-9]{4}$",
+      "required": true
+    },
+    "transaction_type": {
+      "type": "string",
+      "description": "Payment rail",
+      "enum": [
+        "CREDIT",
+        "DIRECT_DEBIT",
+        "CARD_PAYMENT"
+      ],
+      "required": true
+    },
+    "category_ground_truth": {
+      "type": "string",
+      "description": "FR2 target label (mutually exclusive)",
+      "enum": [
+        "Fuel",
+        "Electricity",
+        "Gas",
+        "Public Transport",
+        "Home Improvement",
+        "Automotive",
+        "Utilities",
+        "Other",
+        "Income",
+        "Housing",
+        "Debt"
+      ],
+      "required": true
+    }
+  }
+}
