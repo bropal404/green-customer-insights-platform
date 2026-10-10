@@ -1,0 +1,65 @@
+/* Customer app: a phone-width screen on top of the dashboard's tokens (../styles.css). */
+body { background: #eef1f5; }
+.demo-bar {
+  display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+  padding: 10px 16px; font-size: 12px; color: var(--muted);
+}
+.demo-bar .tag { font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: 11px; color: var(--amber);
+  background: var(--amber-soft); border: 1px solid var(--amber-line); padding: 3px 8px; border-radius: 20px; }
+.demo-bar select { height: 30px; font-size: 12px; }
+.demo-bar a { color: var(--text); }
+
+.phone {
+  max-width: 430px; margin: 4px auto 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 22px;
+  overflow: hidden; box-shadow: 0 10px 40px rgba(15, 23, 42, .08); min-height: 780px;
+}
+.app-top { display: flex; justify-content: space-between; align-items: baseline; padding: 16px 18px 6px; background: #fff;
+  border-bottom: 1px solid var(--border); }
+.app-top b { font-size: 15px; }
+.app-top span { font-size: 11px; color: var(--muted); }
+#screen { padding: 14px 14px 24px; }
+
+.hello h1 { font-size: 20px; margin: 4px 0 2px; }
+.hello p { margin: 0 0 14px; color: var(--muted); font-size: 12.5px; }
+.panel { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+.panel h2 { font-size: 13px; margin: 0 0 10px; font-weight: 600; }
+.big { font-family: var(--mono); font-size: 26px; font-weight: 600; }
+.big small { font-size: 13px; color: var(--muted); font-weight: 500; }
+.compare { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.split { display: flex; height: 10px; border-radius: 6px; overflow: hidden; margin: 12px 0 6px; background: var(--grey-soft); }
+.split i { display: block; height: 100%; }
+.split-legend { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); }
+.split-legend b { color: var(--text); font-family: var(--mono); font-weight: 500; }
+
+.sugg { border-radius: 12px; border: 1px solid var(--border); background: #fff; margin-bottom: 12px; overflow: hidden; }
+.sugg-head { padding: 14px 14px 0; }
+.sugg-head .k { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--green); }
+.sugg-head h3 { margin: 3px 0 0; font-size: 16px; }
+.tiles2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 14px 0; }
+.t2 { border-radius: 8px; padding: 10px; border: 1px solid; }
+.t2.carbon { background: var(--green-soft); border-color: var(--green-line); }
+.t2.money { background: var(--blue-soft); border-color: var(--blue-line); }
+.t2 .k { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+.t2 .v { font-family: var(--mono); font-size: 15px; font-weight: 600; margin-top: 4px; }
+.t2.carbon .v { color: var(--green); }
+.t2.money .v { color: var(--blue); }
+.t2 .s { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.35; }
+.sugg-text { padding: 12px 14px 0; font-size: 13.5px; line-height: 1.55; }
+.sugg details { margin: 10px 14px 0; font-size: 12.5px; }
+.sugg summary { cursor: pointer; color: var(--text); font-weight: 600; }
+.sugg details ul { margin: 8px 0 0; padding-left: 18px; color: #334155; line-height: 1.5; }
+.sugg details .meta { color: var(--muted); font-size: 11.5px; margin-top: 6px; }
+.sugg-actions { display: flex; gap: 6px; flex-wrap: wrap; padding: 12px 14px 14px; }
+.sugg-actions .btn.primary { flex: 1 0 100%; height: 40px; font-size: 13px; }
+.sugg-actions .btn:not(.primary) { flex: 1; height: 32px; font-size: 11.5px; padding: 0 6px; }
+
+.spend-row { display: grid; grid-template-columns: 120px 1fr 72px; gap: 8px; align-items: center; font-size: 12.5px; margin: 7px 0; }
+.spend-row .bar > i { background: var(--dark); }
+.chart-sm { position: relative; height: 190px; margin-top: 10px; }
+.foot { font-size: 11px; color: var(--muted); line-height: 1.5; text-align: center; padding: 4px 10px 0; }
+.none { text-align: center; padding: 18px 8px; color: var(--muted); font-size: 13px; }
+
+@media (max-width: 480px) {
+  .phone { border-radius: 0; border-left: none; border-right: none; margin: 0; }
+  .demo-bar { justify-content: flex-start; }
+}

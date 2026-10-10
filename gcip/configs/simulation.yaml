@@ -1,0 +1,225 @@
+# Synthetic bank simulator configuration.
+#
+# Every number below is either read from data/reference/ (named in `source`) or
+# is an explicit modelling assumption (named in `assumption`). The data card
+# lists all of them; nothing in the generator code is a hidden constant.
+
+seed: 20261010
+
+population:
+  n_customers: 30000            # Ada default; smoke tests override with --n
+  geography: "England and Wales, 318 local authorities (2023 boundaries)"
+  source: "reference/la_profile.csv (Census 2021 TS054/TS044/TS045/TS046/TS017/TS061)"
+  min_age: 18
+  max_age: 90
+  # Age of the account holder given tenure. Assumption: shape follows the English
+  # Housing Survey pattern (outright owners mostly 60+, mortgagors 30-59, private
+  # renters mostly under 40). Values are probabilities per band.
+  age_bands: [[18, 24], [25, 34], [35, 44], [45, 54], [55, 64], [65, 74], [75, 90]]
+  age_given_tenure:
+    owned_outright: [0.01, 0.04, 0.07, 0.12, 0.20, 0.30, 0.26]
+    mortgage:       [0.02, 0.21, 0.31, 0.27, 0.15, 0.03, 0.01]
+    social_rent:    [0.08, 0.17, 0.17, 0.17, 0.16, 0.13, 0.12]
+    private_rent:   [0.16, 0.36, 0.22, 0.13, 0.08, 0.03, 0.02]
+  # Income decile (ONS FS A6 gross income deciles) given tenure. Assumption.
+  income_decile_given_tenure:
+    owned_outright: [0.08, 0.14, 0.13, 0.11, 0.10, 0.09, 0.09, 0.09, 0.08, 0.09]
+    mortgage:       [0.01, 0.02, 0.04, 0.07, 0.10, 0.12, 0.14, 0.15, 0.16, 0.19]
+    social_rent:    [0.22, 0.22, 0.17, 0.12, 0.09, 0.07, 0.05, 0.03, 0.02, 0.01]
+    private_rent:   [0.10, 0.10, 0.11, 0.12, 0.12, 0.12, 0.11, 0.10, 0.07, 0.05]
+  # Flats are far more common among renters; scale the LA flat share by tenure.
+  flat_multiplier_given_tenure: {owned_outright: 0.55, mortgage: 0.65, social_rent: 2.2, private_rent: 2.1}
+  # Car ownership falls with flats and low income: LA odds of 1+ cars x flat
+  # multiplier x exp(slope x (decile - 5.5)). Calibrated so fuel spend by income
+  # decile follows ONS FS A6 line 7.2.2 (see the data validation report).
+  car_odds_multiplier: {flat: 0.45, decile_log_odds_slope: 0.24}
+  employment_given_age:          # employed, self_employed, retired, student, not_working
+    "18-24": [0.62, 0.05, 0.00, 0.25, 0.08]
+    "25-34": [0.80, 0.11, 0.00, 0.03, 0.06]
+    "35-44": [0.79, 0.14, 0.00, 0.01, 0.06]
+    "45-54": [0.77, 0.15, 0.01, 0.00, 0.07]
+    "55-64": [0.62, 0.15, 0.13, 0.00, 0.10]
+    "65-74": [0.12, 0.08, 0.76, 0.00, 0.04]
+    "75-90": [0.02, 0.02, 0.95, 0.00, 0.01]
+  # Income decile shifts by region: [direction, probability]. Assumption reflecting
+  # ONS regional household income differences (London and the South East higher).
+  income_region_shift:
+    London: [1, 0.40]
+    South East: [1, 0.20]
+    North East: [-1, 0.25]
+    Wales: [-1, 0.20]
+    Yorkshire and The Humber: [-1, 0.10]
+  vulnerability_rate: 0.06       # assumption: share flagged vulnerable in bank records (FCA FL 2024 finds 49% with a characteristic; banks flag far fewer)
+
+hidden_traits:
+  # Standard-normal latent traits. Loadings on observable characteristics are
+  # assumptions; the residual sd keeps most of each trait unobservable.
+  green:     {age_under_40: 0.30, decile_scaled: 0.15, london: 0.20, residual_sd: 1.0}
+  liquidity: {decile_scaled: 0.70, age_over_55: 0.30, residual_sd: 0.75}
+  stay:      {age_over_45: 0.40, owner: 0.30, residual_sd: 1.0}
+  digital:   {age_scaled: -0.80, decile_scaled: 0.15, residual_sd: 0.65}
+  risk:      {decile_scaled: 0.25, age_over_65: -0.40, residual_sd: 1.0}
+
+vehicles:
+  source_fuel_mix: "reference/la_profile.csv car_share_* (DfT VEH0105 + VEH0142, private cars, 2026 Q2)"
+  source_mileage: "reference/nts_mileage_by_fuel.csv and nts_mileage_bands.csv (NTS0901/NTS0904, England 2025)"
+  # Car age in years, assumption: mean about 9 years for privately kept cars.
+  # Annual mileage rises with income (factor exp(slope x (decile - 5.5))); the
+  # population mean is then rescaled to the NTS 2025 all-cars figure.
+  mileage_income_slope: 0.06
+  # Car age: cars aged 3+ follow DVSA MOT 2024 by fuel (reference/mot_car_profiles.csv); share under 3 years is an
+  # assumption (UK new registrations ~1.9m a year of ~34m cars; electric and hybrid fleets are much younger).
+  young_car_share: {petrol: 0.17, diesel: 0.05, hev: 0.40, phev: 0.45, bev: 0.60}
+  max_age_years: 25
+  # Vehicle-specific efficiency: the DESNZ 2026 average car is the centre, each car
+  # deviates lognormally. This is deliberately richer than the carbon engine's
+  # average so the engine's error against truth is meaningful.
+  km_per_litre_centre: {petrol: 12.85, diesel: 14.96, hev: 16.0, phev: 25.0}
+  km_per_litre_sd_log: 0.15
+  ev_kwh_per_km_centre: 0.205
+  ev_kwh_per_km_sd_log: 0.12
+  phev_electric_share: 0.45      # assumption: share of PHEV km driven on electricity
+  tank_litres: [40, 65]
+  round_amount_fill_share: 0.40  # assumption: fills paid as a round pound amount
+  forecourt_shop_rate_per_fill: 0.25
+  cash_fuel_customer_share: 0.10 # partial observability: customers who often pay cash
+  cash_fuel_fill_share: 0.55
+  external_card_customer_share: 0.08  # buy fuel on a card held at another bank
+  public_charging_share_bev: {offstreet: 0.15, onstreet: 0.85}  # share of EV kWh bought at public chargers
+  public_charge_price_gbp_per_kwh: {slow: 0.55, rapid: 0.79}    # assumption: 2025-26 UK public charging levels
+  motor_finance_share_of_cars: 0.38    # assumption: cars on finance among private households
+  motor_finance_with_us_share: 0.30
+  motor_finance_term_months: [36, 48]
+  ulez_noncompliant_share_london: 0.04
+
+homes:
+  source: "reference/la_profile.csv; reference/consumption_distribution_2024.csv (DESNZ 2024)"
+  floor_area_m2:                 # assumption: English Housing Survey typical medians, lognormal sd 0.22
+    detached: 140
+    semi: 92
+    terraced: 82
+    flat: 61
+    caravan: 45
+  floor_area_sd_log: 0.22
+  floor_area_income_slope: 0.06   # assumption: larger homes at higher incomes; calibrated to the ONS A6 energy-spend gradient
+  elec_income_slope: 0.04         # assumption: more appliances at higher incomes
+  epc_band_probs:                # assumption: A,B,C,D,E,F,G given dwelling type
+    detached: [0.01, 0.05, 0.30, 0.40, 0.16, 0.06, 0.02]
+    semi:     [0.00, 0.03, 0.36, 0.44, 0.13, 0.03, 0.01]
+    terraced: [0.00, 0.03, 0.38, 0.42, 0.13, 0.03, 0.01]
+    flat:     [0.00, 0.08, 0.55, 0.28, 0.07, 0.01, 0.01]
+    caravan:  [0.00, 0.00, 0.05, 0.25, 0.35, 0.20, 0.15]
+  # Gas demand relative to the LA mean, by EPC band (A..G). Assumption.
+  gas_demand_by_epc: [0.45, 0.60, 0.80, 1.00, 1.25, 1.55, 1.85]
+  gas_demand_area_elasticity: 0.75
+  electric_heating_kwh_per_m2: 70   # assumption: storage/direct electric heating demand
+  heat_pump_spf: 2.93               # Electrification of Heat final report average
+  boiler_efficiency: 0.84           # Electrification of Heat final report, typical fossil system
+  elec_household_size_elasticity: 0.35
+  pv_kwp_mean: 4.0                  # assumption: typical domestic system
+  pv_kwp_sd_log: 0.20
+  pv_self_consumption: 0.45         # assumption without battery
+  roof_suitable_share: 0.72         # assumption: orientation/shading allows PV
+  oil_price_gbp_per_litre: 0.66     # assumption: 2025-26 heating oil level
+  lpg_price_gbp_per_litre: 0.70     # assumption
+  burning_oil_kwh_per_litre: 10.35  # DESNZ 2026 implied: 2.54016 kg/l / 0.24677 kg/kWh
+  billing:
+    dual_fuel_single_dd_share: 0.68
+    separate_dd_share: 0.20
+    prepayment_share: 0.12
+    paid_from_other_bank_share: 0.14   # energy bills invisible in our transactions
+    green_supplier_boost: 0.8          # odds boost for green-attitude households choosing a green supplier
+  water_bill_gbp_month: [32, 62]       # assumption
+  council_tax_gbp_month: [110, 320]    # assumption, 10 instalments April-January
+  rent_gbp_month:
+    private: {London: [1500, 2900], default: [700, 1450]}
+    social: [380, 640]
+  mortgage:
+    # Property value: UK HPI price for the authority, type and origination month (reference/house_prices_la_monthly.csv);
+    # rate: Bank of England quoted rate for the current fixed deal (reference/boe_quoted_rates_monthly.csv).
+    # LTV at origination ~ 0.95 x Beta(5, 2.2), clipped to 0.35-0.95 (assumption).
+    term_years: [15, 30]                  # original terms are 25-35 years (term_years + 10 .. + 5)
+    two_year_fix_share: 0.55              # assumption: share of mortgagors on 2-year rather than 5-year fixes
+    with_us_share: 0.38
+    paid_from_other_bank_share: 0.08
+    epc_match_rate: 0.95                  # assumption: certificates found on the EPC register for mortgaged homes
+
+banking:
+  savings_account_share: 0.58
+  credit_card_share: 0.55
+  personal_loan_share: 0.11
+  # FCA Financial Lives 2024: 35% of adults held investments; split with us vs elsewhere.
+  investments_share: 0.35
+  investments_with_us_share: 0.30
+  stated_sustainability_pref_known_share: 0.30
+  paper_statement_share_by_age: {"18-24": 0.04, "25-34": 0.05, "35-44": 0.07, "45-54": 0.10, "55-64": 0.16, "65-74": 0.27, "75-90": 0.45}
+  # FCA FL 2024: 7% of current-account holders do not bank online or by app.
+  digitally_inactive_target_share: 0.07
+  arrears_rate: 0.035
+  overdraft_heavy_rate: 0.07
+
+transactions:
+  start: "2025-01-01"
+  end: "2026-09-30"
+  source_spend: "reference/family_spending_a6_fye2025.csv (ONS FS A6 by income decile)"
+  # Weekly spend lines from ONS A6 that become card/online transactions in 'Other'
+  # (food, drink, clothing, household goods, communication, recreation, restaurants, misc).
+  other_spend_codes: ["1", "2", "3", "5", "8", "9", "11", "12"]
+  other_spend_capture_share: 0.80     # share of that spend that runs through this current account
+  household_size_elasticity: 0.45
+  local_business_share: 0.18          # share of card spend at small, mostly unique local merchants
+  descriptor_truncate_dd: 18          # BACS reference length
+  card_last4_per_customer: true
+
+events:
+  # Monthly hazards over the simulation window. Assumptions.
+  house_move: 0.0060
+  new_car: 0.0110
+  new_baby: 0.0040
+  retirement_if_60_plus: 0.0080
+  loan_payoff_tracked: true
+
+# Label-generation rules (the brief's slide 08 asks for these to be documented).
+# logit P(take-up) = intercept + sum(driver_coef * driver) + sum(trait_coef * hidden_trait)
+# Drivers are the customer's TRUE situation at the cutoff (see labels.py for each
+# definition); traits are the hidden standard-normal variables above. Intercepts
+# are solved so each product hits its target rate among truly eligible customers.
+label_model:
+  GP01:
+    drivers: {log_km: 0.70, log_km_sq: -0.30, car_age: 0.35, loan_ending_12m: 1.10, offstreet: 0.60, income: 0.25, multi_car: 0.20, clean_air_charges: 0.80, area_ev_share: 0.30}
+    traits: {green: 0.90, liquidity: 0.50}
+  GP02:
+    drivers: {epc_low: 0.90, heat_intensity: 0.55, recent_move: 0.80, diy: 0.45, income: 0.20, mortgage_with_us: 0.50, household_size: 0.15}
+    traits: {green: 0.70, stay: 0.60, liquidity: 0.20}
+  GP03:
+    drivers: {log_elec: 0.65, solar_yield: 0.35, ev_at_home: 0.70, daytime_home: 0.45, income: 0.30, detached: 0.35}
+    traits: {green: 0.80, liquidity: 0.50}
+  GP04:
+    drivers: {log_logins: 0.85, app_user: 0.70, age: -0.45, paper_accounts: 0.20}
+    traits: {digital: 0.90}
+  GP05:
+    drivers: {invests_with_us: 0.60, log_investment: 0.35, regular_investor: 0.45, stated_pref: 1.20, green_supplier: 0.50, income: 0.25}
+    traits: {green: 1.00, risk: 0.55}
+  GP06:
+    drivers: {existing_borrowing: 0.60, purchase_intent: 1.30, cyclist: 0.70, owner_outright_high_gas: 0.50, income: -0.15, age: -0.25}
+    traits: {green: 0.70, liquidity: -0.50}
+
+labels:
+  cutoff: "2026-03-31"
+  window_start: "2026-04-01"
+  window_end: "2026-09-30"
+  # Target 6-month take-up among truly eligible customers. Intercepts are solved
+  # by bisection so each product lands on its rate. Assumptions.
+  target_rate: {GP01: 0.055, GP02: 0.045, GP03: 0.035, GP04: 0.12, GP05: 0.06, GP06: 0.035}
+  prior_holding_rate: {GP01: 0.015, GP02: 0.010, GP03: 0.008, GP04: 0.0, GP05: 0.020, GP06: 0.006}
+
+observability:
+  # Fraction of transactions with merchant category codes (card payments only).
+  mcc_present_card: 0.97
+  dd_reference_has_fuel_tag: 0.35     # e.g. "BRITISH GAS ELEC 8500..." vs a bare supplier name
+
+splits:
+  train: 0.70
+  validation: 0.15
+  test: 0.15
+  hash_salt: "gcip-ps1"

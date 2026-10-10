@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Green Customer Insights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><b>GreenInsights</b><span>Bank</span><span id="asof">Synthetic data</span></div>
+  <nav class="nav" id="nav">
+    <a href="#/overview" data-page="overview">Overview</a>
+    <a href="#/customers" data-page="customers">Customers</a>
+    <a href="#/products" data-page="products">Products</a>
+    <a href="#/regions" data-page="regions">Regions &amp; trends</a>
+    <a href="#/memory" data-page="memory">Memory</a>
+    <a href="#/models" data-page="models">Models &amp; checks</a>
+    <a href="app/" id="app-link">Customer app ↗</a>
+  </nav>
+</header>
+<main class="content" id="view"><div class="empty">Loading…</div></main>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

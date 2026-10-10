@@ -1,0 +1,71 @@
+# End-to-end pipeline configuration. Stages run in order; each writes a checkpoint
+# marker, so a resubmitted job resumes where it stopped.
+
+run_name: gcip-ps1
+
+data:
+  n_customers: 30000
+  chunk_size: 1000
+  workers: null            # default: all CPUs but one
+
+as_of:
+  training_cutoff: "2026-03-31"   # features up to here, labels in the six months after
+  live: "2026-09-30"              # scoring date for recommendations and the dashboards
+  history_months: 12
+
+categoriser:
+  unseen_merchant_share: 0.20     # merchants held out entirely to test generalisation
+  max_train_signatures: 400000
+  lookup_min_count: 3
+  lookup_min_purity: 0.95
+  tfidf_char: {ngram_range: [2, 5], min_df: 2, max_features: 300000}
+  tfidf_word: {ngram_range: [1, 2], min_df: 2, max_features: 100000}
+  logistic_C: 6.0
+  embedding_model: sentence-transformers/all-MiniLM-L6-v2
+  use_embeddings: false          # optional: add MiniLM sentence embeddings (scripts/build_model_inputs.py --embeddings)
+  transformer:                   # optional DistilBERT layer, off: the TF-IDF model already reaches 99% on seen merchants
+    enabled: false
+    model: distilbert-base-uncased
+    epochs: 2
+    batch_size: 128
+    learning_rate: 5.0e-5
+    max_length: 48
+    max_train_rows: 300000
+
+propensity:
+  products: [GP01, GP02, GP03, GP04, GP05, GP06]
+  optuna_trials: 40
+  bootstrap_models: 5
+  learning_rate: 0.03
+  early_stopping_rounds: 100
+  top_k_share: 0.10
+  ablations: [price_normalisation_off, coverage_flags_off, calibration_off, rules_only_categories]
+
+recommend:
+  max_per_customer: 3
+  # A product is shown only when all of these hold (checked in this order after eligibility, consent and memory):
+  require_impact: true           # the carbon and money statements can be computed (no suggestion without them)
+  min_lift: 2.0                  # calibrated propensity >= 2 x the product's take-up rate among eligible training customers
+  min_confidence: 0.45           # "low" confidence (thin or inconsistent evidence) is not shown
+  min_co2e_kg_per_year: 100      # a green suggestion must avoid at least this much a year...
+  co2e_exempt: [GP04]            # ...except Paperless, whose saving per customer is small by nature (required product)
+  cooldown_days: {dismissed: 90, not_interested: 180}
+  clicked_priority_boost: 0.10
+
+llm:
+  # Explanations are written by templates for every recommendation. A local open model only rephrases them, offline
+  # on this machine's GPU (nothing is trained, no API is called); each rephrasing must pass the guards
+  # (gcip.explain.guards) or the template is kept.
+  enabled: true
+  model: Qwen/Qwen2.5-1.5B-Instruct   # fp16 fits a 6 GB laptop GPU; Qwen/Qwen2.5-3B-Instruct on an 11 GB GPU
+  dtype: float16
+  max_new_tokens: 220
+  batch_size: 16
+  eval_set_size: 360             # 60 per product, rephrased and checked in the pipeline; the dashboard rephrases on demand
+
+memory:
+  replay_customers: 300
+  rounds: 3
+
+insights:
+  segments_k: 6

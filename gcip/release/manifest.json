@@ -1,0 +1,35 @@
+{
+ "drive_folder": "https://drive.google.com/drive/folders/1fJV1LTqDVxyUE5GCjPFQ1mKiVNwNVs1C",
+ "built_at": "2026-10-11 03:12:19",
+ "customers": 30000,
+ "bundles": [
+  {
+   "file": "gcip_outputs.tar.gz",
+   "bytes": 7560749,
+   "sha256": "5df15b7c30c2258cf35d27cd4c07444d2ecc791d68f891b555d66843c12842e2",
+   "extract_to": "runs",
+   "contents": "pipeline outputs",
+   "required": true
+  },
+  {
+   "file": "gcip_bank_core.tar.gz",
+   "bytes": 429814051,
+   "sha256": "2fcbb2ff02357d8999bfffcc7cc35e3ae03aa0ae24783dd5d87cceb0941fdec1",
+   "extract_to": "runs",
+   "contents": "model inputs, categorised transactions, reports",
+   "required": true
+  },
+  {
+   "file": "gcip_bank_full.tar.gz",
+   "bytes": 1177441613,
+   "sha256": "a48c28ffe648c381dd3a85c8825799a543685f19c6fca3c327673314963e178f",
+   "extract_to": "runs",
+   "contents": "source-system extracts, warehouse, truth vault, quarantine",
+   "required": false
+  }
+ ],
+ "model": {
+  "repo": "Qwen/Qwen2.5-1.5B-Instruct",
+  "source": "Hugging Face"
+ }
+}

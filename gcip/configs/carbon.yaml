@@ -1,0 +1,135 @@
+# Carbon engine configuration (FR4). Deterministic: same inputs + same file = same output.
+# Every factor is a DESNZ 2026 factor ID; every other number is a sourced value or
+# an explicit assumption. The engine never invents a method: customer impact follows
+# the avoided-emissions frame (GHG Protocol Project Protocol, WBCSD guidance v2.0),
+# the bank view follows PCAF Part A (financed emissions, data-quality scores 1-5).
+
+version: carbon-engine-v1
+boundary: well_to_wheel   # combustion or generation + upstream production (WTT) + grid T&D losses
+factor_file: reference/ghg_factors_2026.csv
+factor_source: "DESNZ GHG conversion factors for company reporting 2026, flat file v1.2"
+
+factors:                      # role: DESNZ factor id
+  petrol_litre: "1_101_1017_8_1"
+  petrol_litre_wtt: "11_101_1017_8_1"
+  diesel_litre: "1_101_1011_8_1"
+  diesel_litre_wtt: "11_101_1011_8_1"
+  natural_gas_kwh: "1_100_1004_6_1"
+  natural_gas_kwh_wtt: "11_100_1004_6_1"
+  burning_oil_litre: "1_101_1010_8_1"
+  burning_oil_litre_wtt: "11_101_1010_8_1"
+  lpg_litre: "1_100_1003_8_1"
+  lpg_litre_wtt: "11_100_1003_8_1"
+  grid_kwh: "7_400_4000_5_1"
+  grid_td_kwh: "13_402_4000_5_1"
+  grid_wtt_generation_kwh: "15_917_4000_5_1"
+  grid_wtt_td_kwh: "15_918_4000_5_1"
+  car_petrol_km: "4_301_3070_4_1"
+  car_diesel_km: "4_301_3069_4_1"
+  car_unknown_km: "4_301_3074_4_1"
+  car_bev_grid_km: "8_301_3076_4_1"
+  car_bev_td_km: "14_301_3076_4_1"
+  paper_primary_tonne: "19_506_5164_15_1"
+  paper_closed_loop_disposal_tonne: "20_506_5457_15_1"
+  bus_passenger_km: "25_314_3145_11_1"
+  rail_passenger_km: "25_315_3147_11_1"
+
+assumptions:
+  unknown_car_fuel: petrol              # most private cars are petrol (DfT VEH0105); used when no vehicle record
+  boiler_efficiency: {value: 0.84, source: "Electrification of Heat final report (typical fossil system)"}
+  heat_pump_efficiency: {value: 2.93, source: "Electrification of Heat final report (average air-source SPF)"}
+  fabric_heating_saving: {value: 0.20, source: "assumption: loft + cavity insulation + draught-proofing package"}
+  typical_pv_kwp: {value: 4.0, source: "assumption: typical domestic system"}
+  pv_orientation_factor: {value: 0.90, source: "assumption: real roofs fall short of the PVGIS optimum"}
+  statement_sheets: {value: 2, source: "assumption"}
+  sheet_grams: {value: 4.99, source: "arithmetic: A4 80 gsm = 0.0624 m2 x 80 g"}
+  envelope_grams: {value: 5.0, source: "assumption"}
+  statements_per_account_year: {value: 12, source: "monthly statements"}
+  ebike_car_km_replaced: {value: 2000, source: "assumption: short trips moved from car to e-bike"}
+  ebike_kwh_per_km: {value: 0.01, source: "assumption: about 1 kWh per 100 km"}
+  appliance_kwh_saving: {value: 150, source: "assumption: replacing an old fridge-freezer or washer with an efficient one"}
+  dual_fuel_split_kwh: {electricity: 2500, gas: 9500, source: "Ofgem 2026 typical domestic consumption values (medium)"}
+  public_charge_price_gbp_per_kwh: {value: 0.70, source: "assumption: blend of rapid (0.79) and slow (0.55) public charging"}
+  heating_oil_gbp_per_litre: {value: 0.66, source: "assumption"}
+  grid_factor_held_flat: true          # conservative for EVs and heat pumps, generous for solar
+  horizon_years: {GP01: 4, GP02: 15, GP03: 25, GP04: 1, GP05: 1, GP06: 5}
+
+# Data-quality score per product (PCAF Part A ladders for motor vehicle loans and
+# mortgages, mapped onto what the bank can see). 1 is never claimed: volumes
+# derived from spend are estimates, not metered or odometer readings.
+data_quality:
+  GP01:
+    2: "vehicle record known and fuel bought in 10+ of the last 12 months"
+    3: "fuel bought in 10+ of the last 12 months, vehicle type unknown"
+    4: "some fuel spend (3-9 months) scaled to a year"
+    5: "car evidence only: NTS average mileage for an average car"
+  GP02:
+    2: "energy bills seen in 10+ of the last 12 months"
+    3: "EPC band and floor area known"
+    4: "property type known: local DESNZ average scaled by type"
+    5: "local DESNZ average only"
+  GP03:
+    3: "property known to be a house with an EPC record"
+    4: "house inferred, regional PVGIS yield"
+  GP05:
+    5: "sector-average footprint (ONS intensity by industry), no holdings data"
+
+# GP05: illustrative fund footprints built from ONS 2024 GHG intensity by SIC section.
+# Sector weights are assumptions describing a broad UK equity fund and a fund with
+# an FCA sustainability label; footprints are proxies (PCAF data quality 5).
+fund_catalogue:
+  intensity_year: 2024
+  conventional_uk_equity:
+    B: 0.17
+    C: 0.33
+    D: 0.04
+    F: 0.02
+    G: 0.06
+    H: 0.03
+    I: 0.02
+    J: 0.06
+    K: 0.23
+    L: 0.03
+    M: 0.01
+  sustainability_focus:
+    C: 0.27
+    D: 0.03
+    F: 0.03
+    G: 0.07
+    H: 0.02
+    I: 0.02
+    J: 0.14
+    K: 0.27
+    L: 0.04
+    M: 0.05
+    Q: 0.06
+  switch_share_of_holdings: 0.25      # assumption: share of investments a customer might move
+
+sensitivity:                            # one-at-a-time ranges for the tornado chart
+  pump_price: 0.20
+  km_per_litre: 0.20
+  heat_pump_efficiency: 0.20
+  boiler_efficiency: 0.10
+  pv_yield: 0.20
+  dual_fuel_split: 0.20
+
+# Money statement (the companion to each carbon statement). Prices are the ones in force on the as-of date:
+# pump prices from reference/fuel_prices_weekly.csv (DESNZ), unit rates and standing charges from
+# reference/ofgem_price_cap.csv (Ofgem). Everything else is a labelled assumption or a cited figure.
+money:
+  ev_kwh_per_km: {value: 0.205, source: "assumption: average battery-electric car"}
+  km_per_litre: {petrol: 12.85, diesel: 14.96, source: "DESNZ 2026 average car per-km and per-litre factors"}
+  nts_average_km: {value: 11426, source: "NTS0901 2025: 7,100 miles a year for all cars (used when fuel is not visible)"}
+  home_charging_share: {house: 0.85, other: 0.15, source: "assumption: share of EV charging done at home"}
+  seg_export_gbp_per_kwh: {value: 0.12, source: "assumption: typical Smart Export Guarantee tariff"}
+  pv_self_consumption: {value: 0.45, source: "assumption: share of solar output used at home without a battery"}
+  ev_loan_to_value: {value: 0.80, source: "assumption: PCAF attribution of a new EV loan (loan / vehicle value)"}
+  upfront_gbp:
+    heat_pump: {value: 12000, source: "assumption: installed air-source heat pump"}
+    heat_pump_grant_gas: {value: 7500, source: "Boiler Upgrade Scheme, England and Wales (Energy Saving Trust)"}
+    heat_pump_grant_off_gas: {value: 9000, source: "Boiler Upgrade Scheme off-gas rate for oil and LPG homes, 21 Jul 2026 - 31 Mar 2027"}
+    insulation: {value: 3500, source: "assumption: loft, cavity and draught-proofing package"}
+    solar_4kwp: {value: 7000, source: "assumption: installed 4 kWp system"}
+    ebike: {value: 2000, source: "assumption"}
+    efficient_appliance: {value: 600, source: "assumption"}
+    home_charger: {value: 900, source: "assumption"}

@@ -1,0 +1,128 @@
+# Sustainability transaction taxonomy (FR2). Every transaction gets exactly one
+# of the eight categories below. Sub-categories carry the detail that reason codes
+# and the carbon engine need; they always roll up to one category.
+
+categories:
+  Fuel:
+    definition: "Energy bought to power a road vehicle away from home."
+    sub_categories:
+      road_fuel: "Petrol, diesel and LPG autogas bought at a forecourt."
+      ev_public_charging: "Electricity bought at a public EV charger."
+  Electricity:
+    definition: "Payments for a home electricity-only supply."
+    sub_categories:
+      electricity_bill: "Direct debit or bill payment to a supplier for electricity only."
+      electricity_prepayment: "Top-up of an electricity prepayment meter."
+  Gas:
+    definition: "Payments for a home mains-gas-only supply."
+    sub_categories:
+      gas_bill: "Direct debit or bill payment to a supplier for gas only."
+      gas_prepayment: "Top-up of a gas prepayment meter."
+  Public Transport:
+    definition: "Shared, scheduled or shared-mobility travel."
+    sub_categories:
+      rail: "National Rail, rail tickets and season tickets."
+      metro_tram: "Underground, metro, light rail and tram, including pay-as-you-go caps."
+      bus_coach: "Local buses and long-distance coaches."
+      micromobility: "Bike and e-scooter share schemes."
+  Home Improvement:
+    definition: "Spending that changes the fabric, systems or appliances of a home."
+    sub_categories:
+      diy_materials: "DIY stores, builders' merchants and decorating supplies."
+      trades: "Builders, plumbers, electricians, roofers and other trades."
+      appliances: "Large household appliances (white goods)."
+      energy_installers: "Installers of heat pumps, solar panels, batteries and insulation."
+  Automotive:
+    definition: "Owning, financing, insuring, taxing, maintaining and parking a vehicle."
+    sub_categories:
+      vehicle_finance: "Car finance, hire purchase and lease payments."
+      vehicle_purchase: "Payments to car dealers."
+      maintenance: "Servicing, MOT, repairs, tyres and parts."
+      motor_insurance: "Car insurance."
+      vehicle_tax: "Vehicle excise duty paid to DVLA."
+      parking_charges: "Parking, tolls, congestion and clean-air-zone charges."
+      breakdown_cover: "Breakdown and recovery cover."
+  Utilities:
+    definition: "Household utility payments that are not a single-fuel electricity or gas supply."
+    sub_categories:
+      dual_fuel_energy: "One payment covering both electricity and gas."
+      water: "Water and sewerage."
+      heating_oil_lpg: "Heating oil and LPG delivered to off-gas-grid homes."
+  Other:
+    definition: "Everything else."
+    sub_categories:
+      groceries: "Supermarkets and food shops."
+      eating_out: "Restaurants, cafes and takeaways."
+      retail: "Clothing, homeware, electronics, online marketplaces."
+      forecourt_shop: "Shop purchases at a fuel forecourt."
+      taxi_ridehail: "Taxis and ride-hailing."
+      travel: "Flights, holidays and hotels."
+      telecoms: "Mobile, broadband and TV."
+      subscriptions: "Streaming, software and memberships."
+      council_tax: "Council tax."
+      housing: "Rent and mortgage payments."
+      insurance_other: "Home, life and other non-motor insurance."
+      health_beauty: "Pharmacies, health and beauty."
+      charity_second_hand: "Charity shops, second-hand marketplaces and donations."
+      investments: "Transfers to investment platforms and pensions."
+      finance: "Loan and card repayments, savings transfers, bank charges."
+      cash: "Cash machine withdrawals."
+      income: "Salary, pension and benefit credits."
+      transfers: "Payments to and from other people."
+
+boundary_rules:
+  - id: B1
+    rule: "Fuel vs Automotive: energy that moves the vehicle is Fuel; anything that keeps a vehicle owned, financed, insured, taxed, maintained or parked is Automotive."
+  - id: B2
+    rule: "Public EV charging is Fuel (transport energy). Home EV charging is part of the household Electricity bill and is not separable."
+  - id: B3
+    rule: "Shop purchases at a fuel forecourt are Other (forecourt_shop). Forecourt terminals report the same merchant and MCC for fuel and shop, so the model separates them using the amount."
+  - id: B4
+    rule: "Electricity or Gas only when the payment is for a single-fuel supply. One payment covering both fuels (dual fuel) is Utilities, as are water and delivered heating oil or LPG."
+  - id: B5
+    rule: "Prepayment top-ups take the category of the meter they top up (Electricity or Gas). Generic top-up networks without a fuel tag are still labelled by the meter."
+  - id: B6
+    rule: "Congestion, ULEZ, clean-air-zone and toll charges are Automotive even when paid to a transport authority; fares paid to the same authority are Public Transport."
+  - id: B7
+    rule: "Taxis and ride-hailing are Other: they are private hire, not shared or scheduled transport. Bike and e-scooter share schemes are Public Transport."
+  - id: B8
+    rule: "Large appliance retailers are Home Improvement (white goods change home energy use); furniture and homeware are Other."
+  - id: B9
+    rule: "Motor insurance and breakdown cover are Automotive; home and life insurance are Other."
+  - id: B10
+    rule: "Refunds and credits take the category of the merchant that paid them (an energy supplier refund stays in its energy category). Income credits are Other."
+  - id: B11
+    rule: "Mortgage and rent payments are Other (housing) but are used as evidence of tenure."
+
+# Fixed reason-code identifiers (FR3, FR7). The model stage maps feature
+# contributions to these; the LLM may only use the human text below.
+reason_codes:
+  HIGH_FUEL_SPEND: "Regular petrol or diesel spending"
+  HIGH_ANNUAL_MILEAGE: "High estimated annual mileage"
+  EXISTING_VEHICLE: "Already owns or finances a petrol or diesel car"
+  VEHICLE_LOAN_ENDING: "Current car finance ends within 12 months"
+  OLDER_VEHICLE: "Current car is older"
+  OFFSTREET_PARKING: "Home likely has off-street parking for charging"
+  CLEAN_AIR_ZONE_CHARGES: "Pays clean-air-zone or ULEZ charges"
+  HOMEOWNER_MORTGAGE: "Owns home with a mortgage"
+  HOMEOWNER: "Owns home"
+  HIGH_GAS_USE: "High estimated gas use"
+  HIGH_ELECTRICITY_USE: "High estimated electricity use"
+  LOW_EPC_RATING: "Home energy rating is D or below"
+  RECENT_HOME_MOVE: "Moved home recently"
+  HOME_IMPROVEMENT_SPEND: "Recent home improvement spending"
+  HOUSE_SUITABLE_FOR_SOLAR: "Lives in a house rather than a flat"
+  HIGH_SOLAR_YIELD_REGION: "Lives in a sunnier region"
+  EV_AT_HOME: "Charges an electric car"
+  DAYTIME_OCCUPANCY: "Likely at home in the daytime"
+  PAPER_STATEMENTS: "Still receives paper statements"
+  HIGH_DIGITAL_ACTIVITY: "Uses online or app banking often"
+  MOBILE_APP_USER: "Uses the mobile app"
+  EXISTING_INVESTMENTS: "Already holds investments"
+  REGULAR_INVESTING: "Invests regularly"
+  SUSTAINABILITY_PREFERENCE: "Has said sustainability matters to them"
+  GREEN_ENERGY_TARIFF: "Uses a green energy supplier"
+  EXISTING_BORROWING: "Already uses a personal loan or credit card"
+  GREEN_PURCHASE_INTENT: "Recent spending at bike, appliance or energy-efficiency retailers"
+  CYCLING_ACTIVITY: "Uses cycling or bike share"
+  OWNER_NO_MORTGAGE: "Owns home outright"

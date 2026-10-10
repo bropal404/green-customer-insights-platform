@@ -1,0 +1,127 @@
+# Data dictionary of the bank's source systems.
+#
+# Real bank data does not arrive as one tidy table: each system below has its own
+# file format, keys, units, date format, code tables and quality problems. The
+# simulator writes extracts by this dictionary (gcip/simulate/sources.py); FR1
+# ingestion reads them by it (gcip/fr1/ingest.py). Every code table maps the
+# system's code to the harmonised warehouse value.
+
+systems:
+  core_banking:
+    description: "Customer master, account master and month-end balances."
+    files: {customers: customers.csv, accounts: accounts.csv, balances: balances.csv}
+    format: "CSV"
+    keys: "CUST_ID; accounts by ACCT_NO (sort code and account number, e.g. 001004-12345678)"
+    dates: "YYYYMMDD"
+    units: "money in pence, interest rates in basis points"
+    known_issues:
+      - "Region names typed inconsistently (upper and lower case variants)."
+  card_processor:
+    description: "Card authorisations that settled: purchases and cash withdrawals, plus the card registry."
+    files: {registry: card_registry.csv, transactions: "part-*.parquet"}
+    format: "Parquet (transactions), CSV (registry)"
+    keys: "CARD_TOKEN (the processor never sees account numbers); TXN_REF"
+    dates: "ISO 8601 timestamps"
+    units: "amounts in pence (AMOUNT_MINOR), direction C/D"
+    known_issues:
+      - "The feed occasionally replays a batch: about 0.2% of rows are exact duplicates."
+  payments_hub:
+    description: "Direct debits, standing orders, Faster Payments, credits, internal transfers and charges."
+    files: {transactions: "part-*.csv.gz"}
+    format: "gzip CSV"
+    keys: "PAYMENT_ID; ACCT_NO"
+    dates: "DD/MM/YYYY value date"
+    units: "signed amounts in pounds (negative = money out)"
+    known_issues:
+      - "About 1% of rows carry the account number in the legacy 14-digit form without a hyphen."
+      - "Narratives are space-padded to 35 characters."
+  crm_marketing:
+    description: "Campaign contacts and responses, keyed by CRM contact id, with a contact-to-customer crosswalk."
+    files: {contacts: contacts.csv, responses: campaign_responses.csv}
+    format: "CSV"
+    keys: "CONTACT_ID; CUST_REF (blank for prospects)"
+    dates: "DD/MM/YYYY"
+    units: "product names instead of product codes"
+    known_issues:
+      - "About 1% of customers have two contact ids (one from a web sign-up)."
+      - "About 1% of campaign contacts are prospects who are not customers."
+      - "Outcomes are recorded in several spellings (e.g. 'Clicked', 'CLICKED', 'click-through')."
+  digital_analytics:
+    description: "Monthly app, web, branch and e-statement activity."
+    files: {engagement: monthly_engagement.jsonl}
+    format: "JSON Lines"
+    keys: "uid = first 16 hex characters of SHA-256('<salt>:<customer id>'), pseudonymised by the analytics team"
+    dates: "YYYY-MM"
+    units: "counts"
+    known_issues:
+      - "About 0.3% of records belong to prospects who never became customers (no matching uid)."
+  lending_assets:
+    description: "Property valuations from the mortgage origination system (EPC register match) and vehicle records for motor finance."
+    files: {properties: property_valuations.xml, vehicles: vehicle_records.csv}
+    format: "XML (properties), CSV (vehicles)"
+    keys: "mortgage or motor loan ACCT_NO"
+    dates: "year of first registration"
+    units: "values in pence"
+    known_issues:
+      - "EPC details are missing when the property did not match the EPC register."
+  product_system:
+    description: "Product holdings (including the paperless service) and statement-preference change events."
+    files: {holdings: holdings.csv, preference_events: statement_preference_events.csv}
+    format: "CSV"
+    keys: "ACCT_NO; CUSTOMER_REF"
+    dates: "ISO dates and timestamps"
+    units: "no amounts"
+    known_issues: []
+
+pseudonymisation:
+  digital_analytics_salt: "gcip-analytics-2026"
+
+quality_rates:            # how often the simulator injects each issue
+  card_replay: 0.002
+  digital_orphan: 0.003
+  crm_duplicate_contact: 0.01
+  crm_prospect: 0.01
+  legacy_account_format: 0.01
+  region_upper_case: 0.05
+  region_lower_case: 0.03
+
+codes:
+  residential_status: {H: homeowner, M: homeowner_mortgage, T: tenant, F: living_with_family}
+  employment_status: {E: employed, S: self_employed, R: retired, U: student, N: not_working}
+  income_band: {"1": under_15k, "2": 15k_25k, "3": 25k_40k, "4": 40k_60k, "5": 60k_100k, "6": 100k_plus}
+  contact_channel: {APP: app, EMAIL: email, POST: post}
+  occupation:             # SOC 2020 major group, or status for people not in work
+    "1": managers_directors
+    "2": professional
+    "3": associate_professional
+    "4": administrative
+    "5": skilled_trades
+    "6": caring_leisure
+    "7": sales_customer_service
+    "8": process_plant
+    "9": elementary
+    R: retired
+    S: student
+    N: not_in_work
+  statement_preference: {P: paper, E: online}
+  card_entry_type: {PURCHASE: DEB, CASH_WITHDRAWAL: CPT}
+  payment_scheme: {BACS_DD: DD, STANDING_ORDER: SO, FPS_OUT: FPO, FPS_IN: FPI, BACS_CREDIT: BGC, INTERNAL: TFR, CHARGE: CHG}
+  open_banking_code:      # proprietary code -> Open Banking transaction code family
+    DEB: CardPayment
+    DD: DirectDebit
+    SO: StandingOrder
+    FPO: FasterPaymentOut
+    FPI: FasterPaymentIn
+    BGC: BankGiroCredit
+    CPT: CashWithdrawal
+    TFR: InternalTransfer
+    CHG: Charge
+  dvla_fuel: {PETROL: petrol, DIESEL: diesel, "HYBRID ELECTRIC": hev, "PLUG-IN HYBRID": phev, ELECTRICITY: bev}
+  epc_main_fuel: {"mains gas": gas, electricity: electric, oil: oil, LPG: lpg, "electricity (heat pump)": heat_pump, other: other}
+  campaign_outcome:       # harmonised value -> spellings found in the CRM
+    no_response: ["no response", "NO_RESPONSE", "None"]
+    viewed: ["Viewed", "VIEWED", "opened"]
+    clicked: ["Clicked", "CLICKED", "click-through"]
+    dismissed: ["Dismissed", "DISMISSED"]
+    not_interested: ["Not interested", "NOT_INTERESTED"]
+    already_have: ["Already have", "ALREADY_HAVE"]

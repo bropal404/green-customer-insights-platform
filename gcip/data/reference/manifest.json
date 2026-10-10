@@ -1,0 +1,686 @@
+{
+ "built_at_utc": "2026-10-10T17:12:42+00:00",
+ "geography": "England and Wales, local authorities on April 2023 boundaries (Census 2021 merged where needed)",
+ "join_stats": {
+  "las": 318,
+  "missing_region": 0,
+  "missing_electricity": 0,
+  "missing_gas": 1,
+  "missing_renewables": 2,
+  "missing_vehicles": 2,
+  "missing_census_extra": 0,
+  "census_rm_las": 318
+ },
+ "raw_sources": [
+  {
+   "key": "census_ts054",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts054.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS054 Tenure, England and Wales",
+   "cache_path": "census/census2021-ts054.zip",
+   "bytes": 4074446,
+   "sha256": "aa07311021776a93fdd7e8f6b3ad261b919305ef821ae68174fb1a66b85304c2"
+  },
+  {
+   "key": "census_ts044",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts044.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS044 Accommodation type, England and Wales",
+   "cache_path": "census/census2021-ts044.zip",
+   "bytes": 3077120,
+   "sha256": "af7b512615ea9d27ad0b2cec715a6cd4b50832482e0f38ca640c906c352f91bd"
+  },
+  {
+   "key": "census_ts045",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts045.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS045 Car or van availability, England and Wales",
+   "cache_path": "census/census2021-ts045.zip",
+   "bytes": 2657395,
+   "sha256": "95593dcd53247d4458e97edd7454577a63e47fd43be957f0a2460e872efdc070"
+  },
+  {
+   "key": "census_ts061",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts061.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS061 Method used to travel to work, England and Wales",
+   "cache_path": "census/census2021-ts061.zip",
+   "bytes": 3727115,
+   "sha256": "ab9756081498826c4aed237e22b811c12d4a52767326c55d1371fcde98f80a31"
+  },
+  {
+   "key": "census_ts046",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts046.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS046 Central heating, England and Wales",
+   "cache_path": "census/census2021-ts046.zip",
+   "bytes": 3313301,
+   "sha256": "ecbe33b3f6fde6fc2dc43dd773148450240408707ed3e73aa6882ba2f4c40c28"
+  },
+  {
+   "key": "census_ts017",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts017.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS017 Household size, England and Wales",
+   "cache_path": "census/census2021-ts017.zip",
+   "bytes": 3358401,
+   "sha256": "1896c2585265ac22991d71065dd1b4382b6605726466681f59042b0d288c033b"
+  },
+  {
+   "key": "census_ts003",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts003.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS003 Household composition, England and Wales",
+   "cache_path": "census/census2021-ts003.zip",
+   "bytes": 6170227,
+   "sha256": "86f1a4097a2e1cd69e162cd5d36f75ce2f23c05e5da70a81075e36fbde9c92f1"
+  },
+  {
+   "key": "census_ts050",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts050.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS050 Number of bedrooms, England and Wales",
+   "cache_path": "census/census2021-ts050.zip",
+   "bytes": 2695207,
+   "sha256": "864c7dc2ae78433042dfe3f68db2c8e2b2afef23d492c5a191bf9f0f1f05495c"
+  },
+  {
+   "key": "census_ts066",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts066.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS066 Economic activity status, England and Wales",
+   "cache_path": "census/census2021-ts066.zip",
+   "bytes": 7437823,
+   "sha256": "eb9d792d4b9d196b2e36ab558af2ad85f52f5f2f2643b3895b42cd4fad068d1a"
+  },
+  {
+   "key": "census_ts062",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts062.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS062 National Statistics Socio-economic Classification (NS-SeC), England and Wales",
+   "cache_path": "census/census2021-ts062.zip",
+   "bytes": 4047597,
+   "sha256": "d688c8079226055e8350b0578a5f0cb10dc942b934e22bcd3958eae2ff0d1404"
+  },
+  {
+   "key": "census_ts058",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts058.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS058 Distance travelled to work, England and Wales",
+   "cache_path": "census/census2021-ts058.zip",
+   "bytes": 3878832,
+   "sha256": "c42050671122a14a9943a3767bd1431c6c8349779ec1518d3956c5639e30816d"
+  },
+  {
+   "key": "census_ts011",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts011.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS011 Households by deprivation dimensions, England and Wales",
+   "cache_path": "census/census2021-ts011.zip",
+   "bytes": 2765908,
+   "sha256": "e7133720f12ed092580e2b815ca6a522f51adfe9e7b2fe272c4a7eefd26389af"
+  },
+  {
+   "key": "census_ts037",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts037.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS037 General health, England and Wales",
+   "cache_path": "census/census2021-ts037.zip",
+   "bytes": 3030001,
+   "sha256": "d379050211a02021e6b6d9a398600de363a6b82e3ded537bdfb3c0216555d959"
+  },
+  {
+   "key": "census_ts038",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts038.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS038 Disability, England and Wales",
+   "cache_path": "census/census2021-ts038.zip",
+   "bytes": 3490582,
+   "sha256": "74d42a2b4138d3182a17e99eba1140d571ee2a48edf4a0210ab525e1aca8bff6"
+  },
+  {
+   "key": "census_ts063",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts063.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS063 Occupation, England and Wales",
+   "cache_path": "census/census2021-ts063.zip",
+   "bytes": 3721824,
+   "sha256": "4e091aa5e3dfa0a136fab3a1ed1ae3a3d05e6dc7e2fbd8fd1e8b9a9de4e625fc"
+  },
+  {
+   "key": "census_ts052",
+   "url": "https://www.nomisweb.co.uk/output/census/2021/census2021-ts052.zip",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 TS052 Occupancy rating for bedrooms, England and Wales",
+   "cache_path": "census/census2021-ts052.zip",
+   "bytes": 2730733,
+   "sha256": "4fa7813b721454c0034cb4ddeba59f909883043fdbac04948637bdc3112d8c89"
+  },
+  {
+   "key": "census_rm201",
+   "url": "https://www.nomisweb.co.uk/api/v01/dataset/NM_2301_1.data.csv?date=latest&geography=TYPE424&c2021_hhtenure_5=1,2,3,4&c2021_age_4b=1,2,3&measures=20100&select=geography_code,geography_name,c2021_hhtenure_5_name,c2021_age_4b_name,obs_value",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 RM201 Tenure by age of household reference person, local authorities (April 2023)",
+   "cache_path": "census_rm/rm201_tenure_by_age_hrp.csv",
+   "bytes": 350442,
+   "sha256": "0a6a9bfdcb21f135019c5af7be44ae01c3a4e1541d65de74a8419eebcd33bfb9"
+  },
+  {
+   "key": "census_rm133",
+   "url": "https://www.nomisweb.co.uk/api/v01/dataset/NM_2233_1.data.csv?date=latest&geography=TYPE424&c2021_hhtenure_5=1,2,3,4&measures=20100&select=geography_code,geography_name,c2021_hhtenure_5_name,c2021_eastat_10,c2021_eastat_10_name,obs_value",
+   "publisher": "ONS via Nomis",
+   "licence": "Open Government Licence v3.0",
+   "description": "Census 2021 RM133 Tenure by economic activity status of household reference person, local authorities (April 2023)",
+   "cache_path": "census_rm/rm133_tenure_by_activity_hrp.csv",
+   "bytes": 1939234,
+   "sha256": "30e0f6db69a0d6d6da29713ea3060d3fd512fddc77870d9e43e0f134ad23d1d3"
+  },
+  {
+   "key": "desnz_need_2025_4m",
+   "url": "https://assets.publishing.service.gov.uk/media/685c04734cd6b03168709827/anon2025_4million.zip",
+   "publisher": "DESNZ",
+   "licence": "Open Government Licence v3.0",
+   "description": "National Energy Efficiency Data-Framework (NEED) anonymised data 2025: 4 million homes in England and Wales with property attributes and metered gas and electricity 2005-2023",
+   "cache_path": "need/anon2025_4million.zip",
+   "bytes": 259555320,
+   "sha256": "fcb2986b323925fe78fb0d4859444b5c8fb7abb5d6a42883b80a2865704494d5"
+  },
+  {
+   "key": "desnz_need_2025_metadata",
+   "url": "https://assets.publishing.service.gov.uk/media/685c02aa0433072fce0e1025/NEED-2025-anonymised-dataset-metadata.ods",
+   "publisher": "DESNZ",
+   "licence": "Open Government Licence v3.0",
+   "description": "NEED anonymised data 2025: variable definitions",
+   "cache_path": "need/NEED-2025-anonymised-dataset-metadata.ods",
+   "bytes": 190993,
+   "sha256": "d28c4ab89aaf382847266ac65459b544677b802c01c9196c96262219cf6ed5c5"
+  },
+  {
+   "key": "hmlr_uk_hpi_2026_07",
+   "url": "https://publicdata.landregistry.gov.uk/market-trend-data/house-price-index-data/UK-HPI-full-file-2026-07.csv",
+   "publisher": "HM Land Registry",
+   "licence": "Open Government Licence v3.0",
+   "description": "UK House Price Index full file (July 2026): average prices by local authority and property type, monthly",
+   "cache_path": "hpi/UK-HPI-full-file-2026-07.csv",
+   "bytes": 35012747,
+   "sha256": "654a541934ba7b393a741e23bc0c6fb668690f562feb8a7b4fff62d653fd6607"
+  },
+  {
+   "key": "dvsa_mot_results_2024",
+   "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/MOT+testing+data+results+(2024).zip",
+   "publisher": "DVSA",
+   "licence": "Open Government Licence v3.0",
+   "description": "Anonymised MOT test results 2024 (make, model, fuel, first-use date, odometer) for every MOT test in Great Britain",
+   "cache_path": "mot/mot_results_2024.zip",
+   "bytes": 1531265132,
+   "sha256": "1432996ede0e7fe89947ea5063ed13ef8b19a8f2e1268aaf261e9fec9bea1d6c"
+  },
+  {
+   "key": "boe_quoted_household_rates",
+   "url": "https://www.bankofengland.co.uk/boeapps/database/_iadb-fromshowcolumns.asp?csv.x=yes&Datefrom=01/Jan/2015&Dateto=now&SeriesCodes=IUMZICQ,IUMBV34,IUMZICR,IUMB482,IUM2WTL,IUMBV37,IUMBV42,IUMBV45,IUMBX67,IUMHPTL,IUMCCTL,IUMODTL,IUMB6VL,IUMB6VM,IUMB6VN,IUMZID2,IUMWTFA,IUMB6RH,IUMB6RI&CSVF=TN&UsingCodes=Y&VPD=Y&VFD=N",
+   "publisher": "Bank of England",
+   "licence": "Bank of England database terms of use",
+   "description": "Quoted household interest rates, monthly, Jan 2015 to Sep 2026: mortgages by LTV and fixed period, personal loans, credit cards, overdrafts, cash ISAs, fixed-rate bonds",
+   "cache_path": "boe/quoted_household_rates.csv",
+   "bytes": 15399,
+   "sha256": "159552c87740b16e073c9bbace96b57c4c3ec3f45491c074bdb27a5ac2e9e363"
+  },
+  {
+   "key": "desnz_elec_la",
+   "url": "https://assets.publishing.service.gov.uk/media/69426e905431f4f94d7f0b5e/Subnational_electricity_consumption_statistics_2005-2024.xlsx",
+   "publisher": "DESNZ",
+   "licence": "Open Government Licence v3.0",
+   "description": "Sub-national electricity consumption by local authority, 2005-2024",
+   "cache_path": "desnz/elec_la.xlsx",
+   "bytes": 2103254,
+   "sha256": "9d40814a23f87b2b028dd39da05b47d0e67e843473ec6ec4a8a0f93167666429"
+  },
+  {
+   "key": "desnz_gas_la",
+   "url": "https://assets.publishing.service.gov.uk/media/69f9bf208f3213f7384ecae6/Subnational_gas_consumption_statistics_2005-2024.xlsx",
+   "publisher": "DESNZ",
+   "licence": "Open Government Licence v3.0",
+   "description": "Sub-national gas consumption by local authority (weather corrected), 2005-2024",
+   "cache_path": "desnz/gas_la.xlsx",
+   "bytes": 1650955,
+   "sha256": "192c5f81f953c9ab6b5c2dc4a3ca5ddccf5e98f53d39c0ce368c3c532b209cd3"
+  },
+  {
+   "key": "desnz_elec_dist",
+   "url": "https://assets.publishing.service.gov.uk/media/69426ec31ec67214e98f3058/Domestic_electricity_consumption_distribution_2015-2024.xlsx",
+   "publisher": "DESNZ",
+   "licence": "Open Government Licence v3.0",
+   "description": "Distribution of domestic electricity consumption per meter, GB",
+   "cache_path": "desnz/elec_dist.xlsx",
+   "bytes": 255730,
+   "sha256": "d67d023508cf2a6794f08886c2b21405ed1b12b6e8bf2e3c9c4a4eee91bd8719"
+  },
+  {
+   "key": "desnz_gas_dist",
+   "url": "https://assets.publishing.service.gov.uk/media/69457621033693d5d50eb843/Domestic_gas_consumption_distribution_2015-2024.xlsx",
+   "publisher": "DESNZ",
+   "licence": "Open Government Licence v3.0",
+   "description": "Distribution of domestic gas consumption per meter, GB",
+   "cache_path": "desnz/gas_dist.xlsx",
+   "bytes": 293982,
+   "sha256": "614cad9cbfceffd7ee5ce0ed22f158ae464322df324342df175c90aed4fd382d"
+  },
+  {
+   "key": "desnz_renewables_la",
+   "url": "https://assets.publishing.service.gov.uk/media/6aba6ebafe72ed1e2b02f151/Renewable_electricity_by_local_authority_2014_2025.xlsx",
+   "publisher": "DESNZ",
+   "licence": "Open Government Licence v3.0",
+   "description": "Renewable electricity sites and capacity by local authority, 2014-2025",
+   "cache_path": "desnz/renew_la.xlsx",
+   "bytes": 3446115,
+   "sha256": "ac5cc6731685c2b24a479f22d019a10577053dc2d65ae12a792f44d5b36ae50e"
+  },
+  {
+   "key": "desnz_ghg_factors_2026",
+   "url": "https://assets.publishing.service.gov.uk/media/6a6c9748862aaf18d9c62ac9/ghg-conversion-factors-2026-flat-format-revised.xlsx",
+   "publisher": "DESNZ",
+   "licence": "Open Government Licence v3.0",
+   "description": "UK Government GHG conversion factors for company reporting 2026, flat file v1.2",
+   "cache_path": "desnz/ghg_factors_2026_flat.xlsx",
+   "bytes": 515426,
+   "sha256": "a9a455ab396dae226d510c7be6233748416d490c41a5d20f3dc7a0c45feecd5e"
+  },
+  {
+   "key": "desnz_fuel_prices",
+   "url": "https://assets.publishing.service.gov.uk/media/6ac3b5951ef3e896de979385/CSV__2018_-__.csv",
+   "publisher": "DESNZ",
+   "licence": "Open Government Licence v3.0",
+   "description": "Weekly road fuel prices (pence per litre), 2018 to October 2026",
+   "cache_path": "desnz/weekly_fuel_prices_2018_2026.csv",
+   "bytes": 20414,
+   "sha256": "ef7658a3fb57707cdf96e2c4b396ec5deeac1f2d03275f64e1e6931fe860f8e5"
+  },
+  {
+   "key": "dft_veh0105",
+   "url": "https://assets.publishing.service.gov.uk/media/6aad561bce3f006bd4346ce1/veh0105.ods",
+   "publisher": "DfT",
+   "licence": "Open Government Licence v3.0",
+   "description": "VEH0105 licensed vehicles by body type, fuel type, keepership and local authority",
+   "cache_path": "dft/veh0105.ods",
+   "bytes": 17613448,
+   "sha256": "242fa118bb25226ffa44797072d66bbcd07ecdcdec2fadb4a39853b4cc847d26"
+  },
+  {
+   "key": "dft_veh0142",
+   "url": "https://assets.publishing.service.gov.uk/media/6aad561b086ce7c57b818707/veh0142.ods",
+   "publisher": "DfT",
+   "licence": "Open Government Licence v3.0",
+   "description": "VEH0142 licensed plug-in vehicles (battery electric, plug-in hybrid) by body type, keepership and local authority",
+   "cache_path": "dft/veh0142.ods",
+   "bytes": 7456034,
+   "sha256": "a4ff4d7bead31bd99a0583426f0f886a52ecb404a8294072035ef83130c385b2"
+  },
+  {
+   "key": "dft_nts0901",
+   "url": "https://assets.publishing.service.gov.uk/media/6a9ed42af36e1f225ecb7eab/nts0901.ods",
+   "publisher": "DfT",
+   "licence": "Open Government Licence v3.0",
+   "description": "NTS0901 annual mileage of cars by fuel type, England",
+   "cache_path": "nts/nts0901.ods",
+   "bytes": 14321,
+   "sha256": "64cf068efd9c47096249c360f9682c227bef37941adbae331ddb1236ea2e6682"
+  },
+  {
+   "key": "dft_nts0904",
+   "url": "https://assets.publishing.service.gov.uk/media/6a9ed42a474b8101ece46448/nts0904.ods",
+   "publisher": "DfT",
+   "licence": "Open Government Licence v3.0",
+   "description": "NTS0904 annual mileage bands of cars, England",
+   "cache_path": "nts/nts0904.ods",
+   "bytes": 15869,
+   "sha256": "4636b948571cd5db7ca94cc8213fb7b59e3dfb65ccf30f17805221a95c622de9"
+  },
+  {
+   "key": "ons_family_spending_wb1",
+   "url": "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook1detailedexpenditureandtrends/fye2025/workbook1detailedexpenditureandtrends.xlsx",
+   "publisher": "ONS",
+   "licence": "Open Government Licence v3.0",
+   "description": "Family spending workbook 1, FYE 2025 (table A6 by gross income decile)",
+   "cache_path": "ons/fs_wb1_fye2025.xlsx",
+   "bytes": 558943,
+   "sha256": "af8d4a4464c0cc0a49195495a6e665667234379ac08293037a69e065d8931076"
+  },
+  {
+   "key": "ons_ghg_intensity_by_industry",
+   "url": "https://www.ons.gov.uk/file?uri=/economy/environmentalaccounts/datasets/ukenvironmentalaccountsatmosphericemissionsgreenhousegasemissionsintensitybyeconomicsectorunitedkingdom/current/04atmosphericemissionsghgintensity.xlsx",
+   "publisher": "ONS",
+   "licence": "Open Government Licence v3.0",
+   "description": "Atmospheric emissions: greenhouse gas emissions intensity by industry (SIC sections), 1990-2024",
+   "cache_path": "ons/ghg_intensity_by_industry.xlsx",
+   "bytes": 2166893,
+   "sha256": "731851e56f685d58a4d994081f44385ef365521b5eb05e3c46903ea850326c6a"
+  },
+  {
+   "key": "mcc_codes",
+   "url": "https://raw.githubusercontent.com/greggles/mcc-codes/main/mcc_codes.csv",
+   "publisher": "greggles/mcc-codes (GitHub)",
+   "licence": "The Unlicense",
+   "description": "ISO 18245 merchant category codes with descriptions",
+   "cache_path": "mcc/mcc_codes.csv",
+   "bytes": 94434,
+   "sha256": "1870af6f01a7b5fa4f89d597f70b3f2481e063e9470549e3a16405f748cb1f9d"
+  },
+  {
+   "key": "bench_dodatathings",
+   "url": "https://huggingface.co/datasets/DoDataThings/us-bank-transaction-categories-v2/resolve/main/transactions-synthetic.csv",
+   "publisher": "DoDataThings (Hugging Face)",
+   "licence": "MIT",
+   "description": "68,000 synthetic US bank transaction descriptions in 17 categories",
+   "cache_path": "bench/dodatathings_transactions_synthetic.csv",
+   "bytes": 3461960,
+   "sha256": "0424aed6e76f74a5b3b1ff61ccec43bc321622e6806da353b910b3b2c8108f6e"
+  },
+  {
+   "key": "ofgem_2025Q1",
+   "url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-january-and-31-march-2025",
+   "publisher": "Ofgem",
+   "licence": "Public web page",
+   "description": "Price cap announcement 2025Q1",
+   "cache_path": "ofgem/cap_1-january-and-31-march-2025.html",
+   "bytes": 211036,
+   "sha256": "a3164f9c95f2bf2fbb017648482aeef94bd30dc74055f7be885f121d56d48b70"
+  },
+  {
+   "key": "ofgem_2025Q2",
+   "url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-april-and-30-june-2025",
+   "publisher": "Ofgem",
+   "licence": "Public web page",
+   "description": "Price cap announcement 2025Q2",
+   "cache_path": "ofgem/cap_1-april-and-30-june-2025.html",
+   "bytes": 212520,
+   "sha256": "08a8d7745eadba97adb31da0b5664e45f33123185e42acef3fd1d599978ff9e7"
+  },
+  {
+   "key": "ofgem_2025Q3",
+   "url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2025",
+   "publisher": "Ofgem",
+   "licence": "Public web page",
+   "description": "Price cap announcement 2025Q3",
+   "cache_path": "ofgem/cap_1-july-and-30-september-2025.html",
+   "bytes": 212122,
+   "sha256": "75b8161ef895893354932fc032bb96b3eca3e395d97781ac34cf314c6a51a884"
+  },
+  {
+   "key": "ofgem_2025Q4",
+   "url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-october-and-31-december-2025",
+   "publisher": "Ofgem",
+   "licence": "Public web page",
+   "description": "Price cap announcement 2025Q4",
+   "cache_path": "ofgem/cap_1-october-and-31-december-2025.html",
+   "bytes": 205685,
+   "sha256": "e12afe75171a9d7991b8898a3ea41b639fc08ca833a7a0731078a1ef52690755"
+  },
+  {
+   "key": "ofgem_2026Q1",
+   "url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-january-and-31-march-2026",
+   "publisher": "Ofgem",
+   "licence": "Public web page",
+   "description": "Price cap announcement 2026Q1",
+   "cache_path": "ofgem/cap_1-january-and-31-march-2026.html",
+   "bytes": 214789,
+   "sha256": "743aae1b52ca4c087db82e420952e7290a52aa051fdfd4c41cc95895104b382b"
+  },
+  {
+   "key": "ofgem_2026Q2",
+   "url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-april-and-30-june-2026",
+   "publisher": "Ofgem",
+   "licence": "Public web page",
+   "description": "Price cap announcement 2026Q2",
+   "cache_path": "ofgem/cap_1-april-and-30-june-2026.html",
+   "bytes": 215429,
+   "sha256": "e6b1780e219ba6d20bd85870dfaaac80e6732b46997593cef53ee80231221a25"
+  },
+  {
+   "key": "ofgem_2026Q3",
+   "url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026",
+   "publisher": "Ofgem",
+   "licence": "Public web page",
+   "description": "Price cap announcement 2026Q3",
+   "cache_path": "ofgem/cap_1-july-and-30-september-2026.html",
+   "bytes": 213204,
+   "sha256": "ff404ab4e0b6c673c5294b278c5d46623bbbccceac6230a73c80261d674e9d19"
+  },
+  {
+   "key": "ofgem_2026Q4",
+   "url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-october-and-31-december-2026",
+   "publisher": "Ofgem",
+   "licence": "Public web page",
+   "description": "Price cap announcement 2026Q4",
+   "cache_path": "ofgem/cap_1-october-and-31-december-2026.html",
+   "bytes": 213765,
+   "sha256": "4664fe85df5952bbb5212d439d78fc46aa1044c0a49d16cc9cf31772cee5d98d"
+  },
+  {
+   "key": "pvgis_north_east",
+   "url": "https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=54.973&lon=-1.614&peakpower=1&loss=14&optimalangles=1&outputformat=json",
+   "publisher": "European Commission JRC",
+   "licence": "Free use (EU JRC PVGIS 5.3)",
+   "description": "PV yield at North East reference point",
+   "cache_path": "pvgis/north_east.json",
+   "bytes": 5201,
+   "sha256": "22461fa25a08749bf1e88882207b5cbc6d2741a2c854700edff1f769076e723d"
+  },
+  {
+   "key": "pvgis_north_west",
+   "url": "https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=53.48&lon=-2.242&peakpower=1&loss=14&optimalangles=1&outputformat=json",
+   "publisher": "European Commission JRC",
+   "licence": "Free use (EU JRC PVGIS 5.3)",
+   "description": "PV yield at North West reference point",
+   "cache_path": "pvgis/north_west.json",
+   "bytes": 5192,
+   "sha256": "d05efdf49de5912a5f660be7e35fb69adf34977e35bea16409d70349738821e0"
+  },
+  {
+   "key": "pvgis_yorkshire_and_the_humber",
+   "url": "https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=53.8&lon=-1.549&peakpower=1&loss=14&optimalangles=1&outputformat=json",
+   "publisher": "European Commission JRC",
+   "licence": "Free use (EU JRC PVGIS 5.3)",
+   "description": "PV yield at Yorkshire and The Humber reference point",
+   "cache_path": "pvgis/yorkshire_and_the_humber.json",
+   "bytes": 5198,
+   "sha256": "acbe9025016f76042000231ac3ece12785abc08ee33f32a69740983f942c656e"
+  },
+  {
+   "key": "pvgis_east_midlands",
+   "url": "https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=52.955&lon=-1.149&peakpower=1&loss=14&optimalangles=1&outputformat=json",
+   "publisher": "European Commission JRC",
+   "licence": "Free use (EU JRC PVGIS 5.3)",
+   "description": "PV yield at East Midlands reference point",
+   "cache_path": "pvgis/east_midlands.json",
+   "bytes": 5202,
+   "sha256": "16e5401107988a2509b48699b2128ec47697abc68be0f7e56ce26ebeed928c0d"
+  },
+  {
+   "key": "pvgis_west_midlands",
+   "url": "https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=52.486&lon=-1.89&peakpower=1&loss=14&optimalangles=1&outputformat=json",
+   "publisher": "European Commission JRC",
+   "licence": "Free use (EU JRC PVGIS 5.3)",
+   "description": "PV yield at West Midlands reference point",
+   "cache_path": "pvgis/west_midlands.json",
+   "bytes": 5200,
+   "sha256": "55b9c72e1bd593bb72d4b869c84cdd02ea3eb4d43534de3caf1d440e46c2b9d7"
+  },
+  {
+   "key": "pvgis_east",
+   "url": "https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=52.205&lon=0.122&peakpower=1&loss=14&optimalangles=1&outputformat=json",
+   "publisher": "European Commission JRC",
+   "licence": "Free use (EU JRC PVGIS 5.3)",
+   "description": "PV yield at East reference point",
+   "cache_path": "pvgis/east.json",
+   "bytes": 5200,
+   "sha256": "537229bb2aa13bd75e1207f260a0df4e44af8d49a764d04dde5d10d85b0b033a"
+  },
+  {
+   "key": "pvgis_london",
+   "url": "https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=51.507&lon=-0.128&peakpower=1&loss=14&optimalangles=1&outputformat=json",
+   "publisher": "European Commission JRC",
+   "licence": "Free use (EU JRC PVGIS 5.3)",
+   "description": "PV yield at London reference point",
+   "cache_path": "pvgis/london.json",
+   "bytes": 5199,
+   "sha256": "911ac6c418a0d2ca03d230506cd602b96cb9d685f5057b35280f55f62c008043"
+  },
+  {
+   "key": "pvgis_south_east",
+   "url": "https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=51.236&lon=-0.57&peakpower=1&loss=14&optimalangles=1&outputformat=json",
+   "publisher": "European Commission JRC",
+   "licence": "Free use (EU JRC PVGIS 5.3)",
+   "description": "PV yield at South East reference point",
+   "cache_path": "pvgis/south_east.json",
+   "bytes": 5203,
+   "sha256": "41c90144d0782cb437b8ff1ecb05ae56b56485f011a2ccf6f65387be56d264dc"
+  },
+  {
+   "key": "pvgis_south_west",
+   "url": "https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=50.9&lon=-3.2&peakpower=1&loss=14&optimalangles=1&outputformat=json",
+   "publisher": "European Commission JRC",
+   "licence": "Free use (EU JRC PVGIS 5.3)",
+   "description": "PV yield at South West reference point",
+   "cache_path": "pvgis/south_west.json",
+   "bytes": 5200,
+   "sha256": "54f652667a12639113d972bb454d289a46ca4a0e4d225b050dde89a5eccac701"
+  },
+  {
+   "key": "pvgis_wales",
+   "url": "https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=51.62&lon=-3.4&peakpower=1&loss=14&optimalangles=1&outputformat=json",
+   "publisher": "European Commission JRC",
+   "licence": "Free use (EU JRC PVGIS 5.3)",
+   "description": "PV yield at Wales reference point",
+   "cache_path": "pvgis/wales.json",
+   "bytes": 5199,
+   "sha256": "5e510cf7c3472157343fdf4f58a5f9602cd6758eb97b40546343af6e7270f987"
+  }
+ ],
+ "processed_files": [
+  {
+   "file": "reference/la_profile.csv",
+   "rows": 318,
+   "columns": 85,
+   "sha256": "c0966a3db84924d798cdea6623b5d1884378161618611852b7410083b3a889e2"
+  },
+  {
+   "file": "reference/pvgis_region_yield.csv",
+   "rows": 10,
+   "columns": 7,
+   "sha256": "6eb0976a0eb1030b0eed34b9a03246ea6dd730d54d8153c6a108be1ea371a8f1"
+  },
+  {
+   "file": "reference/consumption_distribution_2024.csv",
+   "rows": 414,
+   "columns": 4,
+   "sha256": "acbca14ef752d60088a12f661c3f315df7e35d5f54b677722c299ea08fb603c8"
+  },
+  {
+   "file": "reference/nts_mileage_by_fuel.csv",
+   "rows": 144,
+   "columns": 3,
+   "sha256": "53665a2abf41a5b9b2979cf42fde681ed979c756ea113b3f2c6b105ba6f08fe4"
+  },
+  {
+   "file": "reference/nts_mileage_bands.csv",
+   "rows": 336,
+   "columns": 4,
+   "sha256": "835d1c90ff961f207c3389e014d52e3174ff6289bfe0fefd3e7cdbd05c9c4184"
+  },
+  {
+   "file": "reference/fuel_prices_weekly.csv",
+   "rows": 458,
+   "columns": 3,
+   "sha256": "d6ecf5db044de81d6bd11c4241f84568a6a8fb881e098e9ffb6a13c3791df0bb"
+  },
+  {
+   "file": "reference/ofgem_price_cap.csv",
+   "rows": 8,
+   "columns": 9,
+   "sha256": "18f9feaa5b66487d3ab77a3c45a378e06bf474a994f84f3e8397d9b2f6400cf4"
+  },
+  {
+   "file": "reference/family_spending_a6_fye2025.csv",
+   "rows": 196,
+   "columns": 12,
+   "sha256": "3b5b83f73d12d904909642834a13dff83a0d06fd6dbbb5291063a9aa4e855a6e"
+  },
+  {
+   "file": "reference/ghg_factors_2026.csv",
+   "rows": 2622,
+   "columns": 9,
+   "sha256": "e6c0e15a31455554f7009bc7f7bc9c675942a2b449388198e14ef299fca150c5"
+  },
+  {
+   "file": "reference/ons_ghg_intensity_by_industry.csv",
+   "rows": 735,
+   "columns": 6,
+   "sha256": "a15a785a6c2830df458af4e51c1053fd2d5e3e5212a6504ee5e0f8a004582bce"
+  },
+  {
+   "file": "reference/mcc_codes.csv",
+   "rows": 981,
+   "columns": 6,
+   "sha256": "7fbda8a0da4d348a23651e1fe70591efd6c6183201781e33041d56e1e3836ce1"
+  },
+  {
+   "file": "reference/census_tenure_age_hrp.csv",
+   "rows": 2544,
+   "columns": 4,
+   "sha256": "f01ec37c2f4af8d19a5ffc2ed931adefd715f0c97dc5336f5cf678c37cefb98d"
+  },
+  {
+   "file": "reference/census_tenure_activity_hrp.csv",
+   "rows": 8904,
+   "columns": 4,
+   "sha256": "41cf8d89e9c8fb7b281f68bd5b1e1d790049f9e610baaee9cf64af19884ad7b1"
+  },
+  {
+   "file": "reference/house_prices_la_monthly.csv",
+   "rows": 63282,
+   "columns": 8,
+   "sha256": "01ea3f20e0884103449dc2107dc4c047c25bcf67ba54a79d7ba03201ef8d3ab7"
+  },
+  {
+   "file": "reference/boe_quoted_rates_monthly.csv",
+   "rows": 141,
+   "columns": 20,
+   "sha256": "88031b4fc4a19f3cdb2484edbefd489a72c4ec05b5c93d7c9b44b32e8c227d3b"
+  },
+  {
+   "file": "reference/mot_car_profiles.csv",
+   "rows": 96,
+   "columns": 5,
+   "sha256": "6c44258644e1f299ec976109c2d135aafac646104b1242d4557e260e9ae6cd58"
+  },
+  {
+   "file": "reference/need_homes.parquet",
+   "rows": 4000000,
+   "columns": 14,
+   "sha256": "b843fb2def7e68f0e30ea605bf41289829bc9bf2a03df67c71dcf3310e00e31e"
+  },
+  {
+   "file": "benchmarks/dodatathings_us_bank_categories.csv",
+   "rows": 68000,
+   "columns": 2,
+   "sha256": "ac1481c77691ee321f8cd7922ec524ac9368566a5d0aa65c58d56186759ab805"
+  }
+ ]
+}

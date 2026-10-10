@@ -1,0 +1,111 @@
+# Green products catalogue. The brief asks us to define the intended use cases
+# for Green Home and Solar Finance (slide 04) and leaves GP05/GP06 undefined;
+# these definitions are ours and are documented as such.
+#
+# Eligibility here is a "do not show" filter on observed data only. It never
+# says a customer qualifies: real eligibility is the bank's application process.
+
+products:
+  GP01:
+    name: "EV Finance"
+    product_codes: [MOTOR-EV-GREEN]  # code in the bank's product system
+    status: required
+    description: "Finance for a battery-electric car, new or used."
+    use_cases: ["new battery-electric car", "used battery-electric car"]
+    customer_action: "Explore EV options"
+    credit_product: true
+    blocks:
+      - {id: NO_VEHICLE, rule: "No evidence of a car (no fuel, motor tax, insurance or car finance in 12 months)."}
+      - {id: EV_OWNER_NO_REPLACEMENT, rule: "Already drives a battery-electric car that is under 8 years old."}
+      - {id: IN_ARREARS, rule: "Any account in arrears."}
+      - {id: FINANCIAL_DIFFICULTY, rule: "Persistent heavy overdraft use in the last 6 months."}
+      - {id: ALREADY_HOLDS, rule: "Already took this product."}
+    human_review: ["VULNERABLE"]
+    reason_codes: [HIGH_FUEL_SPEND, HIGH_ANNUAL_MILEAGE, EXISTING_VEHICLE, VEHICLE_LOAN_ENDING, OLDER_VEHICLE, OFFSTREET_PARKING, CLEAN_AIR_ZONE_CHARGES]
+    impact_method: AVOIDED_EV_WTW_v1
+  GP02:
+    name: "Green Home Loan"
+    product_codes: [MTG-GREEN-FA]  # code in the bank's product system
+    status: required
+    description: "Additional mortgage borrowing for energy-efficiency improvements."
+    use_cases: ["loft, cavity, solid-wall or floor insulation", "double or triple glazing", "heating controls", "air- or ground-source heat pump"]
+    customer_action: "See home energy upgrades"
+    credit_product: true
+    blocks:
+      - {id: NOT_MORTGAGED_OWNER, rule: "No evidence of a mortgage (with us or by direct debit to another lender)."}
+      - {id: RENTER, rule: "Pays rent or declared tenant status."}
+      - {id: TOP_EPC_RATING, rule: "Home energy rating already A or B."}
+      - {id: IN_ARREARS, rule: "Any account in arrears."}
+      - {id: FINANCIAL_DIFFICULTY, rule: "Persistent heavy overdraft use in the last 6 months."}
+      - {id: ALREADY_HOLDS, rule: "Already took this product."}
+    human_review: ["VULNERABLE"]
+    reason_codes: [HOMEOWNER_MORTGAGE, HIGH_GAS_USE, LOW_EPC_RATING, RECENT_HOME_MOVE, HOME_IMPROVEMENT_SPEND]
+    impact_method: AVOIDED_HOME_WTW_v1
+  GP03:
+    name: "Solar Finance"
+    product_codes: [LOAN-SOLAR]  # code in the bank's product system
+    status: required
+    description: "Finance for rooftop solar panels, with or without a home battery."
+    use_cases: ["rooftop solar PV", "solar PV with battery storage", "battery added to existing solar"]
+    customer_action: "Check solar for your home"
+    credit_product: true
+    blocks:
+      - {id: NOT_HOMEOWNER, rule: "No evidence of home ownership."}
+      - {id: RENTER, rule: "Pays rent or declared tenant status."}
+      - {id: FLAT, rule: "Property known to be a flat."}
+      - {id: SOLAR_FITTED, rule: "Receives solar export payments or the property record shows solar."}
+      - {id: IN_ARREARS, rule: "Any account in arrears."}
+      - {id: FINANCIAL_DIFFICULTY, rule: "Persistent heavy overdraft use in the last 6 months."}
+      - {id: ALREADY_HOLDS, rule: "Already took this product."}
+    human_review: ["VULNERABLE"]
+    reason_codes: [HOMEOWNER, HIGH_ELECTRICITY_USE, HOUSE_SUITABLE_FOR_SOLAR, HIGH_SOLAR_YIELD_REGION, EV_AT_HOME, DAYTIME_OCCUPANCY]
+    impact_method: AVOIDED_SOLAR_WTW_v1
+  GP04:
+    name: "Paperless Banking"
+    product_codes: [SVC-PAPERLESS]  # code in the bank's product system
+    status: required
+    description: "Switching paper statements and letters to online."
+    use_cases: ["online statements", "in-app letters"]
+    customer_action: "Go paperless"
+    credit_product: false
+    blocks:
+      - {id: ALREADY_PAPERLESS, rule: "No account still on paper statements."}
+      - {id: DIGITALLY_INACTIVE, rule: "No online or app log-ins in 6 months: do not nudge customers who may rely on paper."}
+      - {id: VULNERABLE, rule: "Customer has a vulnerability flag: paper may be an adjustment they need."}
+    human_review: []
+    reason_codes: [PAPER_STATEMENTS, HIGH_DIGITAL_ACTIVITY, MOBILE_APP_USER]
+    impact_method: AVOIDED_PAPER_v1
+  GP05:
+    name: "Green Investments"
+    product_codes: [INV-SUSTAIN-FOCUS]  # code in the bank's product system
+    status: optional
+    description: "Information about investment funds that carry an FCA sustainability label. Signposting only, never a personal recommendation."
+    use_cases: ["funds with an FCA sustainability label (Focus, Improvers, Impact or Mixed Goals)"]
+    customer_action: "Learn about sustainable funds"
+    credit_product: false
+    blocks:
+      - {id: NO_INVESTMENTS, rule: "No investment account with us and no transfers to investment platforms."}
+      - {id: FINANCIAL_DIFFICULTY, rule: "Arrears or persistent heavy overdraft use."}
+      - {id: VULNERABLE, rule: "Customer has a vulnerability flag."}
+      - {id: ALREADY_HOLDS, rule: "Already holds a sustainability-labelled fund with us."}
+    human_review: []
+    reason_codes: [EXISTING_INVESTMENTS, REGULAR_INVESTING, SUSTAINABILITY_PREFERENCE, GREEN_ENERGY_TARIFF]
+    impact_method: FINANCED_FUND_SWITCH_v1
+    disclaimer: "Capital at risk. This is information, not advice."
+  GP06:
+    name: "Green Loans"
+    product_codes: [PL-GREEN]  # code in the bank's product system
+    status: optional
+    description: "Unsecured personal loans for green purchases not covered by GP01-GP03."
+    use_cases: ["e-bike or e-cargo bike", "energy-efficient appliances", "home EV charger", "home energy measures for owners without a mortgage"]
+    customer_action: "See green loan options"
+    credit_product: true
+    blocks:
+      - {id: IN_ARREARS, rule: "Any account in arrears."}
+      - {id: FINANCIAL_DIFFICULTY, rule: "Persistent heavy overdraft use in the last 6 months."}
+      - {id: HIGH_DEBT, rule: "Existing unsecured repayments above 25% of monthly income."}
+      - {id: ALREADY_HOLDS, rule: "Already took this product."}
+    routing: "Not shown when GP01, GP02 or GP03 is shown for the same customer and the same need."
+    human_review: ["VULNERABLE"]
+    reason_codes: [EXISTING_BORROWING, GREEN_PURCHASE_INTENT, CYCLING_ACTIVITY, OWNER_NO_MORTGAGE, HIGH_GAS_USE]
+    impact_method: AVOIDED_GREEN_LOAN_v1

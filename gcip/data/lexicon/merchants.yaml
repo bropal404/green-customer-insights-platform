@@ -1,0 +1,599 @@
+# UK merchant lexicon for the synthetic bank.
+#
+# Each sub-category lists real UK merchants (names only, used as payees in
+# synthetic statements), descriptor variants and a merchant category code (MCC).
+# Placeholders in variants: {loc} town, {store} store number, {ref} reference,
+# {reg} number plate, {la} local authority, {surname}, {first}, {employer}, {num}.
+# `regions` limits a merchant to listed regions; otherwise it is national.
+# `green` (0-1) marks merchants that a green-minded customer is likelier to use.
+# `local_patterns` generate small, mostly unique local businesses so that the
+# categoriser has to generalise beyond memorised names.
+
+sub_categories:
+
+  road_fuel:
+    category: Fuel
+    channel: card
+    mcc: "5541"
+    merchants:
+      - {key: tesco_pfs, weight: 15, variants: ["TESCO PFS {store}", "TESCO PFS {loc}", "TESCO PETROL {loc}"]}
+      - {key: sainsburys_petrol, weight: 9, variants: ["SAINSBURYS PETROL {loc}", "SAINSBURY'S PETROL", "SAINSBURYS PFS {store}"]}
+      - {key: asda_petrol, weight: 11, variants: ["ASDA PETROL {loc}", "ASDA EXPRESS PETROL", "ASDA PFS {store}"]}
+      - {key: morrisons_fuel, weight: 9, variants: ["MORRISONS PETROL {loc}", "MORRISONS FUEL {store}", "WM MORRISON PETROL"]}
+      - {key: shell, weight: 12, variants: ["SHELL {loc}", "SHELL {store} {loc}", "SHELL UK {loc}"]}
+      - {key: bp, weight: 11, variants: ["BP {loc}", "BP CONNECT {loc}", "BP {store}"]}
+      - {key: esso, weight: 10, variants: ["ESSO {loc}", "ESSO TESCO EXPRESS {loc}", "EG ESSO {store}"]}
+      - {key: texaco, weight: 5, variants: ["TEXACO {loc}", "TEXACO {store}"]}
+      - {key: jet, weight: 4, variants: ["JET {loc}", "JET PETROL {store}"]}
+      - {key: gulf, weight: 3, variants: ["GULF {loc}", "GULF SERVICE STN {loc}"]}
+      - {key: mfg, weight: 4, variants: ["MFG {loc}", "MOTOR FUEL GROUP {loc}"]}
+      - {key: applegreen, weight: 2, variants: ["APPLEGREEN {loc}", "APPLEGREEN {store}"]}
+      - {key: moto_services, weight: 2, variants: ["MOTO {loc} SERVICES", "MOTO HOSPITALITY {loc}"]}
+      - {key: welcome_break, weight: 1, variants: ["WELCOME BREAK {loc}"]}
+      - {key: roadchef, weight: 1, variants: ["ROADCHEF {loc}"]}
+    local_patterns: ["{loc} SERVICE STATION", "{surname} FUELS", "{loc} FILLING STATION", "{surname} GARAGE FUEL"]
+
+  ev_public_charging:
+    category: Fuel
+    channel: card
+    mcc: "5552"
+    merchants:
+      - {key: bp_pulse, weight: 14, variants: ["BP PULSE", "BPPULSE UK", "BP PULSE {loc}"]}
+      - {key: pod_point, weight: 10, variants: ["POD POINT", "POD-POINT LTD", "PODPOINT {loc}"]}
+      - {key: instavolt, weight: 11, variants: ["INSTAVOLT", "INSTAVOLT {loc}"]}
+      - {key: ionity, weight: 6, variants: ["IONITY GMBH", "IONITY"]}
+      - {key: tesla_supercharger, weight: 9, variants: ["TESLA SUPERCHARGER", "TESLA UK SUPERCHARGER"]}
+      - {key: gridserve, weight: 8, variants: ["GRIDSERVE", "GRIDSERVE ELEC HWY", "ELECTRIC HIGHWAY"]}
+      - {key: osprey, weight: 6, variants: ["OSPREY CHARGING", "OSPREY {loc}"]}
+      - {key: shell_recharge, weight: 7, variants: ["SHELL RECHARGE", "SHELL RECHARGE {loc}"]}
+      - {key: ubitricity, weight: 6, variants: ["UBITRICITY", "UBITRICITY UK"]}
+      - {key: connected_kerbs, weight: 4, variants: ["CONNECTED KERBS"]}
+      - {key: mer, weight: 3, variants: ["MER UK CHARGING", "MER UK"]}
+      - {key: fastned, weight: 3, variants: ["FASTNED UK", "FASTNED"]}
+      - {key: zapmap, weight: 4, variants: ["ZAP-PAY", "ZAPMAP PAY"]}
+      - {key: char_gy, weight: 3, variants: ["CHAR.GY", "CHARGY LTD"]}
+      - {key: source_london, weight: 3, variants: ["SOURCE LONDON"], regions: [London]}
+      - {key: be_ev, weight: 3, variants: ["BE.EV", "BE EV CHARGING"], regions: [North West]}
+
+  energy_supplier:
+    # Energy suppliers are expanded by the generator into electricity, gas,
+    # dual-fuel, prepayment and export-payment descriptors (taxonomy rule B4).
+    category: Utilities
+    channel: dd
+    mcc: "4900"
+    merchants:
+      - {key: british_gas, weight: 19, name: "BRITISH GAS", short: "BG", green: 0.0}
+      - {key: octopus, weight: 24, name: "OCTOPUS ENERGY", short: "OCTOPUS", green: 0.45}
+      - {key: edf, weight: 10, name: "EDF ENERGY", short: "EDF", green: 0.15}
+      - {key: eon_next, weight: 13, name: "E.ON NEXT", short: "EON NEXT", green: 0.10}
+      - {key: ovo, weight: 11, name: "OVO ENERGY", short: "OVO", green: 0.25}
+      - {key: scottish_power, weight: 9, name: "SCOTTISHPOWER", short: "SCOTTISH POWER", green: 0.10}
+      - {key: so_energy, weight: 3, name: "SO ENERGY", short: "SO ENERGY", green: 0.40}
+      - {key: utility_warehouse, weight: 3, name: "UTILITY WAREHOUSE", short: "UW", green: 0.0, dual_only: true}
+      - {key: outfox, weight: 2, name: "OUTFOX THE MARKET", short: "OUTFOX", green: 0.20}
+      - {key: good_energy, weight: 1.5, name: "GOOD ENERGY", short: "GOOD ENERGY", green: 1.0}
+      - {key: ecotricity, weight: 1.5, name: "ECOTRICITY", short: "ECOTRICITY", green: 1.0}
+    prepayment_networks: ["PAYPOINT {loc}", "PAYZONE {loc}", "POST OFFICE {loc}"]
+
+  heating_oil_lpg:
+    category: Utilities
+    channel: card
+    mcc: "5983"
+    merchants:
+      - {key: certas, weight: 10, variants: ["CERTAS ENERGY UK", "CERTAS ENERGY {loc}"]}
+      - {key: boilerjuice, weight: 6, variants: ["BOILERJUICE", "WWW.BOILERJUICE.COM"]}
+      - {key: watson_fuels, weight: 4, variants: ["WATSON FUELS"]}
+      - {key: nwf_fuels, weight: 3, variants: ["NWF FUELS"]}
+      - {key: bayford, weight: 3, variants: ["BAYFORD THRIFTY ENERGY"]}
+      - {key: calor, weight: 6, variants: ["CALOR GAS", "CALOR GAS LTD"], lpg: true}
+      - {key: flogas, weight: 4, variants: ["FLOGAS", "FLOGAS BRITAIN"], lpg: true}
+    local_patterns: ["{loc} OIL SUPPLIES", "{surname} HEATING OILS"]
+
+  water:
+    category: Utilities
+    channel: dd
+    mcc: "4900"
+    merchants:
+      - {key: thames_water, weight: 10, variants: ["THAMES WATER", "THAMES WATER UTILITIE"], regions: [London, South East]}
+      - {key: affinity_water, weight: 5, variants: ["AFFINITY WATER"], regions: [London, East, South East]}
+      - {key: anglian_water, weight: 8, variants: ["ANGLIAN WATER", "ANGLIAN WATER SERVIC"], regions: [East, East Midlands]}
+      - {key: essex_suffolk_water, weight: 3, variants: ["ESSEX & SUFFOLK WATER"], regions: [East]}
+      - {key: cambridge_water, weight: 2, variants: ["CAMBRIDGE WATER"], regions: [East]}
+      - {key: severn_trent, weight: 10, variants: ["SEVERN TRENT WATER", "SEVERN TRENT"], regions: [West Midlands, East Midlands]}
+      - {key: south_staffs_water, weight: 3, variants: ["SOUTH STAFFS WATER"], regions: [West Midlands]}
+      - {key: united_utilities, weight: 10, variants: ["UNITED UTILITIES", "UNITED UTILITIES WAT"], regions: [North West]}
+      - {key: yorkshire_water, weight: 10, variants: ["YORKSHIRE WATER"], regions: [Yorkshire and The Humber]}
+      - {key: northumbrian_water, weight: 10, variants: ["NORTHUMBRIAN WATER"], regions: [North East]}
+      - {key: southern_water, weight: 8, variants: ["SOUTHERN WATER"], regions: [South East]}
+      - {key: south_east_water, weight: 5, variants: ["SOUTH EAST WATER"], regions: [South East]}
+      - {key: ses_water, weight: 2, variants: ["SES WATER"], regions: [South East]}
+      - {key: portsmouth_water, weight: 2, variants: ["PORTSMOUTH WATER"], regions: [South East]}
+      - {key: south_west_water, weight: 8, variants: ["SOUTH WEST WATER"], regions: [South West]}
+      - {key: wessex_water, weight: 6, variants: ["WESSEX WATER"], regions: [South West]}
+      - {key: bristol_water, weight: 3, variants: ["BRISTOL WATER"], regions: [South West]}
+      - {key: welsh_water, weight: 10, variants: ["DWR CYMRU WELSH WATR", "WELSH WATER"], regions: [Wales]}
+
+  rail:
+    category: Public Transport
+    channel: card
+    mcc: "4112"
+    merchants:
+      - {key: trainline, weight: 22, variants: ["TRAINLINE", "TRAINLINE.COM", "THETRAINLINE"]}
+      - {key: lner, weight: 4, variants: ["LNER", "LNER TICKETS"], regions: [Yorkshire and The Humber, North East, London, East]}
+      - {key: avanti, weight: 4, variants: ["AVANTI WEST COAST"], regions: [North West, West Midlands, London]}
+      - {key: gwr, weight: 6, variants: ["GWR", "GREAT WESTERN RAILWAY"], regions: [South West, Wales, London, South East]}
+      - {key: northern, weight: 8, variants: ["NORTHERN TRAINS", "NORTHERN RAIL TICKET"], regions: [North West, North East, Yorkshire and The Humber]}
+      - {key: southern, weight: 5, variants: ["SOUTHERN RAILWAY", "SOUTHERN"], regions: [London, South East]}
+      - {key: southeastern, weight: 5, variants: ["SOUTHEASTERN", "SOUTHEASTERN RAILWAY"], regions: [London, South East]}
+      - {key: thameslink, weight: 4, variants: ["THAMESLINK", "THAMESLINK GN"], regions: [London, East, South East]}
+      - {key: swr, weight: 5, variants: ["SOUTH WESTERN RAILWA", "SWR TICKETS"], regions: [London, South East, South West]}
+      - {key: greater_anglia, weight: 4, variants: ["GREATER ANGLIA"], regions: [East, London]}
+      - {key: c2c, weight: 2, variants: ["C2C RAIL"], regions: [East, London]}
+      - {key: chiltern, weight: 2, variants: ["CHILTERN RAILWAYS"], regions: [London, West Midlands, South East]}
+      - {key: crosscountry, weight: 3, variants: ["CROSSCOUNTRY TRAINS"]}
+      - {key: transpennine, weight: 3, variants: ["TRANSPENNINE EXPRES"], regions: [North West, Yorkshire and The Humber, North East]}
+      - {key: emr, weight: 3, variants: ["EAST MIDLANDS RAILWA"], regions: [East Midlands]}
+      - {key: wmt, weight: 3, variants: ["WEST MIDLANDS RAILWY", "LONDON NORTHWESTERN"], regions: [West Midlands]}
+      - {key: merseyrail, weight: 3, variants: ["MERSEYRAIL"], regions: [North West]}
+      - {key: tfw_rail, weight: 6, variants: ["TFW RAIL", "TRANSPORT FOR WALES"], regions: [Wales]}
+
+  metro_tram:
+    category: Public Transport
+    channel: card
+    mcc: "4111"
+    merchants:
+      - {key: tfl_travel, weight: 30, variants: ["TFL TRAVEL CH", "TFL.GOV.UK/CP", "TFL TRAVEL CHARGE"], regions: [London]}
+      - {key: metrolink, weight: 8, variants: ["BEE NETWORK METROLINK", "METROLINK"], regions: [North West]}
+      - {key: wm_metro, weight: 5, variants: ["WEST MIDLANDS METRO"], regions: [West Midlands]}
+      - {key: net_tram, weight: 4, variants: ["NOTTINGHAM EXPRESS TR"], regions: [East Midlands]}
+      - {key: supertram, weight: 4, variants: ["SHEFFIELD SUPERTRAM", "SYMCA SUPERTRAM"], regions: [Yorkshire and The Humber]}
+      - {key: tyne_wear_metro, weight: 6, variants: ["NEXUS METRO", "TYNE AND WEAR METRO"], regions: [North East]}
+
+  bus_coach:
+    category: Public Transport
+    channel: card
+    mcc: "4131"
+    merchants:
+      - {key: stagecoach, weight: 14, variants: ["STAGECOACH {loc}", "STAGECOACH BUS"]}
+      - {key: first_bus, weight: 12, variants: ["FIRST BUS", "FIRST {loc}"]}
+      - {key: arriva, weight: 10, variants: ["ARRIVA {loc}", "ARRIVA BUS"]}
+      - {key: go_ahead, weight: 6, variants: ["GO NORTH EAST", "GO SOUTH COAST", "GO AHEAD BUS"]}
+      - {key: nxwm, weight: 6, variants: ["NATIONAL EXPRESS WM"], regions: [West Midlands]}
+      - {key: bee_bus, weight: 6, variants: ["BEE NETWORK BUS"], regions: [North West]}
+      - {key: trentbarton, weight: 3, variants: ["TRENTBARTON"], regions: [East Midlands]}
+      - {key: nct, weight: 3, variants: ["NOTTINGHAM CITY TRAN"], regions: [East Midlands]}
+      - {key: brighton_hove, weight: 3, variants: ["BRIGHTON HOVE BUSES"], regions: [South East]}
+      - {key: cardiff_bus, weight: 3, variants: ["CARDIFF BUS"], regions: [Wales]}
+      - {key: national_express, weight: 8, variants: ["NATIONAL EXPRESS", "NATIONALEXPRESS.COM"]}
+      - {key: megabus, weight: 4, variants: ["MEGABUS", "MEGABUS.COM"]}
+    local_patterns: ["{loc} COMMUNITY BUS", "{loc} COACHES"]
+
+  micromobility:
+    category: Public Transport
+    channel: card
+    mcc: "4789"
+    merchants:
+      - {key: santander_cycles, weight: 10, variants: ["SANTANDER CYCLES", "TFL CYCLE HIRE"], regions: [London], green: 0.8}
+      - {key: lime, weight: 12, variants: ["LIME*RIDE", "LIME RIDE"], green: 0.8}
+      - {key: voi, weight: 6, variants: ["VOI TECHNOLOGY", "VOI SCOOTERS"], green: 0.8}
+      - {key: human_forest, weight: 3, variants: ["HUMAN FOREST"], regions: [London], green: 0.8}
+      - {key: dott, weight: 4, variants: ["DOTT RIDE", "TIER DOTT"], green: 0.8}
+      - {key: bee_cycle, weight: 3, variants: ["BEE NETWORK CYCLE HIRE"], regions: [North West], green: 0.8}
+
+  diy_materials:
+    category: Home Improvement
+    channel: card
+    mcc: "5200"
+    merchants:
+      - {key: bq, weight: 18, variants: ["B&Q {store}", "B & Q {loc}", "WWW.DIY.COM"]}
+      - {key: wickes, weight: 12, variants: ["WICKES {loc}", "WICKES BUILDING SUPPL", "WWW.WICKES.CO.UK"]}
+      - {key: screwfix, weight: 16, variants: ["SCREWFIX {loc}", "SCREWFIX DIRECT", "WWW.SCREWFIX.COM"]}
+      - {key: toolstation, weight: 10, variants: ["TOOLSTATION {loc}", "TOOLSTATION LTD"]}
+      - {key: homebase, weight: 5, variants: ["HOMEBASE {loc}"]}
+      - {key: travis_perkins, weight: 6, variants: ["TRAVIS PERKINS {loc}"], mcc: "5211"}
+      - {key: jewson, weight: 4, variants: ["JEWSON {loc}"], mcc: "5211"}
+      - {key: selco, weight: 3, variants: ["SELCO BUILDERS WHOLES"], mcc: "5211"}
+      - {key: city_plumbing, weight: 3, variants: ["CITY PLUMBING SUPPLY"], mcc: "5074"}
+      - {key: topps_tiles, weight: 3, variants: ["TOPPS TILES {loc}"], mcc: "5713"}
+      - {key: dulux_centre, weight: 2, variants: ["DULUX DECORATOR CTR"], mcc: "5231"}
+      - {key: robert_dyas, weight: 2, variants: ["ROBERT DYAS {loc}"], mcc: "5251"}
+    local_patterns: ["{loc} BUILDING SUPPLIES", "{surname} TIMBER", "{loc} PAINT & DECOR"]
+
+  trades:
+    category: Home Improvement
+    channel: fp
+    mcc: "1520"
+    merchants:
+      - {key: checkatrade, weight: 3, variants: ["CHECKATRADE"]}
+      - {key: mybuilder, weight: 2, variants: ["MYBUILDER.COM"]}
+    local_patterns: ["{surname} BUILDERS", "{surname} PLUMBING & HEATING", "{loc} ROOFING LTD", "{surname} ELECTRICAL", "{surname} & SONS JOINERY", "{loc} WINDOWS & DOORS", "{surname} PLASTERING", "{loc} DAMP PROOFING"]
+
+  appliances:
+    category: Home Improvement
+    channel: card
+    mcc: "5722"
+    merchants:
+      - {key: currys, weight: 14, variants: ["CURRYS {loc}", "CURRYS.CO.UK", "CURRYS RETAIL LTD"]}
+      - {key: ao, weight: 10, variants: ["AO.COM", "AO RETAIL LTD"]}
+      - {key: appliances_direct, weight: 4, variants: ["APPLIANCES DIRECT"]}
+      - {key: marks_electrical, weight: 2, variants: ["MARKS ELECTRICAL"]}
+      - {key: hughes, weight: 2, variants: ["HUGHES ELECTRICAL"]}
+    local_patterns: ["{loc} DOMESTIC APPLIANCES", "{surname} APPLIANCE REPAIRS"]
+
+  energy_installers:
+    category: Home Improvement
+    channel: fp
+    mcc: "1711"
+    green: 0.9
+    merchants:
+      - {key: octopus_services, weight: 8, variants: ["OCTOPUS ENERGY SERVI", "OCTOPUS HEAT PUMPS"]}
+      - {key: effective_home, weight: 4, variants: ["EFFECTIVE HOME LTD"]}
+      - {key: british_gas_services, weight: 5, variants: ["BRITISH GAS SERVICES", "BG HEAT PUMP INSTALL"]}
+      - {key: eon_solar, weight: 3, variants: ["EON NEXT SOLAR"]}
+      - {key: sunsave, weight: 2, variants: ["SUNSAVE"]}
+      - {key: aira, weight: 3, variants: ["AIRA HEAT PUMPS", "AIRA UK"]}
+    local_patterns: ["{loc} SOLAR LTD", "{surname} HEAT PUMPS", "{loc} INSULATION LTD", "{surname} RENEWABLES", "{loc} ENERGY SAVING"]
+
+  vehicle_finance:
+    category: Automotive
+    channel: dd
+    mcc: "6141"
+    merchants:
+      - {key: black_horse, weight: 14, variants: ["BLACK HORSE LTD", "BLACK HORSE {ref}"]}
+      - {key: santander_consumer, weight: 12, variants: ["SANTANDER CONSUMER", "SANTANDER CONS FIN"]}
+      - {key: motonovo, weight: 8, variants: ["MOTONOVO FINANCE"]}
+      - {key: vwfs, weight: 10, variants: ["VOLKSWAGEN FS", "VW FINANCIAL SERV"]}
+      - {key: bmw_fs, weight: 6, variants: ["BMW FINANCIAL SERV"]}
+      - {key: mercedes_fs, weight: 5, variants: ["MERCEDES-BENZ FS"]}
+      - {key: toyota_fs, weight: 5, variants: ["TOYOTA FINANCIAL SER"]}
+      - {key: ford_credit, weight: 6, variants: ["FORD CREDIT EUROPE"]}
+      - {key: stellantis_fs, weight: 5, variants: ["STELLANTIS FINANCIAL"]}
+      - {key: close_brothers, weight: 5, variants: ["CLOSE BROTHERS MOTOR"]}
+      - {key: oodle, weight: 3, variants: ["OODLE CAR FINANCE"]}
+      - {key: blue_motor, weight: 3, variants: ["BLUE MOTOR FINANCE"]}
+
+  vehicle_purchase:
+    category: Automotive
+    channel: fp
+    mcc: "5511"
+    merchants:
+      - {key: arnold_clark, weight: 8, variants: ["ARNOLD CLARK {loc}"]}
+      - {key: evans_halshaw, weight: 7, variants: ["EVANS HALSHAW {loc}"]}
+      - {key: lookers, weight: 5, variants: ["LOOKERS {loc}"]}
+      - {key: sytner, weight: 4, variants: ["SYTNER {loc}"]}
+      - {key: cinch, weight: 5, variants: ["CINCH CARS"]}
+      - {key: motorpoint, weight: 4, variants: ["MOTORPOINT {loc}"]}
+    local_patterns: ["{loc} CAR SALES", "{surname} MOTORS SALES"]
+
+  maintenance:
+    category: Automotive
+    channel: card
+    mcc: "7538"
+    merchants:
+      - {key: kwik_fit, weight: 12, variants: ["KWIK FIT {loc}", "KWIK-FIT GB LTD"]}
+      - {key: halfords, weight: 12, variants: ["HALFORDS {store}", "HALFORDS AUTOCENTRE {loc}"]}
+      - {key: ats, weight: 6, variants: ["ATS EUROMASTER {loc}"]}
+      - {key: national_tyres, weight: 6, variants: ["NATIONAL TYRES {loc}"]}
+      - {key: euro_car_parts, weight: 6, variants: ["EURO CAR PARTS {loc}"], mcc: "5533"}
+      - {key: gsf, weight: 3, variants: ["GSF CAR PARTS {loc}"], mcc: "5533"}
+      - {key: mr_clutch, weight: 2, variants: ["MR CLUTCH {loc}"]}
+    local_patterns: ["{surname} MOTORS", "{loc} AUTO CENTRE", "{surname} GARAGE", "{loc} TYRES & EXHAUSTS", "{surname} MOT CENTRE"]
+
+  motor_insurance:
+    category: Automotive
+    channel: dd
+    mcc: "6300"
+    merchants:
+      - {key: admiral, weight: 14, variants: ["ADMIRAL INSURANCE", "ADMIRAL {ref}"]}
+      - {key: direct_line_motor, weight: 9, variants: ["DIRECT LINE INS", "DIRECT LINE {ref}"]}
+      - {key: aviva_motor, weight: 8, variants: ["AVIVA", "AVIVA INSURANCE"]}
+      - {key: hastings, weight: 8, variants: ["HASTINGS DIRECT"]}
+      - {key: churchill, weight: 6, variants: ["CHURCHILL INSURANCE"]}
+      - {key: lv_motor, weight: 6, variants: ["LV INSURANCE", "LV= {ref}"]}
+      - {key: esure, weight: 4, variants: ["ESURE INSURANCE"]}
+      - {key: axa_motor, weight: 4, variants: ["AXA INSURANCE UK"]}
+      - {key: sheilas_wheels, weight: 2, variants: ["SHEILAS WHEELS"]}
+
+  vehicle_tax:
+    category: Automotive
+    channel: dd
+    mcc: "9399"
+    merchants:
+      - {key: dvla, weight: 1, variants: ["DVLA-{reg}", "DVLA VEHICLE TAX {reg}"]}
+
+  parking_charges:
+    category: Automotive
+    channel: card
+    mcc: "7523"
+    merchants:
+      - {key: ringgo, weight: 14, variants: ["RINGGO", "RINGGO {loc}"]}
+      - {key: justpark, weight: 7, variants: ["JUSTPARK"]}
+      - {key: paybyphone, weight: 9, variants: ["PAYBYPHONE {loc}", "PAYBYPHONE"]}
+      - {key: ncp, weight: 6, variants: ["NCP {loc}", "NCP LTD"]}
+      - {key: apcoa, weight: 3, variants: ["APCOA PARKING"]}
+      - {key: qpark, weight: 3, variants: ["Q-PARK {loc}"]}
+      - {key: dart_charge, weight: 2, variants: ["DART CHARGE"], regions: [London, East, South East]}
+      - {key: m6_toll, weight: 1, variants: ["M6 TOLL"], regions: [West Midlands]}
+      - {key: mersey_gateway, weight: 1, variants: ["MERSEY GATEWAY"], regions: [North West]}
+    local_patterns: ["{la} COUNCIL PARKING", "{loc} CAR PARK"]
+
+  clean_air_charges:
+    category: Automotive
+    channel: card
+    mcc: "9399"
+    sub_category_override: parking_charges
+    merchants:
+      - {key: tfl_ulez, weight: 10, variants: ["TFL ULEZ", "TFL.GOV.UK/ULEZ"], regions: [London]}
+      - {key: tfl_congestion, weight: 5, variants: ["TFL CONGESTION CHARGE", "TFL CC AUTOPAY"], regions: [London]}
+      - {key: gov_caz, weight: 4, variants: ["GOV.UK CLEAN AIR ZONE", "DRIVE IN A CLEAN AIR ZONE"], regions: [West Midlands, North East, South West, Yorkshire and The Humber]}
+
+  breakdown_cover:
+    category: Automotive
+    channel: dd
+    mcc: "7549"
+    merchants:
+      - {key: the_aa, weight: 10, variants: ["THE AA", "AA MEMBERSHIP"]}
+      - {key: rac, weight: 9, variants: ["RAC MOTORING SERVICES", "RAC BREAKDOWN"]}
+      - {key: green_flag, weight: 6, variants: ["GREEN FLAG"]}
+
+  groceries:
+    category: Other
+    channel: card
+    mcc: "5411"
+    merchants:
+      - {key: tesco, weight: 27, variants: ["TESCO STORES {store}", "TESCO EXPRESS {loc}", "TESCO {loc}"]}
+      - {key: sainsburys, weight: 15, variants: ["SAINSBURYS S/MKTS", "SAINSBURYS {loc}", "SAINSBURY'S LOCAL"]}
+      - {key: asda, weight: 13, variants: ["ASDA STORES {store}", "ASDA SUPERSTORE {loc}"]}
+      - {key: morrisons, weight: 8, variants: ["MORRISONS {store}", "WM MORRISON {loc}"]}
+      - {key: aldi, weight: 11, variants: ["ALDI {store}", "ALDI STORES {loc}"]}
+      - {key: lidl, weight: 9, variants: ["LIDL GB {loc}", "LIDL {store}"]}
+      - {key: coop, weight: 6, variants: ["CO-OP GROUP {store}", "CO-OP FOOD {loc}"]}
+      - {key: waitrose, weight: 5, variants: ["WAITROSE {store}", "WAITROSE & PARTNERS"]}
+      - {key: iceland, weight: 2, variants: ["ICELAND {store}"]}
+      - {key: ms_food, weight: 3, variants: ["M&S SIMPLY FOOD {loc}", "M&S FOOD {store}"]}
+      - {key: ocado, weight: 2, variants: ["OCADO RETAIL LTD", "OCADO.COM"], channel: online}
+    local_patterns: ["{surname}S CONVENIENCE", "{loc} FOOD & WINE", "{surname} BUTCHERS", "{loc} FARM SHOP"]
+
+  eating_out:
+    category: Other
+    channel: card
+    mcc: "5812"
+    merchants:
+      - {key: mcdonalds, weight: 10, variants: ["MCDONALDS {store}", "MCDONALD'S {loc}"]}
+      - {key: greggs, weight: 9, variants: ["GREGGS {store}", "GREGGS PLC {loc}"]}
+      - {key: costa, weight: 8, variants: ["COSTA COFFEE {store}", "COSTA {loc}"]}
+      - {key: starbucks, weight: 5, variants: ["STARBUCKS {loc}"]}
+      - {key: pret, weight: 4, variants: ["PRET A MANGER {loc}"]}
+      - {key: nandos, weight: 4, variants: ["NANDOS {loc}"]}
+      - {key: wetherspoon, weight: 5, variants: ["JD WETHERSPOON {loc}", "WETHERSPOONS"]}
+      - {key: just_eat, weight: 6, variants: ["JUST EAT.CO.UK", "JUST-EAT {loc}"], channel: online}
+      - {key: deliveroo, weight: 5, variants: ["DELIVEROO", "DELIVEROO.CO.UK"], channel: online}
+      - {key: uber_eats, weight: 4, variants: ["UBER *EATS", "UBER EATS"], channel: online}
+      - {key: kfc, weight: 3, variants: ["KFC {loc}"]}
+      - {key: subway, weight: 2, variants: ["SUBWAY {store}"]}
+      - {key: wagamama, weight: 2, variants: ["WAGAMAMA {loc}"]}
+      - {key: pizza_express, weight: 2, variants: ["PIZZA EXPRESS {loc}"]}
+      - {key: dominos, weight: 3, variants: ["DOMINOS PIZZA {loc}"], channel: online}
+    local_patterns: ["{surname}'S CAFE", "{loc} FISH BAR", "{loc} TANDOORI", "THE {surname} ARMS", "SQ *{surname} COFFEE", "SUMUP *{loc} BAKERY"]
+
+  retail:
+    category: Other
+    channel: card
+    mcc: "5311"
+    merchants:
+      - {key: amazon, weight: 26, variants: ["AMZN MKTP UK*{ref}", "AMAZON.CO.UK*{ref}", "AMAZON UK RETAIL"], channel: online}
+      - {key: argos, weight: 6, variants: ["ARGOS LTD", "ARGOS {loc}"]}
+      - {key: primark, weight: 5, variants: ["PRIMARK {loc}"]}
+      - {key: next, weight: 5, variants: ["NEXT RETAIL LTD", "NEXT {loc}"]}
+      - {key: ms, weight: 5, variants: ["M&S {loc}", "MARKS & SPENCER {store}"]}
+      - {key: john_lewis, weight: 4, variants: ["JOHN LEWIS {loc}", "JOHN LEWIS.COM"]}
+      - {key: ikea, weight: 3, variants: ["IKEA LTD {loc}", "IKEA.COM"]}
+      - {key: dunelm, weight: 3, variants: ["DUNELM {loc}"]}
+      - {key: tk_maxx, weight: 4, variants: ["TK MAXX {loc}"]}
+      - {key: sports_direct, weight: 3, variants: ["SPORTS DIRECT {loc}"]}
+      - {key: jd_sports, weight: 2, variants: ["JD SPORTS {loc}"]}
+      - {key: hm, weight: 2, variants: ["H&M {loc}"]}
+      - {key: asos, weight: 3, variants: ["ASOS.COM"], channel: online}
+      - {key: apple_store, weight: 2, variants: ["APPLE STORE R{store}"]}
+      - {key: the_range, weight: 2, variants: ["THE RANGE {loc}"]}
+      - {key: paypal, weight: 6, variants: ["PAYPAL *{surname}", "PAYPAL *EBAY"], channel: online}
+      - {key: klarna, weight: 3, variants: ["KLARNA*{ref}"], channel: online}
+      - {key: halfords_retail, weight: 1, variants: ["HALFORDS CYCLES {loc}"], mcc: "5940", green: 0.6, intent: green_purchase}
+      - {key: evans_cycles, weight: 1, variants: ["EVANS CYCLES {loc}"], mcc: "5940", green: 0.8, intent: green_purchase}
+      - {key: decathlon_bikes, weight: 1, variants: ["DECATHLON {loc}"], mcc: "5940", green: 0.4, intent: green_purchase}
+    local_patterns: ["{loc} GIFTS", "{surname} & CO", "{loc} HARDWARE", "{loc} BIKE SHOP"]
+
+  forecourt_shop:
+    # Generated from the same forecourt merchants as road_fuel (rule B3).
+    category: Other
+    channel: card
+    mcc: "5541"
+    merchants: []
+
+  taxi_ridehail:
+    category: Other
+    channel: card
+    mcc: "4121"
+    merchants:
+      - {key: uber, weight: 14, variants: ["UBER *TRIP", "UBER* PENDING", "UBER BV"], channel: online}
+      - {key: bolt, weight: 6, variants: ["BOLT.EU/O/{ref}", "BOLT RIDE"], channel: online}
+      - {key: addison_lee, weight: 2, variants: ["ADDISON LEE"], regions: [London]}
+      - {key: free_now, weight: 2, variants: ["FREENOW"], regions: [London]}
+    local_patterns: ["{loc} TAXIS", "{loc} PRIVATE HIRE", "{surname} CARS"]
+
+  travel:
+    category: Other
+    channel: online
+    mcc: "4511"
+    merchants:
+      - {key: easyjet, weight: 8, variants: ["EASYJET {ref}", "EASYJET AIRLINE"]}
+      - {key: ryanair, weight: 7, variants: ["RYANAIR {ref}"]}
+      - {key: british_airways, weight: 5, variants: ["BRITISH AIRWAYS {ref}"]}
+      - {key: jet2, weight: 6, variants: ["JET2.COM", "JET2HOLIDAYS"]}
+      - {key: tui, weight: 3, variants: ["TUI UK LTD"]}
+      - {key: booking, weight: 6, variants: ["BOOKING.COM", "HOTEL AT BOOKING.COM"], mcc: "7011"}
+      - {key: airbnb, weight: 4, variants: ["AIRBNB * {ref}"], mcc: "7011"}
+      - {key: premier_inn, weight: 4, variants: ["PREMIER INN {loc}"], mcc: "7011", channel: card}
+      - {key: travelodge, weight: 3, variants: ["TRAVELODGE {loc}"], mcc: "7011", channel: card}
+
+  telecoms:
+    category: Other
+    channel: dd
+    mcc: "4814"
+    merchants:
+      - {key: bt, weight: 14, variants: ["BT GROUP PLC", "BT {ref}"]}
+      - {key: sky, weight: 12, variants: ["SKY DIGITAL", "SKY UK LIMITED"]}
+      - {key: virgin_media, weight: 10, variants: ["VIRGIN MEDIA", "VIRGIN MEDIA PYMTS"]}
+      - {key: ee, weight: 10, variants: ["EE LIMITED", "EE {ref}"]}
+      - {key: vodafone, weight: 8, variants: ["VODAFONE LTD", "VODAFONE {ref}"]}
+      - {key: o2, weight: 8, variants: ["O2", "TELEFONICA UK O2"]}
+      - {key: three, weight: 5, variants: ["THREE", "HUTCHISON 3G UK"]}
+      - {key: talktalk, weight: 4, variants: ["TALKTALK"]}
+      - {key: plusnet, weight: 2, variants: ["PLUSNET"]}
+      - {key: giffgaff, weight: 3, variants: ["GIFFGAFF"], channel: card}
+      - {key: community_fibre, weight: 2, variants: ["COMMUNITY FIBRE"], regions: [London]}
+
+  subscriptions:
+    category: Other
+    channel: card
+    mcc: "4899"
+    merchants:
+      - {key: netflix, weight: 12, variants: ["NETFLIX.COM"]}
+      - {key: spotify, weight: 10, variants: ["SPOTIFY P{ref}", "SPOTIFY UK"]}
+      - {key: disney, weight: 4, variants: ["DISNEY PLUS"]}
+      - {key: amazon_prime, weight: 8, variants: ["AMAZON PRIME*{ref}", "PRIME VIDEO*{ref}"]}
+      - {key: apple_bill, weight: 8, variants: ["APPLE.COM/BILL"]}
+      - {key: google, weight: 6, variants: ["GOOGLE *YOUTUBEPREMIUM", "GOOGLE *GOOGLE ONE"]}
+      - {key: now_tv, weight: 3, variants: ["NOW TV"]}
+      - {key: puregym, weight: 4, variants: ["PUREGYM LTD"], mcc: "7997"}
+      - {key: gym_group, weight: 3, variants: ["THE GYM GROUP"], mcc: "7997"}
+      - {key: microsoft, weight: 3, variants: ["MSFT * {ref}", "MICROSOFT*365"]}
+
+  council_tax:
+    category: Other
+    channel: dd
+    mcc: "9311"
+    merchants:
+      - {key: council_tax, weight: 1, variants: ["{la} COUNCIL", "{la} CTAX", "{la} BC CT"]}
+
+  housing_rent:
+    category: Other
+    channel: so
+    sub_category_override: housing
+    mcc: "6513"
+    merchants:
+      - {key: openrent, weight: 3, variants: ["OPENRENT"]}
+      - {key: foxtons, weight: 2, variants: ["FOXTONS LTD"], regions: [London]}
+      - {key: countrywide, weight: 2, variants: ["COUNTRYWIDE LETTINGS"]}
+    local_patterns: ["{surname} LETTINGS", "{loc} PROPERTY MGMT", "{first} {surname} RENT"]
+
+  housing_social_rent:
+    category: Other
+    channel: dd
+    sub_category_override: housing
+    mcc: "6513"
+    merchants:
+      - {key: clarion, weight: 5, variants: ["CLARION HOUSING"]}
+      - {key: lq, weight: 4, variants: ["L&Q HOUSING TRUST"], regions: [London, South East, East]}
+      - {key: peabody, weight: 3, variants: ["PEABODY TRUST"], regions: [London]}
+      - {key: sanctuary, weight: 4, variants: ["SANCTUARY HOUSING"]}
+      - {key: places_for_people, weight: 3, variants: ["PLACES FOR PEOPLE"]}
+      - {key: council_rent, weight: 10, variants: ["{la} COUNCIL RENT", "{la} HOUSING RENT"]}
+
+  housing_mortgage_external:
+    category: Other
+    channel: dd
+    sub_category_override: housing
+    mcc: "6012"
+    merchants:
+      - {key: nationwide, weight: 14, variants: ["NATIONWIDE BS", "NATIONWIDE B/S MTGE"]}
+      - {key: santander_mortgage, weight: 9, variants: ["SANTANDER MORTGAGE"]}
+      - {key: barclays_mortgage, weight: 9, variants: ["BARCLAYS MORTGAGE"]}
+      - {key: natwest_mortgage, weight: 9, variants: ["NATWEST MORTGAGE"]}
+      - {key: hsbc_mortgage, weight: 6, variants: ["HSBC MORTGAGE"]}
+      - {key: coventry_bs, weight: 4, variants: ["COVENTRY B/S"]}
+      - {key: yorkshire_bs, weight: 4, variants: ["YORKSHIRE BUILDING S"]}
+      - {key: skipton_bs, weight: 3, variants: ["SKIPTON BUILDING SOC"]}
+      - {key: virgin_money, weight: 4, variants: ["VIRGIN MONEY MORTGAG"]}
+      - {key: tsb_mortgage, weight: 3, variants: ["TSB MORTGAGE"]}
+
+  insurance_other:
+    category: Other
+    channel: dd
+    mcc: "6300"
+    merchants:
+      - {key: aviva_home, weight: 8, variants: ["AVIVA", "AVIVA LIFE & PENS"]}
+      - {key: legal_general, weight: 8, variants: ["LEGAL & GENERAL"]}
+      - {key: direct_line_home, weight: 6, variants: ["DIRECT LINE INS"]}
+      - {key: vitality, weight: 4, variants: ["VITALITY HEALTH"]}
+      - {key: royal_london, weight: 4, variants: ["ROYAL LONDON"]}
+      - {key: zurich, weight: 2, variants: ["ZURICH INSURANCE"]}
+      - {key: homeserve, weight: 4, variants: ["HOMESERVE MEMBERSHIP"]}
+      - {key: axa_home, weight: 3, variants: ["AXA INSURANCE UK"]}
+
+  health_beauty:
+    category: Other
+    channel: card
+    mcc: "5912"
+    merchants:
+      - {key: boots, weight: 12, variants: ["BOOTS {store}", "BOOTS THE CHEMIST {loc}"]}
+      - {key: superdrug, weight: 6, variants: ["SUPERDRUG {store}"]}
+      - {key: specsavers, weight: 3, variants: ["SPECSAVERS {loc}"]}
+    local_patterns: ["{surname} PHARMACY", "{loc} DENTAL CARE", "{first}'S HAIR STUDIO", "{loc} BARBERS"]
+
+  charity_second_hand:
+    category: Other
+    channel: card
+    mcc: "5931"
+    green: 0.7
+    merchants:
+      - {key: vinted, weight: 8, variants: ["VINTED", "VINTED.CO.UK"], channel: online}
+      - {key: ebay, weight: 8, variants: ["EBAY O*{ref}", "EBAY MARKETPLACE"], channel: online, green: 0.4}
+      - {key: oxfam, weight: 4, variants: ["OXFAM {loc}", "OXFAM GB"]}
+      - {key: bhf, weight: 4, variants: ["BRITISH HEART FOUNDA"]}
+      - {key: too_good_to_go, weight: 4, variants: ["TOO GOOD TO GO"], channel: online}
+      - {key: cancer_research, weight: 3, variants: ["CANCER RESEARCH UK"]}
+    local_patterns: ["{loc} HOSPICE SHOP", "{loc} REPAIR CAFE"]
+
+  investments:
+    category: Other
+    channel: fp
+    mcc: "6211"
+    merchants:
+      - {key: hargreaves_lansdown, weight: 12, variants: ["HARGREAVES LANSDOWN", "HL ISA {ref}"]}
+      - {key: vanguard, weight: 10, variants: ["VANGUARD INVESTOR", "VANGUARD ASSET MGMT"]}
+      - {key: aj_bell, weight: 6, variants: ["AJ BELL YOUINVEST"]}
+      - {key: interactive_investor, weight: 5, variants: ["INTERACTIVE INVESTOR"]}
+      - {key: fidelity, weight: 4, variants: ["FIDELITY INTERNATIONAL", "FIL INVESTMENT"]}
+      - {key: trading212, weight: 5, variants: ["TRADING 212"]}
+      - {key: freetrade, weight: 3, variants: ["FREETRADE"]}
+      - {key: nutmeg, weight: 3, variants: ["NUTMEG SAVING"]}
+      - {key: moneyfarm, weight: 2, variants: ["MONEYFARM"]}
+
+  finance:
+    category: Other
+    channel: dd
+    mcc: "6012"
+    merchants:
+      - {key: barclaycard, weight: 10, variants: ["BARCLAYCARD"]}
+      - {key: amex, weight: 6, variants: ["AMERICAN EXPRESS"]}
+      - {key: mbna, weight: 5, variants: ["MBNA LIMITED"]}
+      - {key: capital_one, weight: 5, variants: ["CAPITAL ONE"]}
+      - {key: vanquis, weight: 3, variants: ["VANQUIS BANK"]}
+      - {key: zopa, weight: 3, variants: ["ZOPA BANK LOAN"]}
+      - {key: clearpay, weight: 3, variants: ["CLEARPAY {ref}"], channel: card}
+      - {key: klarna_dd, weight: 3, variants: ["KLARNA BANK AB"]}
+
+  income:
+    category: Other
+    channel: bgc
+    mcc: ""
+    employers: ["NHS {la}", "{la} COUNCIL", "TESCO STORES LTD", "AMAZON UK SERVICES", "SAINSBURYS SUPERMKT", "BT GROUP PLC", "HMRC SALARIES", "UNIVERSITY OF {loc}", "{surname} & CO LTD", "{surname} ENGINEERING", "{loc} ACADEMY TRUST", "ROYAL MAIL GROUP", "JOHN LEWIS PARTNERS", "BARCLAYS BANK UK", "CAPITA PLC", "SERCO LTD", "ARCADIS UK", "ROLLS-ROYCE PLC", "BAE SYSTEMS", "GLAXOSMITHKLINE"]
+    pensions: ["DWP STATE PENSION", "AVIVA PENSIONS", "LEGAL & GENERAL PENS", "ROYAL LONDON PENSION", "NEST PENSIONS", "{la} PENSION FUND", "NHS PENSIONS", "TEACHERS PENSIONS"]
+    benefits: ["DWP UC", "HMRC CHILD BENEFIT", "DWP PIP"]
+
+  transfers:
+    category: Other
+    channel: fp
+    mcc: ""
+    merchants: []

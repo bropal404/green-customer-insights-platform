@@ -1,0 +1,166 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[a4paper,left=1.35cm,right=1.35cm,top=1.0cm,bottom=1.0cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[scaled=0.93]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{microtype}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+
+% ---- set the team number here -------------------------------------------
+\newcommand{\teamno}{198}
+% --------------------------------------------------------------------------
+
+\definecolor{lbg}{HTML}{006A4D}
+\definecolor{soft}{HTML}{EAF4F0}
+\definecolor{ink}{HTML}{1F2A2E}
+\color{ink}
+\titleformat{\section}{\normalsize\bfseries\color{lbg}}{\thesection}{0.5em}{}
+\titlespacing*{\section}{0pt}{5pt}{2pt}
+\setlist{nosep,leftmargin=1.1em,itemsep=1pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\pagestyle{empty}
+\renewcommand{\arraystretch}{1.1}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\co}{CO\textsubscript{2}e}
+
+\begin{document}
+
+{\large\bfseries Team No.\ \teamno}\hfill{\small M2 -- Progress}\\[2pt]
+{\Large\bfseries\color{lbg} Green Customer Insights Platform}\\[1pt]
+{\small PS1 \textperiodcentered{} Lloyds Banking Group \textperiodcentered{} Megathon X: Singularity}
+\vspace{-2pt}
+
+\section{Where we are}
+Every stage now runs end to end on a calibrated synthetic bank of \textbf{30,000 customers and 28.3M transactions},
+on one laptop (data build 25 min, pipeline 8 min), with a bank dashboard for staff and a separate customer app. All
+customers are synthetic; nothing leaves the machine.
+
+{\small
+\begin{tabularx}{\textwidth}{@{}>{\bfseries\raggedright\arraybackslash}p{2.6cm}Y>{\raggedright\arraybackslash}p{5.6cm}@{}}
+\toprule
+Stage & What runs & Result on 30,000 customers \\
+\midrule
+Data + FR1 & 7 source systems (71 files) $\rightarrow$ control checks, crosswalks, de-duplication, quarantine $\rightarrow$
+warehouse $\rightarrow$ Customer 360 (69 fields, 9 sections) + 63 features & Audit: 8/8 tables and 28,266,495/28,266,495
+transactions identical to the system of record; 36/36 realism checks \\
+FR2 categoriser & Boundary rules $\rightarrow$ merchant lookup $\rightarrow$ TF-IDF model & Test: 99.0\% (seen merchants),
+90.4\% (merchants never seen in training) \\
+FR3 propensity & Eligibility rules, then per product LightGBM, out-of-fold isotonic calibration, 5-model bootstrap,
+confidence, TreeSHAP reason codes & Beats the rules baseline on all 6 products; calibration error about 0.01 \\
+FR4 impact & DESNZ 2026 well-to-wheel factors; carbon statement (avoided, PCAF financed) + money statement & 131,656
+customer$\times$product estimates; 48,344 marked \emph{insufficient data} instead of guessed \\
+FR5--FR7 & Consent, memory, routing, top 3, human review; template explanation for every recommendation; local LLM rewrite
+behind guards & 5,478 suggestions for 4,824 customers, each at least 2$\times$ as likely as average; 292 to human review \\
+FR6 insights & Opportunity by product and region, decision funnel, footprint, 6 behavioural segments, monthly trends &
+Expected 925 take-ups, 1,237 t \co{} avoided a year and \pounds 418k a year customer savings \\
+\bottomrule
+\end{tabularx}}
+
+\section{What changed since M1}
+\begin{itemize}
+  \item \textbf{Richer public data, more checks.} Homes are drawn from DESNZ NEED 2025 (4M real homes: type, age, floor
+        area, metered gas and electricity); car ages and mileage from 9.25M MOT tests (2024); property values from the UK
+        House Price Index; mortgage, loan, card and savings rates from Bank of England quoted rates; age and economic activity
+        by tenure from Census RM201/RM133. Realism checks grew from 24 to 36 and all pass.
+  \item \textbf{Scale.} 4,000 $\rightarrow$ 30,000 customers and 3.8M $\rightarrow$ 28.3M transactions. Generation, validation
+        and the categoriser stream in parts, so a 14 GB laptop is enough; the GPU cluster is no longer needed.
+  \item \textbf{Leaner Customer 360.} Every field was traced to the rule, model or engine that reads it; unread fields were
+        dropped (82 $\rightarrow$ 69, features 69 $\rightarrow$ 63). Labels come from the bank's own product system (a green
+        product opened in the window) and match the simulator's truth on all 180,000 customer$\times$product rows.
+  \item \textbf{LLM: smaller, local, constrained.} No fine-tuning or distillation. A 1.5B open model (Qwen2.5-Instruct)
+        runs offline and rewrites only the ``why + impact'' part; the compliance sentence (data date, caveat, investment
+        disclaimer) is fixed text. Our first run passed 0/360 because the model reformatted dates and added promises.
+  \item \textbf{Suggestion thresholds.} A fixed 2\% propensity floor let in customers no likelier than average. A product
+        is now shown only if its calibrated propensity is at least 2$\times$ the product's take-up rate among eligible
+        customers (test lift 2.2--4.3$\times$), confidence is not low, its impact can be estimated, and it avoids at least
+        100 kg \co{} a year (Paperless exempt). Suggestions fell from 27,461 to 5,478. Propensity is bounded to 0.1--95\%;
+        customer memory is an event log the dashboard writes to.
+\end{itemize}
+
+\section{Experiments and results}
+\textbf{FR3, test set} (customers never seen in training; take-up observed 1 Apr--30 Sep 2026). The oracle scores with the
+simulator's true probability, including hidden traits, so it is the ceiling for any model.
+
+{\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}*{9}{>{\raggedleft\arraybackslash}X}@{}}
+\toprule
+Product & Take-ups & Rules AUC & Logistic & \textbf{LightGBM} & Oracle & Gap closed & PR-AUC & Lift@10\% & ECE \\
+\midrule
+GP01 EV Finance        & 164 & 0.628 & 0.726 & \textbf{0.728} & 0.855 & 44\% & 0.129 & 3.0$\times$ & 0.010 \\
+GP02 Green Home Loan   &  31 & 0.573 & 0.597 & \textbf{0.634} & 0.812 & 26\% & 0.043 & 1.9$\times$ & 0.014 \\
+GP03 Solar Finance     &  56 & 0.623 & 0.747 & \textbf{0.726} & 0.906 & 36\% & 0.067 & 3.4$\times$ & 0.006 \\
+GP04 Paperless         & 122 & 0.737 & 0.814 & \textbf{0.821} & 0.827 & 93\% & 0.529 & 4.1$\times$ & 0.012 \\
+GP05 Green Investments &  60 & 0.677 & 0.764 & \textbf{0.744} & 0.858 & 37\% & 0.237 & 4.3$\times$ & 0.013 \\
+GP06 Green Loans       & 106 & 0.625 & 0.734 & \textbf{0.709} & 0.792 & 50\% & 0.090 & 3.7$\times$ & 0.005 \\
+\bottomrule
+\end{tabularx}}
+
+\begin{itemize}
+  \item \textbf{Findings.} Calibration matters more than the model family: logistic regression is within 0.04 AUC of
+        LightGBM (better on GP03 and GP05), while the rules baseline is 3--24$\times$ worse calibrated (ECE 0.04--0.12 vs
+        0.005--0.014). Ablations: removing
+        price normalisation cuts GP01 lift from 3.1 to 2.8 and GP02 AUC from 0.66 to 0.63; removing coverage flags cuts GP01
+        lift to 2.6. Using all 145 inputs instead of the curated 21--40 adds up to 0.023 AUC (GP03) but lets demographic
+        fields drive scores, so we keep the curated, behavioural set.
+  \item \textbf{FR2.} Accuracy holds on unseen merchants overall (90.4\%), but electricity vs gas from unseen energy
+        suppliers is weak (F1 0.13 and 0.29); on 68k out-of-domain US descriptions, coarse accuracy is 82.1\%.
+  \item \textbf{FR4 against true usage} (31 Mar snapshot, visible spend only): fuel litres within $\pm$20\% for 83\% of
+        drivers (r = 0.95); gas and electricity kWh only 39\% (r = 0.57 and 0.78), because direct debits smooth bills.
+        Sensitivity: $\pm$20\% on km per litre moves GP01 money by 82\%; $\pm$20\% on solar yield moves GP03 carbon by 40\%.
+  \item \textbf{FR5.} Templates pass every guard (5,478/5,478). After the redesign the local LLM passes 67.8\% of the
+        360-item evaluation set (60 per product); the rest fall back to the template. Stricter guards now also reject a
+        rewrite that drops a number or turns a 12-month figure into a monthly one, after we found ``\pounds1,337 on fuel
+        each month'' passing the number check. Reading ease is lower for LLM text (60 vs 72 Flesch).
+\end{itemize}
+
+\section{Testing progress}
+{\small
+\begin{tabularx}{\textwidth}{@{}>{\bfseries\raggedright\arraybackslash}p{2.6cm}Y>{\raggedright\arraybackslash}p{5.2cm}@{}}
+\toprule
+Area & Test & Status \\
+\midrule
+Data & 36 checks against Census, DESNZ, DfT/NTS, MOT, BoE, HPI; FR1 audit by table fingerprints and per-transaction hashes;
+tamper tests (one-penny change, edited narrative, wrong checksum) & 36/36; exact; all detected \\
+Automated tests & 13 pytest tests: ingestion (8), FR4 golden case worked by hand from DESNZ factors and 30 Sep 2026 prices,
+insufficient-data path, memory cool-downs (5) & 13/13 pass \\
+FR7 rules & On all 5,478 suggestions: none for a blocked product or below its threshold; no solar to renters; nothing without marketing
+consent; credit offers to vulnerable customers always routed to human review; at most 3 per customer & 0 violations \\
+Memory & 300 customers, 3 monthly rounds, responses drawn from the true take-up probability & 0 products re-shown inside a
+cool-down; 122 then 197 held back \\
+Fairness & Test-set take-up, mean propensity and selection rate by age, income and region & Low-income bands are rarely
+selected for EV Finance (0\% under \pounds 25k), mirroring true take-up \\
+\bottomrule
+\end{tabularx}}
+
+\section{Bank dashboard and customer app}
+\vspace{2pt}
+\noindent\fbox{\includegraphics[height=6.75cm]{fig_overview.png}}\hfill
+\fbox{\includegraphics[height=6.75cm,trim=0 40 0 0,clip]{fig_customer.png}}\hfill
+\fbox{\includegraphics[height=6.75cm]{fig_app.png}}\\[1pt]
+{\small \textbf{Bank dashboard} (staff, FR6): portfolio view with pipeline status, expected take-ups and \co{} by product
+(left); staff view of one customer with propensity, confidence, data quality, reason codes and the threshold behind every
+decision (middle). \textbf{Customer app} (FR5, right): what the customer sees in their banking app -- their footprint against
+similar households, suggestions in plain language with a ``for the planet'' and a ``for your pocket'' statement, ``why am I
+seeing this?'', and buttons that write to customer memory. It never shows scores, codes, flags or suggestions awaiting
+human review.}
+
+\section{Plan to the final submission}
+\begin{enumerate}[leftmargin=1.4em]
+  \item \textbf{Close measured gaps:} energy kWh from smoothed direct debits (use bill-change dates and annual
+        reconciliation credits); a supplier-name rule list for unseen energy merchants; EV explanations, where only 22\% of
+        LLM rewrites pass.
+  \item \textbf{Real-data proofs:} the categoriser on a real UK current-account statement (6,567 lines) and FR1 on a
+        public multi-table bank dataset (1.06M transactions).
+  \item \textbf{Scenario pack} of hand-picked customers with expected outcomes, and a manual review of 60 LLM explanations.
+  \item \textbf{Final:} 3-page report, 4-minute demo of the dashboard (portfolio view $\rightarrow$ customer $\rightarrow$
+        response $\rightarrow$ re-ranked suggestions), code with setup and run instructions.
+\end{enumerate}
+
+\end{document}

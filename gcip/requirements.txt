@@ -1,0 +1,15 @@
+# Core: data generation, FR1-FR7 pipeline, dashboards. Tested with Python 3.13 on Linux.
+numpy==2.4.2
+pandas==3.0.1
+pyarrow==25.0.1
+scipy==1.17.1
+scikit-learn==1.8.0
+lightgbm==4.6.0
+joblib==1.5.3
+pyyaml==6.0.3
+tqdm==4.67.1
+lxml==6.0.2
+openpyxl==3.1.5          # reference build: published .xlsx statistics
+odfpy==1.4.1             # reference build: published .ods statistics
+gdown==5.2.0             # fetches the prebuilt data from the shared Drive folder
+pytest==9.1.1
