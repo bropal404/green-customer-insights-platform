@@ -12,3 +12,5 @@ build/
 .pytest_cache/
 .coverage
 data/synthetic/*.csv
+*.csv
+

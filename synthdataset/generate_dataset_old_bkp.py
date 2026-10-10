@@ -557,10 +557,10 @@ def generate_product_labels(df_customers):
 # ==============================================================================
 if __name__ == "__main__":
     print("Starting customer generation...", flush=True)
-    df_customers = generate_customers(num_customers=50)
+    df_customers = generate_customers(num_customers=10_000)
 
     print("Starting transaction generation...", flush=True)
-    df_tx = generate_transactions(df_customers, days_history=90)
+    df_tx = generate_transactions(df_customers, days_history=360)
 
     print("Starting product-label generation...", flush=True)
     df_labels = generate_product_labels(df_customers)
