@@ -84,7 +84,10 @@ def recommend(live_scores: pd.DataFrame, impact: pd.DataFrame, c360: pd.DataFram
     over = candidates["rank"] > cfg["max_per_customer"]
     d.loc[candidates.index[over], "decision"] = "lower priority than three other products"
     shown = candidates[~over].copy()
-    review = shown["product"].isin(CREDIT) & shown["vulnerability_flag"].fillna(False)
+    # Human review comes from the eligibility rules (products.yaml `human_review`, e.g. VULNERABLE on credit products);
+    # without that column, credit products for customers with a vulnerability flag.
+    review = (shown["human_review"].fillna(False).astype(bool) if "human_review" in shown
+              else shown["product"].isin(CREDIT) & shown["vulnerability_flag"].fillna(False))
     shown["status"] = np.where(review, "human_review", "recommended")
     d.loc[shown.index, "decision"] = np.where(review, "human review (vulnerability flag)", "recommended")
     # Memory as a reason: earlier interest in the product (it raised the priority) is stated with its date.
