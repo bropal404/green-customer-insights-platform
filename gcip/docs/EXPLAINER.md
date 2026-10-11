@@ -612,6 +612,8 @@ separately from the four required products.
 
 ## 16. Limitations
 
+The main ones are below. The complete list of assumptions and limitations, stage by stage: `docs/ASSUMPTIONS_AND_LIMITATIONS.md`.
+
 - England and Wales only (Census 2021 coverage).
 - Synthetic customers: metrics describe a realistic simulated bank, not real Lloyds customers.
 - Area context is at local-authority level; a real bank would use postcode-level statistics.

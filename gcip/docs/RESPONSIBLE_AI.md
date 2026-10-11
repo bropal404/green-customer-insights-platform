@@ -114,6 +114,9 @@ Measured results:
 
 ## Data limitations
 
+The main ones are below. The complete list, stage by stage, with every assumption's value and source, is in
+`docs/ASSUMPTIONS_AND_LIMITATIONS.md`.
+
 - **Synthetic bank.** Customers, behaviour and take-up come from a simulator calibrated on public data, so the metrics
   describe a realistic simulated bank, not Lloyds customers. Take-up in the simulator does not depend on being shown a
   suggestion, which is why the measured uplift is near zero.

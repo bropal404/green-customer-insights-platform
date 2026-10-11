@@ -2,7 +2,8 @@
 
 Setup and run instructions. What each stage does and the results are in `docs/PIPELINE.md`; the design and the reasons
 behind it in `docs/EXPLAINER.md`; the public data in `docs/DATA_SOURCES.md`; the synthetic bank in `docs/DATA_CARD.md`
-and `docs/data_contract/`. Where each of the nine hand-in items (A-I) is: `docs/SUBMISSION.md`.
+and `docs/data_contract/`; every assumption and limitation, stage by stage, in `docs/ASSUMPTIONS_AND_LIMITATIONS.md`.
+Where each of the nine hand-in items (A-I) is: `docs/SUBMISSION.md`.
 
 All customers are synthetic. No real personal or banking data is used.
 
