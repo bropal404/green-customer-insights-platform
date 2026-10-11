@@ -59,7 +59,8 @@ Each stage writes `runs/pipeline/_checkpoints/<stage>.done` and is skipped on a 
 | memory | Replay of 300 customers over 3 monthly rounds with responses drawn from the true take-up probability | `memory/replay_events.parquet`, `metrics/memory_replay.json` | 1 s |
 | insights | FR6: opportunity by product and region, decision funnel, footprint, 6 segments, estimate-confidence mix; trends by month: spend by category and region, green signals (customers using public EV charging, spend at energy installers, bike hire, rail, bus, heating oil), road fuel spend vs litres at that month's pump price, home energy bills, green take-ups; each customer's last 12 months of spend | `insights/bank_insights.json`, `insights/monthly_trends.parquet` | 19 s |
 | value | Business value per suggestion and for the portfolio (`configs/business.yaml`): customer savings, net present value, payback, cost of carbon abatement; bank new lending, net interest income, fees, credit losses, campaign cost, ROI, carbon per £1,000 spent, financed emissions avoided; backtest of who to contact (model vs rules vs random) on the held-out test customers | `recommendations/value.parquet`, `metrics/business_value.json` | 6 s |
-| explain_llm | The configured LLM rewrites the body of 360 explanations (60 per product); guarded; passes replace templates. Reported with the local Qwen2.5-1.5B (`--llm-provider local`); a free-tier Gemini key covers only about 20 requests a day per model (sample: 16 of 17 Gemini 3.8 Flash replies passed) | `explanations/eval_set.parquet`, `metrics/explanations_gemini_sample.json` | 2.2 min |
+| explain_llm | The configured LLM (`configs/pipeline.yaml` `llm.provider`: Gemini Flash API, or `local` for Qwen2.5-1.5B) rewrites the body of 360 explanations (60 per product); guarded; passes replace templates. Reported with the local Qwen2.5-1.5B (`--llm-provider local`), because a free-tier Gemini key covers only about 20 requests a day per model; Gemini sample: 12 of 12 replies passed every guard | `explanations/eval_set.parquet`, `metrics/explanations.json`, `metrics/explanations_gemini_sample.json` | 2.2 min |
+| evaluate | Evaluation report: every model's metrics on the validation set next to test and a baseline (FR2 categoriser, FR3 propensity, fairness at the suggestion threshold, FR4 truth recovery, FR5 guards, targeting backtest); nothing is retrained (`gcip.models.evaluate`); see `docs/EVALUATION.md` | `metrics/evaluation_report.json`, `metrics/evaluation_report.md`, `predictions/test_predictions.csv` | 1 s |
 | report | Every metric in one file | `summary.json` | <1 s |
 
 ## 5. Decision rules for a suggestion (`configs/pipeline.yaml` `recommend`)
@@ -163,13 +164,17 @@ EV finance (−£299/t) and solar (−£230/t) save it.
 
 ## 7. Tests
 
-`.venv/bin/python -m pytest -q` (13 tests, about a minute): FR1 audit, injected-issue handling, Customer 360 quality,
+`.venv/bin/python -m pytest -q` (16 tests, about a minute): FR1 audit, injected-issue handling, Customer 360 quality,
 tamper detection (changed checksum, a one-penny change, an edited narrative), identifier collisions, account-number
-normalisation, FR4 golden case, published factors and prices, the insufficient-data path, memory cool-downs and events.
+normalisation, FR4 golden case, published factors and prices, the insufficient-data path, memory cool-downs, events and
+fatigue, reason codes only with supporting data, and the business value worked by hand. The brief's scenario tests and
+where each is covered: `docs/EVALUATION.md`.
 
 ## 8. Shipped results and release bundles
 
-`demo/` (in the repo, 16 MB) holds what the dashboards read for the 30,000-customer run. The complete generated data is
+`demo/` (in the repo, 54 MB) holds what the dashboards read for the 30,000-customer run, the trained models
+(`demo/pipeline/models/`: six propensity models and the categoriser, used by `scripts/predict.py`), the held-out and
+test set predictions (`demo/pipeline/predictions/`) and the evaluation report. The complete generated data is
 published as release bundles (`release/manifest.json`), downloaded with `scripts/fetch_release.py` (`--all` for all three):
 
 | Bundle | Size | Contents | Default download |

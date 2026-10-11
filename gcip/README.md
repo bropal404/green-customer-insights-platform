@@ -2,7 +2,7 @@
 
 Setup and run instructions. What each stage does and the results are in `docs/PIPELINE.md`; the design and the reasons
 behind it in `docs/EXPLAINER.md`; the public data in `docs/DATA_SOURCES.md`; the synthetic bank in `docs/DATA_CARD.md`
-and `docs/data_contract/`.
+and `docs/data_contract/`. Where each of the nine hand-in items (A-I) is: `docs/SUBMISSION.md`.
 
 All customers are synthetic. No real personal or banking data is used.
 
@@ -24,7 +24,7 @@ To watch the whole pipeline run live instead (about 5 minutes):
 
 ```bash
 ./run.sh --quick       # builds a 2,000-customer bank (7 source systems -> FR1 -> FR2 -> features), runs FR3-FR7,
-                       # memory and FR6, then serves those results
+                       # memory, FR6, business value and the evaluation report, then serves those results
 ```
 
 Other options:
@@ -43,7 +43,7 @@ key, explanations keep their standard wording.
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/python -m pytest -q                                          # 13 tests
+.venv/bin/python -m pytest -q                                          # 16 tests
 .venv/bin/python scripts/build_reference.py                            # optional: rebuild data/reference from the publishers
 bash scripts/build_full_data.sh runs/full 30000 2                      # synthetic bank, FR1, FR2, Customer 360, features, labels
 .venv/bin/python scripts/run_pipeline.py --data runs/full --run-dir runs/pipeline   # FR3-FR7, memory, FR6, checks
@@ -51,6 +51,21 @@ bash scripts/build_full_data.sh runs/full 30000 2                      # synthet
 .venv/bin/python scripts/make_demo.py                                  # refresh demo/ from a full run
 ```
 
-The full generated bank (source-system extracts, warehouse, truth vault; 1.6 GB) is published separately:
-`.venv/bin/python scripts/fetch_release.py --all` downloads it from the Drive folder in `release/manifest.json`.
+## Inference with the trained models
+
+The trained models ship in `demo/pipeline/models/` (six propensity models and the categoriser); scoring needs
+`requirements.txt`, not a rebuild:
+
+```bash
+.venv/bin/python scripts/predict.py propensity --data demo/data --as-of 2026-09-30 --out scores.csv   # FR3, 30,000 customers
+.venv/bin/python scripts/predict.py categorise "SHELL PETROL 0423 LEEDS" "TFL TRAVEL CH"             # FR2
+.venv/bin/python scripts/predict.py categorise "BRITISH GAS" --ptype DD
+```
+
+Test set predictions: `demo/pipeline/predictions/test_predictions.csv`. Evaluation report (validation and test):
+`docs/EVALUATION.md`.
+
+The full generated bank (source-system extracts, warehouse, truth vault; 1.6 GB) is hosted externally, on Google Drive:
+https://drive.google.com/drive/folders/1fJV1LTqDVxyUE5GCjPFQ1mKiVNwNVs1C (`.venv/bin/python scripts/fetch_release.py
+--all` downloads it). Nothing above needs it: `./run.sh --quick` and `--rebuild` generate the bank locally.
 Keep `runs/` on disk (not a RAM-backed /tmp). Configuration lives in `configs/`.

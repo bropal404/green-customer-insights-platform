@@ -50,7 +50,7 @@ if [ "$MODE" = quick ] || [ "$MODE" = rebuild ]; then
   bash scripts/build_full_data.sh "$DATA" "$N" 2
   say "Pipeline: FR3 propensity -> FR4 impact -> FR5-FR7 suggestions + explanations -> memory -> FR6 insights"
   "$PY" -I scripts/run_pipeline.py --data "$DATA" --run-dir "$RUN" \
-      --stages propensity impact recommend explain impact_checks memory insights report
+      --stages propensity impact recommend explain impact_checks memory insights value evaluate report
 fi
 say "Starting the dashboards on the results in $RUN"
 exec "$PY" -I scripts/serve_dashboard.py --run-dir "$RUN" --data-dir "$DATA" --port "$PORT"

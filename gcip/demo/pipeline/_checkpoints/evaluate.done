@@ -1,0 +1,17 @@
+{
+  "finished_at": "2026-10-11 07:28:40",
+  "validation_mean": {
+    "roc_auc": 0.7196,
+    "pr_auc": 0.1718,
+    "brier": 0.0436,
+    "ece": 0.0124,
+    "lift_top10": 3.325
+  },
+  "test_mean": {
+    "roc_auc": 0.7268,
+    "pr_auc": 0.1825,
+    "brier": 0.0439,
+    "ece": 0.0101,
+    "lift_top10": 3.4183
+  }
+}

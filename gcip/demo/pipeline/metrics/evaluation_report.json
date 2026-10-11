@@ -1,0 +1,2410 @@
+{
+  "splits": {
+    "customers": "70% train / 15% validation / 15% test, by customer (seeded), the same split for every model",
+    "propensity_rows": {
+      "validation": 11733,
+      "test": 12073
+    },
+    "merchants": "20% of merchants never appear in training (categoriser generalisation)"
+  },
+  "propensity": {
+    "products": {
+      "GP01": {
+        "min_propensity": 0.09512,
+        "validation": {
+          "model": {
+            "n": 3176,
+            "positives": 162,
+            "roc_auc": 0.7112,
+            "pr_auc": 0.1106,
+            "brier": 0.04735,
+            "ece": 0.00797,
+            "lift_top10": 2.528
+          },
+          "rules_baseline": {
+            "n": 3176,
+            "positives": 162,
+            "roc_auc": 0.5857,
+            "pr_auc": 0.0683,
+            "brier": 0.06771,
+            "ece": 0.09662,
+            "lift_top10": 1.726
+          },
+          "at_threshold": {
+            "selected_share": 0.1414,
+            "precision": 0.118,
+            "recall": 0.3272,
+            "lift": 2.31
+          }
+        },
+        "test": {
+          "model": {
+            "n": 3258,
+            "positives": 164,
+            "roc_auc": 0.7276,
+            "pr_auc": 0.1288,
+            "brier": 0.04595,
+            "ece": 0.01038,
+            "lift_top10": 3.047
+          },
+          "rules_baseline": {
+            "n": 3258,
+            "positives": 164,
+            "roc_auc": 0.6282,
+            "pr_auc": 0.0733,
+            "brier": 0.06312,
+            "ece": 0.08765,
+            "lift_top10": 2.255
+          },
+          "at_threshold": {
+            "selected_share": 0.155,
+            "precision": 0.1287,
+            "recall": 0.3963,
+            "lift": 2.56
+          }
+        }
+      },
+      "GP02": {
+        "min_propensity": 0.08875,
+        "validation": {
+          "model": {
+            "n": 982,
+            "positives": 49,
+            "roc_auc": 0.6167,
+            "pr_auc": 0.0856,
+            "brier": 0.0469,
+            "ece": 0.00788,
+            "lift_top10": 2.045
+          },
+          "rules_baseline": {
+            "n": 982,
+            "positives": 49,
+            "roc_auc": 0.6036,
+            "pr_auc": 0.0668,
+            "brier": 0.06811,
+            "ece": 0.10835,
+            "lift_top10": 1.431
+          },
+          "at_threshold": {
+            "selected_share": 0.0295,
+            "precision": 0.2069,
+            "recall": 0.1224,
+            "lift": 4.15
+          }
+        },
+        "test": {
+          "model": {
+            "n": 1063,
+            "positives": 31,
+            "roc_auc": 0.6342,
+            "pr_auc": 0.0434,
+            "brier": 0.02851,
+            "ece": 0.01387,
+            "lift_top10": 1.941
+          },
+          "rules_baseline": {
+            "n": 1063,
+            "positives": 31,
+            "roc_auc": 0.5728,
+            "pr_auc": 0.0372,
+            "brier": 0.05554,
+            "ece": 0.11853,
+            "lift_top10": 1.617
+          },
+          "at_threshold": {
+            "selected_share": 0.0292,
+            "precision": 0.0645,
+            "recall": 0.0645,
+            "lift": 2.21
+          }
+        }
+      },
+      "GP03": {
+        "min_propensity": 0.03928,
+        "validation": {
+          "model": {
+            "n": 2172,
+            "positives": 31,
+            "roc_auc": 0.7047,
+            "pr_auc": 0.037,
+            "brier": 0.01401,
+            "ece": 0.00843,
+            "lift_top10": 2.906
+          },
+          "rules_baseline": {
+            "n": 2172,
+            "positives": 31,
+            "roc_auc": 0.6024,
+            "pr_auc": 0.0203,
+            "brier": 0.03172,
+            "ece": 0.08901,
+            "lift_top10": 1.614
+          },
+          "at_threshold": {
+            "selected_share": 0.1294,
+            "precision": 0.0391,
+            "recall": 0.3548,
+            "lift": 2.74
+          }
+        },
+        "test": {
+          "model": {
+            "n": 2222,
+            "positives": 56,
+            "roc_auc": 0.7259,
+            "pr_auc": 0.0665,
+            "brier": 0.02423,
+            "ece": 0.00609,
+            "lift_top10": 3.396
+          },
+          "rules_baseline": {
+            "n": 2222,
+            "positives": 56,
+            "roc_auc": 0.6234,
+            "pr_auc": 0.0387,
+            "brier": 0.04029,
+            "ece": 0.08888,
+            "lift_top10": 2.681
+          },
+          "at_threshold": {
+            "selected_share": 0.1256,
+            "precision": 0.0753,
+            "recall": 0.375,
+            "lift": 2.99
+          }
+        }
+      },
+      "GP04": {
+        "min_propensity": 0.24514,
+        "validation": {
+          "model": {
+            "n": 937,
+            "positives": 114,
+            "roc_auc": 0.8518,
+            "pr_auc": 0.5193,
+            "brier": 0.07672,
+            "ece": 0.02274,
+            "lift_top10": 4.984
+          },
+          "rules_baseline": {
+            "n": 937,
+            "positives": 114,
+            "roc_auc": 0.7554,
+            "pr_auc": 0.2579,
+            "brier": 0.11182,
+            "ece": 0.09498,
+            "lift_top10": 2.885
+          },
+          "at_threshold": {
+            "selected_share": 0.1622,
+            "precision": 0.4803,
+            "recall": 0.6404,
+            "lift": 3.95
+          }
+        },
+        "test": {
+          "model": {
+            "n": 951,
+            "positives": 122,
+            "roc_auc": 0.8207,
+            "pr_auc": 0.5292,
+            "brier": 0.08115,
+            "ece": 0.01205,
+            "lift_top10": 4.103
+          },
+          "rules_baseline": {
+            "n": 951,
+            "positives": 122,
+            "roc_auc": 0.737,
+            "pr_auc": 0.2492,
+            "brier": 0.11964,
+            "ece": 0.10305,
+            "lift_top10": 2.626
+          },
+          "at_threshold": {
+            "selected_share": 0.1767,
+            "precision": 0.4405,
+            "recall": 0.6066,
+            "lift": 3.43
+          }
+        }
+      },
+      "GP05": {
+        "min_propensity": 0.13767,
+        "validation": {
+          "model": {
+            "n": 888,
+            "positives": 45,
+            "roc_auc": 0.763,
+            "pr_auc": 0.2008,
+            "brier": 0.04553,
+            "ece": 0.01987,
+            "lift_top10": 4.213
+          },
+          "rules_baseline": {
+            "n": 888,
+            "positives": 45,
+            "roc_auc": 0.69,
+            "pr_auc": 0.1313,
+            "brier": 0.04547,
+            "ece": 0.02984,
+            "lift_top10": 4.213
+          },
+          "at_threshold": {
+            "selected_share": 0.089,
+            "precision": 0.2025,
+            "recall": 0.3556,
+            "lift": 4.0
+          }
+        },
+        "test": {
+          "model": {
+            "n": 883,
+            "positives": 60,
+            "roc_auc": 0.7436,
+            "pr_auc": 0.2367,
+            "brier": 0.05633,
+            "ece": 0.01276,
+            "lift_top10": 4.348
+          },
+          "rules_baseline": {
+            "n": 883,
+            "positives": 60,
+            "roc_auc": 0.6772,
+            "pr_auc": 0.1623,
+            "brier": 0.05967,
+            "ece": 0.04219,
+            "lift_top10": 4.181
+          },
+          "at_threshold": {
+            "selected_share": 0.1031,
+            "precision": 0.2857,
+            "recall": 0.4333,
+            "lift": 4.2
+          }
+        }
+      },
+      "GP06": {
+        "min_propensity": 0.06638,
+        "validation": {
+          "model": {
+            "n": 3578,
+            "positives": 116,
+            "roc_auc": 0.6702,
+            "pr_auc": 0.0773,
+            "brier": 0.03086,
+            "ece": 0.00723,
+            "lift_top10": 3.274
+          },
+          "rules_baseline": {
+            "n": 3578,
+            "positives": 116,
+            "roc_auc": 0.6103,
+            "pr_auc": 0.0496,
+            "brier": 0.0577,
+            "ece": 0.11722,
+            "lift_top10": 2.154
+          },
+          "at_threshold": {
+            "selected_share": 0.062,
+            "precision": 0.1216,
+            "recall": 0.2328,
+            "lift": 3.75
+          }
+        },
+        "test": {
+          "model": {
+            "n": 3696,
+            "positives": 106,
+            "roc_auc": 0.7085,
+            "pr_auc": 0.0903,
+            "brier": 0.0273,
+            "ece": 0.00517,
+            "lift_top10": 3.675
+          },
+          "rules_baseline": {
+            "n": 3696,
+            "positives": 106,
+            "roc_auc": 0.6254,
+            "pr_auc": 0.0669,
+            "brier": 0.05576,
+            "ece": 0.12403,
+            "lift_top10": 2.544
+          },
+          "at_threshold": {
+            "selected_share": 0.0728,
+            "precision": 0.1227,
+            "recall": 0.3113,
+            "lift": 4.28
+          }
+        }
+      }
+    },
+    "mean_over_products": {
+      "validation": {
+        "model": {
+          "roc_auc": 0.7196,
+          "pr_auc": 0.1718,
+          "brier": 0.0436,
+          "ece": 0.0124,
+          "lift_top10": 3.325
+        },
+        "rules_baseline": {
+          "roc_auc": 0.6412,
+          "pr_auc": 0.099,
+          "brier": 0.0638,
+          "ece": 0.0893,
+          "lift_top10": 2.3372
+        }
+      },
+      "test": {
+        "model": {
+          "roc_auc": 0.7268,
+          "pr_auc": 0.1825,
+          "brier": 0.0439,
+          "ece": 0.0101,
+          "lift_top10": 3.4183
+        },
+        "rules_baseline": {
+          "roc_auc": 0.644,
+          "pr_auc": 0.1046,
+          "brier": 0.0657,
+          "ece": 0.0941,
+          "lift_top10": 2.6507
+        }
+      }
+    }
+  },
+  "fairness": {
+    "GP01": {
+      "test": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 702,
+              "take_up_rate": 0.0513,
+              "mean_propensity": 0.0506,
+              "selected_rate": 0.1581
+            },
+            "35-54": {
+              "n": 1142,
+              "take_up_rate": 0.0569,
+              "mean_propensity": 0.0499,
+              "selected_rate": 0.1769
+            },
+            "55+": {
+              "n": 1414,
+              "take_up_rate": 0.0446,
+              "mean_propensity": 0.0428,
+              "selected_rate": 0.1358
+            }
+          },
+          "selected_rate_min": 0.1358,
+          "selected_rate_max": 0.1769,
+          "max_calibration_gap": 0.0071
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 622,
+              "take_up_rate": 0.1061,
+              "mean_propensity": 0.086,
+              "selected_rate": 0.4244
+            },
+            "15k_25k": {
+              "n": 346,
+              "take_up_rate": 0.0202,
+              "mean_propensity": 0.0157,
+              "selected_rate": 0.0
+            },
+            "25k_40k": {
+              "n": 573,
+              "take_up_rate": 0.0244,
+              "mean_propensity": 0.0215,
+              "selected_rate": 0.0052
+            },
+            "40k_60k": {
+              "n": 671,
+              "take_up_rate": 0.0373,
+              "mean_propensity": 0.0346,
+              "selected_rate": 0.0417
+            },
+            "60k_100k": {
+              "n": 817,
+              "take_up_rate": 0.0624,
+              "mean_propensity": 0.0669,
+              "selected_rate": 0.257
+            },
+            "under_15k": {
+              "n": 229,
+              "take_up_rate": 0.0044,
+              "mean_propensity": 0.0166,
+              "selected_rate": 0.0
+            }
+          },
+          "selected_rate_min": 0.0,
+          "selected_rate_max": 0.4244,
+          "max_calibration_gap": 0.0201
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 405,
+              "take_up_rate": 0.042,
+              "mean_propensity": 0.0502,
+              "selected_rate": 0.1778
+            },
+            "East Midlands": {
+              "n": 263,
+              "take_up_rate": 0.0532,
+              "mean_propensity": 0.0444,
+              "selected_rate": 0.1521
+            },
+            "London": {
+              "n": 354,
+              "take_up_rate": 0.0452,
+              "mean_propensity": 0.0514,
+              "selected_rate": 0.2203
+            },
+            "North East": {
+              "n": 157,
+              "take_up_rate": 0.0127,
+              "mean_propensity": 0.0386,
+              "selected_rate": 0.0828
+            },
+            "North West": {
+              "n": 426,
+              "take_up_rate": 0.0587,
+              "mean_propensity": 0.0421,
+              "selected_rate": 0.1103
+            },
+            "South East": {
+              "n": 551,
+              "take_up_rate": 0.0672,
+              "mean_propensity": 0.0548,
+              "selected_rate": 0.2015
+            },
+            "South West": {
+              "n": 325,
+              "take_up_rate": 0.0492,
+              "mean_propensity": 0.0481,
+              "selected_rate": 0.1662
+            },
+            "Wales": {
+              "n": 186,
+              "take_up_rate": 0.0323,
+              "mean_propensity": 0.0366,
+              "selected_rate": 0.0645
+            },
+            "West Midlands": {
+              "n": 307,
+              "take_up_rate": 0.0651,
+              "mean_propensity": 0.0446,
+              "selected_rate": 0.1336
+            },
+            "Yorkshire and The Humber": {
+              "n": 284,
+              "take_up_rate": 0.0387,
+              "mean_propensity": 0.0435,
+              "selected_rate": 0.1303
+            }
+          },
+          "selected_rate_min": 0.0645,
+          "selected_rate_max": 0.2203,
+          "max_calibration_gap": 0.0258
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 2973,
+              "take_up_rate": 0.0518,
+              "mean_propensity": 0.0474,
+              "selected_rate": 0.1584
+            },
+            "yes": {
+              "n": 285,
+              "take_up_rate": 0.0351,
+              "mean_propensity": 0.0416,
+              "selected_rate": 0.1193
+            }
+          },
+          "selected_rate_min": 0.1193,
+          "selected_rate_max": 0.1584,
+          "max_calibration_gap": 0.0065
+        }
+      },
+      "validation": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 673,
+              "take_up_rate": 0.0669,
+              "mean_propensity": 0.051,
+              "selected_rate": 0.1649
+            },
+            "35-54": {
+              "n": 1123,
+              "take_up_rate": 0.0445,
+              "mean_propensity": 0.0491,
+              "selected_rate": 0.1549
+            },
+            "55+": {
+              "n": 1380,
+              "take_up_rate": 0.0486,
+              "mean_propensity": 0.043,
+              "selected_rate": 0.1188
+            }
+          },
+          "selected_rate_min": 0.1188,
+          "selected_rate_max": 0.1649,
+          "max_calibration_gap": 0.0159
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 581,
+              "take_up_rate": 0.1033,
+              "mean_propensity": 0.0858,
+              "selected_rate": 0.4028
+            },
+            "15k_25k": {
+              "n": 319,
+              "take_up_rate": 0.0188,
+              "mean_propensity": 0.0179,
+              "selected_rate": 0.0
+            },
+            "25k_40k": {
+              "n": 569,
+              "take_up_rate": 0.0176,
+              "mean_propensity": 0.0219,
+              "selected_rate": 0.0
+            },
+            "40k_60k": {
+              "n": 727,
+              "take_up_rate": 0.0385,
+              "mean_propensity": 0.0355,
+              "selected_rate": 0.0413
+            },
+            "60k_100k": {
+              "n": 776,
+              "take_up_rate": 0.0722,
+              "mean_propensity": 0.0666,
+              "selected_rate": 0.2384
+            },
+            "under_15k": {
+              "n": 204,
+              "take_up_rate": 0.0098,
+              "mean_propensity": 0.016,
+              "selected_rate": 0.0
+            }
+          },
+          "selected_rate_min": 0.0,
+          "selected_rate_max": 0.4028,
+          "max_calibration_gap": 0.0174
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 328,
+              "take_up_rate": 0.0549,
+              "mean_propensity": 0.0519,
+              "selected_rate": 0.128
+            },
+            "East Midlands": {
+              "n": 248,
+              "take_up_rate": 0.0645,
+              "mean_propensity": 0.0443,
+              "selected_rate": 0.1371
+            },
+            "London": {
+              "n": 390,
+              "take_up_rate": 0.0538,
+              "mean_propensity": 0.0527,
+              "selected_rate": 0.2103
+            },
+            "North East": {
+              "n": 157,
+              "take_up_rate": 0.0318,
+              "mean_propensity": 0.0382,
+              "selected_rate": 0.0892
+            },
+            "North West": {
+              "n": 417,
+              "take_up_rate": 0.0624,
+              "mean_propensity": 0.0434,
+              "selected_rate": 0.1223
+            },
+            "South East": {
+              "n": 515,
+              "take_up_rate": 0.0447,
+              "mean_propensity": 0.0518,
+              "selected_rate": 0.165
+            },
+            "South West": {
+              "n": 318,
+              "take_up_rate": 0.0535,
+              "mean_propensity": 0.0445,
+              "selected_rate": 0.1384
+            },
+            "Wales": {
+              "n": 176,
+              "take_up_rate": 0.0398,
+              "mean_propensity": 0.0365,
+              "selected_rate": 0.0682
+            },
+            "West Midlands": {
+              "n": 345,
+              "take_up_rate": 0.0493,
+              "mean_propensity": 0.0477,
+              "selected_rate": 0.1304
+            },
+            "Yorkshire and The Humber": {
+              "n": 282,
+              "take_up_rate": 0.0426,
+              "mean_propensity": 0.0443,
+              "selected_rate": 0.1418
+            }
+          },
+          "selected_rate_min": 0.0682,
+          "selected_rate_max": 0.2103,
+          "max_calibration_gap": 0.0202
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 2935,
+              "take_up_rate": 0.0514,
+              "mean_propensity": 0.0472,
+              "selected_rate": 0.1441
+            },
+            "yes": {
+              "n": 241,
+              "take_up_rate": 0.0456,
+              "mean_propensity": 0.0433,
+              "selected_rate": 0.1079
+            }
+          },
+          "selected_rate_min": 0.1079,
+          "selected_rate_max": 0.1441,
+          "max_calibration_gap": 0.0043
+        }
+      }
+    },
+    "GP02": {
+      "test": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 207,
+              "take_up_rate": 0.0435,
+              "mean_propensity": 0.0402,
+              "selected_rate": 0.0097
+            },
+            "35-54": {
+              "n": 614,
+              "take_up_rate": 0.0293,
+              "mean_propensity": 0.0406,
+              "selected_rate": 0.0261
+            },
+            "55+": {
+              "n": 242,
+              "take_up_rate": 0.0165,
+              "mean_propensity": 0.0518,
+              "selected_rate": 0.0537
+            }
+          },
+          "selected_rate_min": 0.0097,
+          "selected_rate_max": 0.0537,
+          "max_calibration_gap": 0.0352
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 336,
+              "take_up_rate": 0.0417,
+              "mean_propensity": 0.0466,
+              "selected_rate": 0.0357
+            },
+            "15k_25k": {
+              "n": 28,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0424,
+              "selected_rate": 0.0
+            },
+            "25k_40k": {
+              "n": 114,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0356,
+              "selected_rate": 0.0088
+            },
+            "40k_60k": {
+              "n": 230,
+              "take_up_rate": 0.0261,
+              "mean_propensity": 0.0369,
+              "selected_rate": 0.0043
+            },
+            "60k_100k": {
+              "n": 346,
+              "take_up_rate": 0.0289,
+              "mean_propensity": 0.0461,
+              "selected_rate": 0.0491
+            },
+            "under_15k": {
+              "n": 9,
+              "take_up_rate": 0.1111,
+              "mean_propensity": 0.0422,
+              "selected_rate": 0.0
+            }
+          },
+          "selected_rate_min": 0.0043,
+          "selected_rate_max": 0.0491,
+          "max_calibration_gap": 0.0356
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 137,
+              "take_up_rate": 0.0438,
+              "mean_propensity": 0.041,
+              "selected_rate": 0.0073
+            },
+            "East Midlands": {
+              "n": 83,
+              "take_up_rate": 0.012,
+              "mean_propensity": 0.039,
+              "selected_rate": 0.012
+            },
+            "London": {
+              "n": 132,
+              "take_up_rate": 0.0303,
+              "mean_propensity": 0.0455,
+              "selected_rate": 0.0606
+            },
+            "North East": {
+              "n": 46,
+              "take_up_rate": 0.0217,
+              "mean_propensity": 0.0386,
+              "selected_rate": 0.0435
+            },
+            "North West": {
+              "n": 149,
+              "take_up_rate": 0.0201,
+              "mean_propensity": 0.0417,
+              "selected_rate": 0.0403
+            },
+            "South East": {
+              "n": 178,
+              "take_up_rate": 0.0281,
+              "mean_propensity": 0.0507,
+              "selected_rate": 0.0393
+            },
+            "South West": {
+              "n": 96,
+              "take_up_rate": 0.0312,
+              "mean_propensity": 0.0392,
+              "selected_rate": 0.0208
+            },
+            "Wales": {
+              "n": 52,
+              "take_up_rate": 0.0385,
+              "mean_propensity": 0.0373,
+              "selected_rate": 0.0192
+            },
+            "West Midlands": {
+              "n": 95,
+              "take_up_rate": 0.0316,
+              "mean_propensity": 0.0409,
+              "selected_rate": 0.0211
+            },
+            "Yorkshire and The Humber": {
+              "n": 95,
+              "take_up_rate": 0.0316,
+              "mean_propensity": 0.0451,
+              "selected_rate": 0.0105
+            }
+          },
+          "selected_rate_min": 0.0073,
+          "selected_rate_max": 0.0606,
+          "max_calibration_gap": 0.0226
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 999,
+              "take_up_rate": 0.03,
+              "mean_propensity": 0.0432,
+              "selected_rate": 0.029
+            },
+            "yes": {
+              "n": 64,
+              "take_up_rate": 0.0156,
+              "mean_propensity": 0.0407,
+              "selected_rate": 0.0312
+            }
+          },
+          "selected_rate_min": 0.029,
+          "selected_rate_max": 0.029,
+          "max_calibration_gap": 0.0132
+        }
+      },
+      "validation": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 214,
+              "take_up_rate": 0.0748,
+              "mean_propensity": 0.0385,
+              "selected_rate": 0.0187
+            },
+            "35-54": {
+              "n": 563,
+              "take_up_rate": 0.0462,
+              "mean_propensity": 0.041,
+              "selected_rate": 0.0213
+            },
+            "55+": {
+              "n": 205,
+              "take_up_rate": 0.0341,
+              "mean_propensity": 0.0514,
+              "selected_rate": 0.0634
+            }
+          },
+          "selected_rate_min": 0.0187,
+          "selected_rate_max": 0.0634,
+          "max_calibration_gap": 0.0363
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 309,
+              "take_up_rate": 0.0712,
+              "mean_propensity": 0.0437,
+              "selected_rate": 0.0324
+            },
+            "15k_25k": {
+              "n": 24,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0483,
+              "selected_rate": 0.125
+            },
+            "25k_40k": {
+              "n": 86,
+              "take_up_rate": 0.0116,
+              "mean_propensity": 0.0388,
+              "selected_rate": 0.0116
+            },
+            "40k_60k": {
+              "n": 240,
+              "take_up_rate": 0.0375,
+              "mean_propensity": 0.0389,
+              "selected_rate": 0.0083
+            },
+            "60k_100k": {
+              "n": 318,
+              "take_up_rate": 0.0535,
+              "mean_propensity": 0.0445,
+              "selected_rate": 0.0409
+            },
+            "under_15k": {
+              "n": 5,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0669,
+              "selected_rate": 0.0
+            }
+          },
+          "selected_rate_min": 0.0083,
+          "selected_rate_max": 0.0409,
+          "max_calibration_gap": 0.0275
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 109,
+              "take_up_rate": 0.0183,
+              "mean_propensity": 0.0397,
+              "selected_rate": 0.0183
+            },
+            "East Midlands": {
+              "n": 65,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0432,
+              "selected_rate": 0.0154
+            },
+            "London": {
+              "n": 141,
+              "take_up_rate": 0.0638,
+              "mean_propensity": 0.0443,
+              "selected_rate": 0.0213
+            },
+            "North East": {
+              "n": 38,
+              "take_up_rate": 0.0263,
+              "mean_propensity": 0.0354,
+              "selected_rate": 0.0
+            },
+            "North West": {
+              "n": 121,
+              "take_up_rate": 0.0579,
+              "mean_propensity": 0.0412,
+              "selected_rate": 0.0248
+            },
+            "South East": {
+              "n": 180,
+              "take_up_rate": 0.0556,
+              "mean_propensity": 0.0449,
+              "selected_rate": 0.05
+            },
+            "South West": {
+              "n": 77,
+              "take_up_rate": 0.0909,
+              "mean_propensity": 0.0403,
+              "selected_rate": 0.013
+            },
+            "Wales": {
+              "n": 47,
+              "take_up_rate": 0.0426,
+              "mean_propensity": 0.0452,
+              "selected_rate": 0.0851
+            },
+            "West Midlands": {
+              "n": 100,
+              "take_up_rate": 0.06,
+              "mean_propensity": 0.0448,
+              "selected_rate": 0.05
+            },
+            "Yorkshire and The Humber": {
+              "n": 104,
+              "take_up_rate": 0.0481,
+              "mean_propensity": 0.0415,
+              "selected_rate": 0.0096
+            }
+          },
+          "selected_rate_min": 0.0096,
+          "selected_rate_max": 0.05,
+          "max_calibration_gap": 0.0213
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 927,
+              "take_up_rate": 0.0507,
+              "mean_propensity": 0.0422,
+              "selected_rate": 0.028
+            },
+            "yes": {
+              "n": 55,
+              "take_up_rate": 0.0364,
+              "mean_propensity": 0.0496,
+              "selected_rate": 0.0545
+            }
+          },
+          "selected_rate_min": 0.028,
+          "selected_rate_max": 0.028,
+          "max_calibration_gap": 0.0085
+        }
+      }
+    },
+    "GP03": {
+      "test": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 264,
+              "take_up_rate": 0.0152,
+              "mean_propensity": 0.0186,
+              "selected_rate": 0.0985
+            },
+            "35-54": {
+              "n": 805,
+              "take_up_rate": 0.0236,
+              "mean_propensity": 0.0194,
+              "selected_rate": 0.1143
+            },
+            "55+": {
+              "n": 1153,
+              "take_up_rate": 0.0286,
+              "mean_propensity": 0.0194,
+              "selected_rate": 0.1396
+            }
+          },
+          "selected_rate_min": 0.0985,
+          "selected_rate_max": 0.1396,
+          "max_calibration_gap": 0.0092
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 501,
+              "take_up_rate": 0.0479,
+              "mean_propensity": 0.0388,
+              "selected_rate": 0.3413
+            },
+            "15k_25k": {
+              "n": 188,
+              "take_up_rate": 0.0106,
+              "mean_propensity": 0.0048,
+              "selected_rate": 0.0
+            },
+            "25k_40k": {
+              "n": 355,
+              "take_up_rate": 0.0056,
+              "mean_propensity": 0.0068,
+              "selected_rate": 0.0
+            },
+            "40k_60k": {
+              "n": 478,
+              "take_up_rate": 0.0188,
+              "mean_propensity": 0.0134,
+              "selected_rate": 0.0607
+            },
+            "60k_100k": {
+              "n": 583,
+              "take_up_rate": 0.0326,
+              "mean_propensity": 0.0228,
+              "selected_rate": 0.1355
+            },
+            "under_15k": {
+              "n": 117,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0041,
+              "selected_rate": 0.0
+            }
+          },
+          "selected_rate_min": 0.0,
+          "selected_rate_max": 0.3413,
+          "max_calibration_gap": 0.0098
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 269,
+              "take_up_rate": 0.0446,
+              "mean_propensity": 0.0242,
+              "selected_rate": 0.1636
+            },
+            "East Midlands": {
+              "n": 187,
+              "take_up_rate": 0.0214,
+              "mean_propensity": 0.0149,
+              "selected_rate": 0.0963
+            },
+            "London": {
+              "n": 224,
+              "take_up_rate": 0.0312,
+              "mean_propensity": 0.0292,
+              "selected_rate": 0.2143
+            },
+            "North East": {
+              "n": 105,
+              "take_up_rate": 0.019,
+              "mean_propensity": 0.009,
+              "selected_rate": 0.019
+            },
+            "North West": {
+              "n": 317,
+              "take_up_rate": 0.0126,
+              "mean_propensity": 0.0132,
+              "selected_rate": 0.0568
+            },
+            "South East": {
+              "n": 378,
+              "take_up_rate": 0.0397,
+              "mean_propensity": 0.0264,
+              "selected_rate": 0.1931
+            },
+            "South West": {
+              "n": 215,
+              "take_up_rate": 0.014,
+              "mean_propensity": 0.0182,
+              "selected_rate": 0.1163
+            },
+            "Wales": {
+              "n": 122,
+              "take_up_rate": 0.0164,
+              "mean_propensity": 0.0117,
+              "selected_rate": 0.0492
+            },
+            "West Midlands": {
+              "n": 206,
+              "take_up_rate": 0.0194,
+              "mean_propensity": 0.0202,
+              "selected_rate": 0.165
+            },
+            "Yorkshire and The Humber": {
+              "n": 199,
+              "take_up_rate": 0.0151,
+              "mean_propensity": 0.0124,
+              "selected_rate": 0.0553
+            }
+          },
+          "selected_rate_min": 0.019,
+          "selected_rate_max": 0.2143,
+          "max_calibration_gap": 0.0204
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 2019,
+              "take_up_rate": 0.0267,
+              "mean_propensity": 0.0197,
+              "selected_rate": 0.1288
+            },
+            "yes": {
+              "n": 203,
+              "take_up_rate": 0.0099,
+              "mean_propensity": 0.0158,
+              "selected_rate": 0.0936
+            }
+          },
+          "selected_rate_min": 0.0936,
+          "selected_rate_max": 0.1288,
+          "max_calibration_gap": 0.0071
+        }
+      },
+      "validation": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 269,
+              "take_up_rate": 0.0112,
+              "mean_propensity": 0.0176,
+              "selected_rate": 0.1004
+            },
+            "35-54": {
+              "n": 782,
+              "take_up_rate": 0.0153,
+              "mean_propensity": 0.0191,
+              "selected_rate": 0.1215
+            },
+            "55+": {
+              "n": 1121,
+              "take_up_rate": 0.0143,
+              "mean_propensity": 0.0195,
+              "selected_rate": 0.1418
+            }
+          },
+          "selected_rate_min": 0.1004,
+          "selected_rate_max": 0.1418,
+          "max_calibration_gap": 0.0064
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 487,
+              "take_up_rate": 0.0287,
+              "mean_propensity": 0.0402,
+              "selected_rate": 0.3799
+            },
+            "15k_25k": {
+              "n": 193,
+              "take_up_rate": 0.0052,
+              "mean_propensity": 0.0055,
+              "selected_rate": 0.0052
+            },
+            "25k_40k": {
+              "n": 334,
+              "take_up_rate": 0.006,
+              "mean_propensity": 0.0066,
+              "selected_rate": 0.006
+            },
+            "40k_60k": {
+              "n": 491,
+              "take_up_rate": 0.0041,
+              "mean_propensity": 0.0117,
+              "selected_rate": 0.0305
+            },
+            "60k_100k": {
+              "n": 563,
+              "take_up_rate": 0.0178,
+              "mean_propensity": 0.0222,
+              "selected_rate": 0.1385
+            },
+            "under_15k": {
+              "n": 104,
+              "take_up_rate": 0.0192,
+              "mean_propensity": 0.0048,
+              "selected_rate": 0.0
+            }
+          },
+          "selected_rate_min": 0.0,
+          "selected_rate_max": 0.3799,
+          "max_calibration_gap": 0.0145
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 233,
+              "take_up_rate": 0.0172,
+              "mean_propensity": 0.0229,
+              "selected_rate": 0.1502
+            },
+            "East Midlands": {
+              "n": 160,
+              "take_up_rate": 0.0125,
+              "mean_propensity": 0.0187,
+              "selected_rate": 0.15
+            },
+            "London": {
+              "n": 264,
+              "take_up_rate": 0.0189,
+              "mean_propensity": 0.0293,
+              "selected_rate": 0.2386
+            },
+            "North East": {
+              "n": 94,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0091,
+              "selected_rate": 0.0213
+            },
+            "North West": {
+              "n": 282,
+              "take_up_rate": 0.0035,
+              "mean_propensity": 0.0128,
+              "selected_rate": 0.0461
+            },
+            "South East": {
+              "n": 357,
+              "take_up_rate": 0.0196,
+              "mean_propensity": 0.0266,
+              "selected_rate": 0.2101
+            },
+            "South West": {
+              "n": 206,
+              "take_up_rate": 0.0194,
+              "mean_propensity": 0.0166,
+              "selected_rate": 0.1019
+            },
+            "Wales": {
+              "n": 131,
+              "take_up_rate": 0.0229,
+              "mean_propensity": 0.0147,
+              "selected_rate": 0.1069
+            },
+            "West Midlands": {
+              "n": 247,
+              "take_up_rate": 0.0162,
+              "mean_propensity": 0.0164,
+              "selected_rate": 0.1174
+            },
+            "Yorkshire and The Humber": {
+              "n": 198,
+              "take_up_rate": 0.0051,
+              "mean_propensity": 0.0108,
+              "selected_rate": 0.0253
+            }
+          },
+          "selected_rate_min": 0.0253,
+          "selected_rate_max": 0.2386,
+          "max_calibration_gap": 0.0103
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 2009,
+              "take_up_rate": 0.0154,
+              "mean_propensity": 0.0194,
+              "selected_rate": 0.1299
+            },
+            "yes": {
+              "n": 163,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0157,
+              "selected_rate": 0.1227
+            }
+          },
+          "selected_rate_min": 0.1227,
+          "selected_rate_max": 0.1299,
+          "max_calibration_gap": 0.0157
+        }
+      }
+    },
+    "GP04": {
+      "test": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 32,
+              "take_up_rate": 0.5938,
+              "mean_propensity": 0.6453,
+              "selected_rate": 0.9688
+            },
+            "35-54": {
+              "n": 147,
+              "take_up_rate": 0.3265,
+              "mean_propensity": 0.3076,
+              "selected_rate": 0.5918
+            },
+            "55+": {
+              "n": 772,
+              "take_up_rate": 0.0712,
+              "mean_propensity": 0.0788,
+              "selected_rate": 0.0648
+            }
+          },
+          "selected_rate_min": 0.0648,
+          "selected_rate_max": 0.5918,
+          "max_calibration_gap": 0.019
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 131,
+              "take_up_rate": 0.145,
+              "mean_propensity": 0.1621,
+              "selected_rate": 0.229
+            },
+            "15k_25k": {
+              "n": 119,
+              "take_up_rate": 0.0756,
+              "mean_propensity": 0.1103,
+              "selected_rate": 0.1597
+            },
+            "25k_40k": {
+              "n": 202,
+              "take_up_rate": 0.1634,
+              "mean_propensity": 0.1257,
+              "selected_rate": 0.1485
+            },
+            "40k_60k": {
+              "n": 201,
+              "take_up_rate": 0.1144,
+              "mean_propensity": 0.1246,
+              "selected_rate": 0.1692
+            },
+            "60k_100k": {
+              "n": 187,
+              "take_up_rate": 0.1711,
+              "mean_propensity": 0.1641,
+              "selected_rate": 0.2353
+            },
+            "under_15k": {
+              "n": 111,
+              "take_up_rate": 0.0541,
+              "mean_propensity": 0.1011,
+              "selected_rate": 0.0991
+            }
+          },
+          "selected_rate_min": 0.0991,
+          "selected_rate_max": 0.2353,
+          "max_calibration_gap": 0.047
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 100,
+              "take_up_rate": 0.12,
+              "mean_propensity": 0.1605,
+              "selected_rate": 0.24
+            },
+            "East Midlands": {
+              "n": 79,
+              "take_up_rate": 0.1392,
+              "mean_propensity": 0.1166,
+              "selected_rate": 0.1266
+            },
+            "London": {
+              "n": 99,
+              "take_up_rate": 0.1717,
+              "mean_propensity": 0.1425,
+              "selected_rate": 0.1818
+            },
+            "North East": {
+              "n": 44,
+              "take_up_rate": 0.0227,
+              "mean_propensity": 0.1271,
+              "selected_rate": 0.1591
+            },
+            "North West": {
+              "n": 119,
+              "take_up_rate": 0.0924,
+              "mean_propensity": 0.1082,
+              "selected_rate": 0.1176
+            },
+            "South East": {
+              "n": 160,
+              "take_up_rate": 0.1375,
+              "mean_propensity": 0.1327,
+              "selected_rate": 0.1812
+            },
+            "South West": {
+              "n": 97,
+              "take_up_rate": 0.1237,
+              "mean_propensity": 0.1187,
+              "selected_rate": 0.1443
+            },
+            "Wales": {
+              "n": 65,
+              "take_up_rate": 0.1077,
+              "mean_propensity": 0.1337,
+              "selected_rate": 0.1846
+            },
+            "West Midlands": {
+              "n": 97,
+              "take_up_rate": 0.1649,
+              "mean_propensity": 0.1541,
+              "selected_rate": 0.2165
+            },
+            "Yorkshire and The Humber": {
+              "n": 91,
+              "take_up_rate": 0.1429,
+              "mean_propensity": 0.1372,
+              "selected_rate": 0.2088
+            }
+          },
+          "selected_rate_min": 0.1176,
+          "selected_rate_max": 0.24,
+          "max_calibration_gap": 0.0405
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 951,
+              "take_up_rate": 0.1283,
+              "mean_propensity": 0.1332,
+              "selected_rate": 0.1767
+            }
+          },
+          "selected_rate_min": 0.1767,
+          "selected_rate_max": 0.1767,
+          "max_calibration_gap": 0.005
+        }
+      },
+      "validation": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 28,
+              "take_up_rate": 0.7143,
+              "mean_propensity": 0.6063,
+              "selected_rate": 0.9643
+            },
+            "35-54": {
+              "n": 129,
+              "take_up_rate": 0.3488,
+              "mean_propensity": 0.3259,
+              "selected_rate": 0.6124
+            },
+            "55+": {
+              "n": 780,
+              "take_up_rate": 0.0628,
+              "mean_propensity": 0.0745,
+              "selected_rate": 0.059
+            }
+          },
+          "selected_rate_min": 0.059,
+          "selected_rate_max": 0.6124,
+          "max_calibration_gap": 0.0229
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 121,
+              "take_up_rate": 0.1405,
+              "mean_propensity": 0.1372,
+              "selected_rate": 0.1818
+            },
+            "15k_25k": {
+              "n": 107,
+              "take_up_rate": 0.0654,
+              "mean_propensity": 0.0872,
+              "selected_rate": 0.1028
+            },
+            "25k_40k": {
+              "n": 206,
+              "take_up_rate": 0.1165,
+              "mean_propensity": 0.1175,
+              "selected_rate": 0.1505
+            },
+            "40k_60k": {
+              "n": 217,
+              "take_up_rate": 0.1521,
+              "mean_propensity": 0.1466,
+              "selected_rate": 0.1843
+            },
+            "60k_100k": {
+              "n": 188,
+              "take_up_rate": 0.1277,
+              "mean_propensity": 0.1375,
+              "selected_rate": 0.1968
+            },
+            "under_15k": {
+              "n": 98,
+              "take_up_rate": 0.0918,
+              "mean_propensity": 0.0948,
+              "selected_rate": 0.1122
+            }
+          },
+          "selected_rate_min": 0.1028,
+          "selected_rate_max": 0.1968,
+          "max_calibration_gap": 0.0218
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 89,
+              "take_up_rate": 0.1124,
+              "mean_propensity": 0.118,
+              "selected_rate": 0.1573
+            },
+            "East Midlands": {
+              "n": 75,
+              "take_up_rate": 0.1467,
+              "mean_propensity": 0.1223,
+              "selected_rate": 0.16
+            },
+            "London": {
+              "n": 102,
+              "take_up_rate": 0.1667,
+              "mean_propensity": 0.1402,
+              "selected_rate": 0.1961
+            },
+            "North East": {
+              "n": 35,
+              "take_up_rate": 0.1714,
+              "mean_propensity": 0.2177,
+              "selected_rate": 0.3143
+            },
+            "North West": {
+              "n": 140,
+              "take_up_rate": 0.1643,
+              "mean_propensity": 0.1466,
+              "selected_rate": 0.2143
+            },
+            "South East": {
+              "n": 153,
+              "take_up_rate": 0.1046,
+              "mean_propensity": 0.1151,
+              "selected_rate": 0.1307
+            },
+            "South West": {
+              "n": 86,
+              "take_up_rate": 0.0814,
+              "mean_propensity": 0.1115,
+              "selected_rate": 0.1163
+            },
+            "Wales": {
+              "n": 65,
+              "take_up_rate": 0.0615,
+              "mean_propensity": 0.1006,
+              "selected_rate": 0.1231
+            },
+            "West Midlands": {
+              "n": 120,
+              "take_up_rate": 0.0917,
+              "mean_propensity": 0.1002,
+              "selected_rate": 0.1167
+            },
+            "Yorkshire and The Humber": {
+              "n": 72,
+              "take_up_rate": 0.125,
+              "mean_propensity": 0.1283,
+              "selected_rate": 0.1806
+            }
+          },
+          "selected_rate_min": 0.1167,
+          "selected_rate_max": 0.2143,
+          "max_calibration_gap": 0.0264
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 937,
+              "take_up_rate": 0.1217,
+              "mean_propensity": 0.125,
+              "selected_rate": 0.1622
+            }
+          },
+          "selected_rate_min": 0.1622,
+          "selected_rate_max": 0.1622,
+          "max_calibration_gap": 0.0033
+        }
+      }
+    },
+    "GP05": {
+      "test": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 200,
+              "take_up_rate": 0.085,
+              "mean_propensity": 0.0967,
+              "selected_rate": 0.175
+            },
+            "35-54": {
+              "n": 354,
+              "take_up_rate": 0.0847,
+              "mean_propensity": 0.0666,
+              "selected_rate": 0.0904
+            },
+            "55+": {
+              "n": 329,
+              "take_up_rate": 0.0395,
+              "mean_propensity": 0.055,
+              "selected_rate": 0.0729
+            }
+          },
+          "selected_rate_min": 0.0729,
+          "selected_rate_max": 0.175,
+          "max_calibration_gap": 0.0181
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 288,
+              "take_up_rate": 0.1042,
+              "mean_propensity": 0.1052,
+              "selected_rate": 0.1806
+            },
+            "15k_25k": {
+              "n": 39,
+              "take_up_rate": 0.0256,
+              "mean_propensity": 0.0301,
+              "selected_rate": 0.0256
+            },
+            "25k_40k": {
+              "n": 74,
+              "take_up_rate": 0.0541,
+              "mean_propensity": 0.0354,
+              "selected_rate": 0.0541
+            },
+            "40k_60k": {
+              "n": 183,
+              "take_up_rate": 0.0164,
+              "mean_propensity": 0.0434,
+              "selected_rate": 0.0492
+            },
+            "60k_100k": {
+              "n": 281,
+              "take_up_rate": 0.0783,
+              "mean_propensity": 0.0653,
+              "selected_rate": 0.089
+            },
+            "under_15k": {
+              "n": 18,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0358,
+              "selected_rate": 0.0
+            }
+          },
+          "selected_rate_min": 0.0492,
+          "selected_rate_max": 0.1806,
+          "max_calibration_gap": 0.027
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 113,
+              "take_up_rate": 0.1062,
+              "mean_propensity": 0.0775,
+              "selected_rate": 0.1504
+            },
+            "East Midlands": {
+              "n": 69,
+              "take_up_rate": 0.0435,
+              "mean_propensity": 0.0618,
+              "selected_rate": 0.087
+            },
+            "London": {
+              "n": 125,
+              "take_up_rate": 0.08,
+              "mean_propensity": 0.0607,
+              "selected_rate": 0.072
+            },
+            "North East": {
+              "n": 41,
+              "take_up_rate": 0.0732,
+              "mean_propensity": 0.0682,
+              "selected_rate": 0.0976
+            },
+            "North West": {
+              "n": 103,
+              "take_up_rate": 0.0388,
+              "mean_propensity": 0.0683,
+              "selected_rate": 0.1068
+            },
+            "South East": {
+              "n": 146,
+              "take_up_rate": 0.0685,
+              "mean_propensity": 0.0785,
+              "selected_rate": 0.1301
+            },
+            "South West": {
+              "n": 80,
+              "take_up_rate": 0.075,
+              "mean_propensity": 0.0548,
+              "selected_rate": 0.0625
+            },
+            "Wales": {
+              "n": 48,
+              "take_up_rate": 0.0208,
+              "mean_propensity": 0.0476,
+              "selected_rate": 0.0417
+            },
+            "West Midlands": {
+              "n": 81,
+              "take_up_rate": 0.0494,
+              "mean_propensity": 0.0773,
+              "selected_rate": 0.1235
+            },
+            "Yorkshire and The Humber": {
+              "n": 77,
+              "take_up_rate": 0.0909,
+              "mean_propensity": 0.0802,
+              "selected_rate": 0.1039
+            }
+          },
+          "selected_rate_min": 0.072,
+          "selected_rate_max": 0.1504,
+          "max_calibration_gap": 0.0295
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 883,
+              "take_up_rate": 0.068,
+              "mean_propensity": 0.0691,
+              "selected_rate": 0.1031
+            }
+          },
+          "selected_rate_min": 0.1031,
+          "selected_rate_max": 0.1031,
+          "max_calibration_gap": 0.0012
+        }
+      },
+      "validation": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 195,
+              "take_up_rate": 0.0718,
+              "mean_propensity": 0.1,
+              "selected_rate": 0.1538
+            },
+            "35-54": {
+              "n": 373,
+              "take_up_rate": 0.0617,
+              "mean_propensity": 0.067,
+              "selected_rate": 0.0858
+            },
+            "55+": {
+              "n": 320,
+              "take_up_rate": 0.025,
+              "mean_propensity": 0.0527,
+              "selected_rate": 0.0531
+            }
+          },
+          "selected_rate_min": 0.0531,
+          "selected_rate_max": 0.1538,
+          "max_calibration_gap": 0.0282
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 296,
+              "take_up_rate": 0.0608,
+              "mean_propensity": 0.0897,
+              "selected_rate": 0.1081
+            },
+            "15k_25k": {
+              "n": 39,
+              "take_up_rate": 0.0513,
+              "mean_propensity": 0.0411,
+              "selected_rate": 0.0256
+            },
+            "25k_40k": {
+              "n": 79,
+              "take_up_rate": 0.0127,
+              "mean_propensity": 0.0365,
+              "selected_rate": 0.038
+            },
+            "40k_60k": {
+              "n": 174,
+              "take_up_rate": 0.0517,
+              "mean_propensity": 0.0424,
+              "selected_rate": 0.0345
+            },
+            "60k_100k": {
+              "n": 278,
+              "take_up_rate": 0.054,
+              "mean_propensity": 0.0805,
+              "selected_rate": 0.1331
+            },
+            "under_15k": {
+              "n": 22,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0266,
+              "selected_rate": 0.0
+            }
+          },
+          "selected_rate_min": 0.0345,
+          "selected_rate_max": 0.1331,
+          "max_calibration_gap": 0.0288
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 80,
+              "take_up_rate": 0.025,
+              "mean_propensity": 0.0579,
+              "selected_rate": 0.0625
+            },
+            "East Midlands": {
+              "n": 63,
+              "take_up_rate": 0.0317,
+              "mean_propensity": 0.0663,
+              "selected_rate": 0.0952
+            },
+            "London": {
+              "n": 141,
+              "take_up_rate": 0.0709,
+              "mean_propensity": 0.0855,
+              "selected_rate": 0.1348
+            },
+            "North East": {
+              "n": 40,
+              "take_up_rate": 0.075,
+              "mean_propensity": 0.0549,
+              "selected_rate": 0.025
+            },
+            "North West": {
+              "n": 129,
+              "take_up_rate": 0.0388,
+              "mean_propensity": 0.0721,
+              "selected_rate": 0.0775
+            },
+            "South East": {
+              "n": 154,
+              "take_up_rate": 0.0584,
+              "mean_propensity": 0.0734,
+              "selected_rate": 0.1039
+            },
+            "South West": {
+              "n": 77,
+              "take_up_rate": 0.0649,
+              "mean_propensity": 0.0516,
+              "selected_rate": 0.039
+            },
+            "Wales": {
+              "n": 34,
+              "take_up_rate": 0.0588,
+              "mean_propensity": 0.0755,
+              "selected_rate": 0.1765
+            },
+            "West Midlands": {
+              "n": 97,
+              "take_up_rate": 0.0309,
+              "mean_propensity": 0.0622,
+              "selected_rate": 0.0619
+            },
+            "Yorkshire and The Humber": {
+              "n": 73,
+              "take_up_rate": 0.0548,
+              "mean_propensity": 0.0701,
+              "selected_rate": 0.0959
+            }
+          },
+          "selected_rate_min": 0.0775,
+          "selected_rate_max": 0.1348,
+          "max_calibration_gap": 0.0333
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 888,
+              "take_up_rate": 0.0507,
+              "mean_propensity": 0.0691,
+              "selected_rate": 0.089
+            }
+          },
+          "selected_rate_min": 0.089,
+          "selected_rate_max": 0.089,
+          "max_calibration_gap": 0.0184
+        }
+      }
+    },
+    "GP06": {
+      "test": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 806,
+              "take_up_rate": 0.0372,
+              "mean_propensity": 0.0479,
+              "selected_rate": 0.1452
+            },
+            "35-54": {
+              "n": 1314,
+              "take_up_rate": 0.0373,
+              "mean_propensity": 0.0327,
+              "selected_rate": 0.0753
+            },
+            "55+": {
+              "n": 1576,
+              "take_up_rate": 0.0171,
+              "mean_propensity": 0.0227,
+              "selected_rate": 0.0336
+            }
+          },
+          "selected_rate_min": 0.0336,
+          "selected_rate_max": 0.1452,
+          "max_calibration_gap": 0.0107
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 690,
+              "take_up_rate": 0.0304,
+              "mean_propensity": 0.0255,
+              "selected_rate": 0.0478
+            },
+            "15k_25k": {
+              "n": 403,
+              "take_up_rate": 0.0298,
+              "mean_propensity": 0.0371,
+              "selected_rate": 0.0918
+            },
+            "25k_40k": {
+              "n": 676,
+              "take_up_rate": 0.0311,
+              "mean_propensity": 0.0332,
+              "selected_rate": 0.074
+            },
+            "40k_60k": {
+              "n": 796,
+              "take_up_rate": 0.0302,
+              "mean_propensity": 0.0311,
+              "selected_rate": 0.0691
+            },
+            "60k_100k": {
+              "n": 897,
+              "take_up_rate": 0.0156,
+              "mean_propensity": 0.03,
+              "selected_rate": 0.068
+            },
+            "under_15k": {
+              "n": 234,
+              "take_up_rate": 0.0598,
+              "mean_propensity": 0.0456,
+              "selected_rate": 0.141
+            }
+          },
+          "selected_rate_min": 0.0478,
+          "selected_rate_max": 0.141,
+          "max_calibration_gap": 0.0144
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 429,
+              "take_up_rate": 0.0303,
+              "mean_propensity": 0.0321,
+              "selected_rate": 0.0723
+            },
+            "East Midlands": {
+              "n": 288,
+              "take_up_rate": 0.0139,
+              "mean_propensity": 0.0306,
+              "selected_rate": 0.0799
+            },
+            "London": {
+              "n": 499,
+              "take_up_rate": 0.0301,
+              "mean_propensity": 0.0375,
+              "selected_rate": 0.0922
+            },
+            "North East": {
+              "n": 187,
+              "take_up_rate": 0.0374,
+              "mean_propensity": 0.0371,
+              "selected_rate": 0.1176
+            },
+            "North West": {
+              "n": 490,
+              "take_up_rate": 0.0367,
+              "mean_propensity": 0.0332,
+              "selected_rate": 0.0735
+            },
+            "South East": {
+              "n": 589,
+              "take_up_rate": 0.0221,
+              "mean_propensity": 0.0278,
+              "selected_rate": 0.0475
+            },
+            "South West": {
+              "n": 340,
+              "take_up_rate": 0.0353,
+              "mean_propensity": 0.0282,
+              "selected_rate": 0.0618
+            },
+            "Wales": {
+              "n": 209,
+              "take_up_rate": 0.0287,
+              "mean_propensity": 0.0319,
+              "selected_rate": 0.0718
+            },
+            "West Midlands": {
+              "n": 339,
+              "take_up_rate": 0.0295,
+              "mean_propensity": 0.0313,
+              "selected_rate": 0.0737
+            },
+            "Yorkshire and The Humber": {
+              "n": 326,
+              "take_up_rate": 0.0245,
+              "mean_propensity": 0.0294,
+              "selected_rate": 0.0675
+            }
+          },
+          "selected_rate_min": 0.0475,
+          "selected_rate_max": 0.1176,
+          "max_calibration_gap": 0.0167
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 3374,
+              "take_up_rate": 0.0282,
+              "mean_propensity": 0.0319,
+              "selected_rate": 0.0738
+            },
+            "yes": {
+              "n": 322,
+              "take_up_rate": 0.0342,
+              "mean_propensity": 0.0304,
+              "selected_rate": 0.0621
+            }
+          },
+          "selected_rate_min": 0.0621,
+          "selected_rate_max": 0.0738,
+          "max_calibration_gap": 0.0037
+        }
+      },
+      "validation": {
+        "age_band": {
+          "groups": {
+            "18-34": {
+              "n": 776,
+              "take_up_rate": 0.0451,
+              "mean_propensity": 0.0458,
+              "selected_rate": 0.1456
+            },
+            "35-54": {
+              "n": 1289,
+              "take_up_rate": 0.0295,
+              "mean_propensity": 0.0294,
+              "selected_rate": 0.052
+            },
+            "55+": {
+              "n": 1513,
+              "take_up_rate": 0.0284,
+              "mean_propensity": 0.0213,
+              "selected_rate": 0.0278
+            }
+          },
+          "selected_rate_min": 0.0278,
+          "selected_rate_max": 0.1456,
+          "max_calibration_gap": 0.0071
+        },
+        "declared_income_band": {
+          "groups": {
+            "100k_plus": {
+              "n": 639,
+              "take_up_rate": 0.0235,
+              "mean_propensity": 0.0243,
+              "selected_rate": 0.0344
+            },
+            "15k_25k": {
+              "n": 373,
+              "take_up_rate": 0.0483,
+              "mean_propensity": 0.0398,
+              "selected_rate": 0.118
+            },
+            "25k_40k": {
+              "n": 658,
+              "take_up_rate": 0.0456,
+              "mean_propensity": 0.0305,
+              "selected_rate": 0.0608
+            },
+            "40k_60k": {
+              "n": 826,
+              "take_up_rate": 0.0291,
+              "mean_propensity": 0.0294,
+              "selected_rate": 0.0666
+            },
+            "60k_100k": {
+              "n": 879,
+              "take_up_rate": 0.0284,
+              "mean_propensity": 0.0281,
+              "selected_rate": 0.0557
+            },
+            "under_15k": {
+              "n": 203,
+              "take_up_rate": 0.0197,
+              "mean_propensity": 0.0311,
+              "selected_rate": 0.0591
+            }
+          },
+          "selected_rate_min": 0.0344,
+          "selected_rate_max": 0.118,
+          "max_calibration_gap": 0.0151
+        },
+        "region": {
+          "groups": {
+            "East": {
+              "n": 351,
+              "take_up_rate": 0.0313,
+              "mean_propensity": 0.0288,
+              "selected_rate": 0.057
+            },
+            "East Midlands": {
+              "n": 277,
+              "take_up_rate": 0.0253,
+              "mean_propensity": 0.0305,
+              "selected_rate": 0.065
+            },
+            "London": {
+              "n": 521,
+              "take_up_rate": 0.0307,
+              "mean_propensity": 0.0341,
+              "selected_rate": 0.0864
+            },
+            "North East": {
+              "n": 180,
+              "take_up_rate": 0.0167,
+              "mean_propensity": 0.0313,
+              "selected_rate": 0.0722
+            },
+            "North West": {
+              "n": 466,
+              "take_up_rate": 0.0408,
+              "mean_propensity": 0.0293,
+              "selected_rate": 0.073
+            },
+            "South East": {
+              "n": 559,
+              "take_up_rate": 0.0322,
+              "mean_propensity": 0.0288,
+              "selected_rate": 0.0644
+            },
+            "South West": {
+              "n": 340,
+              "take_up_rate": 0.0206,
+              "mean_propensity": 0.0269,
+              "selected_rate": 0.0324
+            },
+            "Wales": {
+              "n": 190,
+              "take_up_rate": 0.0421,
+              "mean_propensity": 0.0277,
+              "selected_rate": 0.0421
+            },
+            "West Midlands": {
+              "n": 380,
+              "take_up_rate": 0.05,
+              "mean_propensity": 0.0292,
+              "selected_rate": 0.0632
+            },
+            "Yorkshire and The Humber": {
+              "n": 314,
+              "take_up_rate": 0.0255,
+              "mean_propensity": 0.0272,
+              "selected_rate": 0.0414
+            }
+          },
+          "selected_rate_min": 0.0324,
+          "selected_rate_max": 0.0864,
+          "max_calibration_gap": 0.0208
+        },
+        "vulnerable": {
+          "groups": {
+            "no": {
+              "n": 3312,
+              "take_up_rate": 0.0311,
+              "mean_propensity": 0.0294,
+              "selected_rate": 0.0616
+            },
+            "yes": {
+              "n": 266,
+              "take_up_rate": 0.0489,
+              "mean_propensity": 0.0313,
+              "selected_rate": 0.0677
+            }
+          },
+          "selected_rate_min": 0.0616,
+          "selected_rate_max": 0.0677,
+          "max_calibration_gap": 0.0175
+        }
+      }
+    }
+  },
+  "categoriser": {
+    "validation_seen_merchants": {
+      "model": {
+        "transactions": 3376996,
+        "category_accuracy": 0.9897,
+        "category_macro_f1": 0.9252,
+        "sub_category_accuracy": 0.9896
+      },
+      "rules_baseline": {
+        "transactions": 3376996,
+        "category_accuracy": 0.9306,
+        "category_macro_f1": 0.7794,
+        "sub_category_accuracy": 0.7808
+      }
+    },
+    "validation_unseen_merchants": {
+      "model": {
+        "transactions": 769636,
+        "category_accuracy": 0.9015,
+        "category_macro_f1": 0.6875,
+        "sub_category_accuracy": 0.8801
+      },
+      "rules_baseline": {
+        "transactions": 769636,
+        "category_accuracy": 0.8896,
+        "category_macro_f1": 0.6865,
+        "sub_category_accuracy": 0.8239
+      }
+    },
+    "test_seen_merchants": {
+      "model": {
+        "transactions": 3492020,
+        "category_accuracy": 0.9899,
+        "category_macro_f1": 0.9248,
+        "sub_category_accuracy": 0.9899
+      },
+      "rules_baseline": {
+        "transactions": 3492020,
+        "category_accuracy": 0.9312,
+        "category_macro_f1": 0.7796,
+        "sub_category_accuracy": 0.7804
+      }
+    },
+    "test_unseen_merchants": {
+      "model": {
+        "transactions": 802377,
+        "category_accuracy": 0.9039,
+        "category_macro_f1": 0.6878,
+        "sub_category_accuracy": 0.8833
+      },
+      "rules_baseline": {
+        "transactions": 802377,
+        "category_accuracy": 0.8936,
+        "category_macro_f1": 0.6921,
+        "sub_category_accuracy": 0.8309
+      }
+    },
+    "out_of_distribution_us_descriptions": {
+      "rows": 68000,
+      "coarse_accuracy": 0.8208
+    }
+  },
+  "impact_truth_recovery": {
+    "fuel_litres": {
+      "customers": 16745,
+      "median_ratio": 1.057,
+      "median_abs_pct_error": 7.4,
+      "within_20pct": 0.827,
+      "correlation": 0.953
+    },
+    "gas_kwh": {
+      "customers": 19111,
+      "median_ratio": 1.05,
+      "median_abs_pct_error": 27.9,
+      "within_20pct": 0.388,
+      "correlation": 0.57
+    },
+    "electricity_kwh": {
+      "customers": 24880,
+      "median_ratio": 0.939,
+      "median_abs_pct_error": 29.9,
+      "within_20pct": 0.388,
+      "correlation": 0.775
+    },
+    "transport_co2e_kg": {
+      "customers": 16745,
+      "median_ratio": 1.057,
+      "median_abs_pct_error": 7.4,
+      "within_20pct": 0.827,
+      "correlation": 0.955
+    },
+    "home_energy_co2e_kg": {
+      "customers": 24880,
+      "median_ratio": 1.084,
+      "median_abs_pct_error": 22.1,
+      "within_20pct": 0.47,
+      "correlation": 0.743
+    },
+    "coverage": {
+      "customers": 30000,
+      "car_owners": 20113,
+      "fuel_visible": 16745,
+      "energy_bills_visible": 24880
+    }
+  },
+  "explanations": {
+    "template_guard_pass": 5437,
+    "explanations": 5437,
+    "llm_eval": {
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "provider": "local",
+      "items": 360,
+      "seconds": 131.6,
+      "guard_pass_rate": 0.897,
+      "failure_reasons": {
+        "numbers dropped": 36,
+        "banned claim": 5,
+        "currency symbol dropped": 3,
+        "numbers not in the facts": 2
+      },
+      "pass_rate_by_product": {
+        "GP01": 0.917,
+        "GP02": 0.883,
+        "GP03": 0.967,
+        "GP04": 0.933,
+        "GP05": 0.933,
+        "GP06": 0.75
+      },
+      "words_mean": {
+        "llm": 71.9,
+        "template": 75.6
+      },
+      "reading_ease_mean": {
+        "llm": 67.3,
+        "template": 73.1
+      }
+    },
+    "gemini_sample": {
+      "models_used": {
+        "gemini-3.5-flash": 6,
+        "gemini-3.1-flash-lite": 6
+      },
+      "requests": 12,
+      "passed_guards": 12,
+      "measured": "2026-10-11 07:10"
+    }
+  },
+  "targeting_backtest_test": {
+    "model": {
+      "contacted": 1343.0,
+      "takeups": 221.0,
+      "co2e_t_lifetime": 1682.2,
+      "bank_value_gbp": 117149.0,
+      "customer_npv_gbp": 295469.0
+    },
+    "random": {
+      "contacted": 1343.0,
+      "takeups": 80.0,
+      "co2e_t_lifetime": 579.8,
+      "bank_value_gbp": 46433.0,
+      "customer_npv_gbp": 86475.0
+    },
+    "rules": {
+      "contacted": 1343.0,
+      "takeups": 159.0,
+      "co2e_t_lifetime": 1174.4,
+      "bank_value_gbp": 78894.0,
+      "customer_npv_gbp": 163010.0
+    }
+  }
+}

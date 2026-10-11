@@ -243,6 +243,7 @@ class Categoriser:
         obj = cls.__new__(cls)
         obj.__dict__.update(joblib.load(path))
         obj.embedder = None
+        obj.__dict__.setdefault("finbert_lr", None)  # models saved before the FinBERT head existed
         return obj
 
 

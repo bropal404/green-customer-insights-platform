@@ -14,7 +14,10 @@ Stages (each writes <run-dir>/_checkpoints/<stage>.done and is skipped on a reru
   insights       FR6: bank insights (opportunity, funnel, regions, footprint, segments, monthly trends)
   value          business value: customer and bank financial and carbon return per suggestion, portfolio totals, and a
                  backtest of targeting (model vs rules vs random) on the held-out test customers
-  explain_llm    FR5: local-LLM rephrasing of a 360-item evaluation set (60 per product), guarded; passes replace templates
+  explain_llm    FR5: LLM rephrasing (llm.provider: Gemini API or a local Qwen) of a 360-item evaluation set (60 per
+                 product), guarded; passes replace templates
+  evaluate       evaluation report: every model's metrics on the validation set next to test and a baseline, and the
+                 test set predictions (gcip.models.evaluate)
   report         every metric in one file: <run-dir>/summary.json
 """
 
@@ -35,7 +38,7 @@ import pandas as pd  # noqa: E402
 
 from gcip.pipeline.context import make_context  # noqa: E402
 
-STAGES = ["propensity", "impact", "recommend", "explain", "impact_checks", "memory", "insights", "value", "explain_llm", "report"]
+STAGES = ["propensity", "impact", "recommend", "explain", "impact_checks", "memory", "insights", "value", "explain_llm", "evaluate", "report"]
 PRODUCTS = ["GP01", "GP02", "GP03", "GP04", "GP05", "GP06"]
 _DATES = __import__("gcip.config", fromlist=["load_config"]).load_config("pipeline")["as_of"]
 TRAIN, LIVE = str(_DATES["training_cutoff"]), str(_DATES["live"])
@@ -207,11 +210,24 @@ def stage_value(ctx, data: Path) -> dict:
     return {"portfolio": out["portfolio"], "backtest_total": out["backtest"]["total"]}
 
 
+def stage_evaluate(ctx, data: Path) -> dict:
+    from gcip.config import load_config
+    from gcip.models.evaluate import build
+    opportunity = {k: v["opportunity"] for k, v in load_config("products")["products"].items()}
+    # The categoriser's report is written by the data build (<data>_run); keep a copy with this run's metrics.
+    built, kept = data.parent / f"{data.name}_run" / "metrics" / "categoriser_report.json", ctx.path("metrics", "categoriser_report.json")
+    if built.exists():
+        kept.write_text(built.read_text())
+    report = build(ctx.run_dir, kept if kept.exists() else None, opportunity, data / f"customer_360_{TRAIN}.parquet")
+    return {"validation_mean": report["propensity"]["mean_over_products"]["validation"]["model"],
+            "test_mean": report["propensity"]["mean_over_products"]["test"]["model"]}
+
+
 def stage_report(ctx, data: Path) -> dict:
     metrics = ctx.run_dir / "metrics"
     summary = {"data": json.loads((data / "meta" / "data_validation.json").read_text()).get("summary")
                if (data / "meta" / "data_validation.json").exists() else None}
-    for name in ("propensity_report", "explanations", "impact_truth_recovery", "memory_replay", "business_value"):
+    for name in ("propensity_report", "evaluation_report", "explanations", "impact_truth_recovery", "memory_replay", "business_value"):
         path = metrics / f"{name}.json"
         if path.exists():
             summary[name] = json.loads(path.read_text())

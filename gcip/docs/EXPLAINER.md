@@ -244,11 +244,15 @@ take-ups on the 30,000-customer build, same dates; all 180,000 customer-product 
 
 ## 9. Architecture: the pipeline
 
+![Architecture](architecture/architecture.png)
+
+Source: `docs/architecture/architecture.tex` (TikZ; `architecture.pdf` and `.png` are built from it with pdflatex).
+
 ```
 Public data (57 files) --> reference tables (Census, NEED, MOT, prices, factors ...)
         |
         v
-Synthetic bank simulator --> 7 source-system extracts + truth vault (hidden)
+Synthetic bank simulator --> 7 source-system extracts + truth vault (hidden; evaluation only)
         |
         v
 FR1 ingestion + audit --> warehouse --> validation (36 checks) + data card
@@ -258,15 +262,22 @@ Customer 360 (2 snapshots) --> FR2 categoriser --> categorised transactions --> 
         |
         v
 Eligibility rules --> FR3 propensity, confidence, reason codes --> FR4 carbon + money impact
+        |                                                       customer memory (CRM + app responses)
+        v                                                               |
+FR5-FR7 suggestions (threshold, memory, routing, human review) <--------+
         |
         v
-FR5-FR7 recommendations (memory, routing, human review) --> explanations --> FR6 business insights --> reports
+explanations (template -> Gemini Flash rewrite -> guards) --> customer app --> responses --> memory
+        |
+        v
+FR6 insights + business value --> staff dashboard;  evaluation report (validation + test) --> docs/EVALUATION.md
 ```
 
 Every stage writes a checkpoint, so a restarted job resumes where it stopped. Everything runs on one laptop (14 GB RAM,
 12 CPU cores, a 6 GB GPU): the 30,000-customer data build takes about 25 minutes and the pipeline about 8 minutes
-(`scripts/run_pipeline.py`: propensity, impact, recommend, explain, impact checks, memory replay, insights, local-LLM
-evaluation, report). The dashboard (`scripts/serve_dashboard.py`) serves the bank view and the customer view. [built]
+(`scripts/run_pipeline.py`: propensity, impact, recommend, explain, impact checks, memory replay, insights, business
+value, LLM evaluation, evaluation report, report). The dashboard (`scripts/serve_dashboard.py`) serves the bank view and
+the customer view; `scripts/predict.py` scores with the saved models. [built]
 
 ---
 
@@ -397,13 +408,14 @@ Explanations (FR5) are generated from that record only. Every recommendation get
 a body (why, what it changes, what it costs) and a fixed compliance sentence (the data date, "prices and your situation can
 change", and the GP05 disclaimer). All 5,437 templates on the 30,000 build pass the guards.
 
-The LLM is optional and nothing is trained (the only trained models are the FR3 LightGBM propensity models). Two
+The LLM is optional and nothing about it is trained (the trained models are the FR2 categoriser and the FR3 LightGBM propensity models). Full details, with the prompts word for word: `docs/LLM.md`. Two
 roles: in the dashboards, "Rewrite" uses Gemini Flash through the Gemini API (`llm.provider: gemini`, model
 gemini-3.8-flash, falling back to gemini-3.5-flash and gemini-3.1-flash-lite when a model's daily quota is used up; only
 the explanation text and its facts are sent, no identifiers; replies are cached on disk). The 360-item evaluation below
 runs an open model (Qwen2.5-1.5B-Instruct) offline on the laptop GPU (`--llm-provider local`), because a free-tier
 Gemini key allows only about 20 requests a day per model: of 17 Gemini 3.8 Flash replies before the quota ran out, 16
-passed every guard (the one failure wrote 13,033 for 13,003, caught by the number check). Either way the LLM rewrites only the body; the compliance
+passed every guard (the one failure wrote 13,033 for 13,003, caught by the number check); with the current prompt and
+per-product examples, a later sample passed 12 of 12 (gemini-3.5-flash and gemini-3.1-flash-lite). Either way the LLM rewrites only the body; the compliance
 sentence is appended unchanged, the way banks treat disclosures. Guards reject any rewrite that adds a number not in the facts, drops a number from the draft, turns a yearly or
 12-month figure into a monthly one, promises savings, approval or returns ("will save", "guaranteed", "perfect for you"),
 or is too long; a rejected rewrite falls back to the template. Why each guard exists: the first run passed 0 of 360
@@ -412,7 +424,7 @@ reach, a run passed 97%, but reading them showed "£1,337 on fuel each month" (r
 payback slipping through, so the completeness and time-period guards were added. Result on the 360-item evaluation set
 (60 per product, local Qwen2.5-1.5B): 89.7% pass (EV Finance 92%; it was 22% while the prompt's only worked example
 was a solar one, and Green Investments rewrites spoke as the bank, "our investments", until the evidence sentences were
-written in the second person with a verb, "you told us sustainability matters to how you invest"); reading ease is lower for LLM text (60 vs 72 Flesch), so templates remain the default and the
+written in the second person with a verb, "you told us sustainability matters to how you invest"); reading ease is lower for LLM text (67 vs 73 Flesch), so templates remain the default and the
 LLM is offered in the dashboard as an on-demand rewrite.
 
 ---
