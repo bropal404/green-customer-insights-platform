@@ -91,9 +91,10 @@ def recommend(live_scores: pd.DataFrame, impact: pd.DataFrame, c360: pd.DataFram
     shown["status"] = np.where(review, "human_review", "recommended")
     d.loc[shown.index, "decision"] = np.where(review, "human review (vulnerability flag)", "recommended")
     shown["product_name"] = shown["product"].map({k: v["name"] for k, v in products.items()})
+    shown["opportunity"] = shown["product"].map({k: v.get("opportunity", k) for k, v in products.items()})
     shown["customer_action"] = shown["product"].map({k: v["customer_action"] for k, v in products.items()})
     shown["data_timestamp"] = as_of.strftime("%Y-%m-%d")
-    keep = ["customer_id", "rank", "product", "product_name", "status", "propensity", "propensity_threshold", "confidence",
+    keep = ["customer_id", "rank", "opportunity", "product", "product_name", "status", "propensity", "propensity_threshold", "confidence",
             "priority", "reason_codes",
             "evidence", "measure", "co2e_avoided_kg_per_year", "co2e_avoided_kg_horizon", "horizon_years", "data_quality",
             "financed_co2e_avoided_kg_per_year", "running_cost_change_gbp_per_year", "upfront_cost_gbp", "payback_years",

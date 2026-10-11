@@ -1,0 +1,26 @@
+{
+ "GP01": {
+  "base_rate": 0.04756,
+  "min_propensity": 0.09512
+ },
+ "GP02": {
+  "base_rate": 0.04437,
+  "min_propensity": 0.08875
+ },
+ "GP03": {
+  "base_rate": 0.01964,
+  "min_propensity": 0.03928
+ },
+ "GP04": {
+  "base_rate": 0.12257,
+  "min_propensity": 0.24514
+ },
+ "GP05": {
+  "base_rate": 0.06884,
+  "min_propensity": 0.13767
+ },
+ "GP06": {
+  "base_rate": 0.03319,
+  "min_propensity": 0.06638
+ }
+}

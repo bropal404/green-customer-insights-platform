@@ -1,0 +1,9 @@
+quarter,start,end,elec_unit_p_per_kwh,elec_standing_p_per_day,gas_unit_p_per_kwh,gas_standing_p_per_day,electricity_vat_pct,source_url
+2025Q1,2025-01-01,2025-03-31,24.86,60.97,6.34,31.65,5.0,https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-january-and-31-march-2025
+2025Q2,2025-04-01,2025-06-30,27.03,53.8,6.99,32.67,5.0,https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-april-and-30-june-2025
+2025Q3,2025-07-01,2025-09-30,25.73,51.37,6.33,29.82,5.0,https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2025
+2025Q4,2025-10-01,2025-12-31,26.35,53.68,6.29,34.03,5.0,https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-october-and-31-december-2025
+2026Q1,2026-01-01,2026-03-31,27.69,54.75,5.93,35.09,5.0,https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-january-and-31-march-2026
+2026Q2,2026-04-01,2026-06-30,24.67,57.21,5.74,29.09,5.0,https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-april-and-30-june-2026
+2026Q3,2026-07-01,2026-09-30,26.11,57.19,7.33,29.04,5.0,https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026
+2026Q4,2026-10-01,2026-12-31,26.32,54.83,7.97,29.68,0.0,https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-october-and-31-december-2026

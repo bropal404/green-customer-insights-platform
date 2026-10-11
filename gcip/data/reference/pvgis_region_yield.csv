@@ -1,0 +1,11 @@
+region,lat,lon,pv_kwh_per_kwp_year,optimal_slope_deg,optimal_azimuth_deg,radiation_db
+North East,54.973,-1.614,955.76,43,-2,PVGIS-SARAH3
+North West,53.48,-2.242,887.83,39,0,PVGIS-SARAH3
+Yorkshire and The Humber,53.8,-1.549,955.86,41,-3,PVGIS-SARAH3
+East Midlands,52.955,-1.149,982.95,41,-5,PVGIS-SARAH3
+West Midlands,52.486,-1.89,971.29,40,-5,PVGIS-SARAH3
+East,52.205,0.122,1045.87,41,-5,PVGIS-SARAH3
+London,51.507,-0.128,1022.87,40,-6,PVGIS-SARAH3
+South East,51.236,-0.57,1026.75,39,0,PVGIS-SARAH3
+South West,50.9,-3.2,1010.47,38,-3,PVGIS-SARAH3
+Wales,51.62,-3.4,974.54,38,1,PVGIS-SARAH3

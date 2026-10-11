@@ -63,3 +63,13 @@ body { background: #eef1f5; }
   .phone { border-radius: 0; border-left: none; border-right: none; margin: 0; }
   .demo-bar { justify-content: flex-start; }
 }
+
+.sugg.closed .tiles2, .sugg.closed .sugg-text, .sugg.closed details { opacity: .45; }
+.done { flex: 1 0 100%; font-size: 12.5px; line-height: 1.5; background: var(--green-soft); border: 1px solid var(--green-line);
+  border-radius: 8px; padding: 10px 12px; color: #14532d; }
+.undo { background: none; border: none; padding: 0; margin-left: 6px; font-weight: 600; text-decoration: underline; cursor: pointer; color: var(--text); }
+
+.why-line { padding: 8px 14px 0; font-size: 12.5px; color: #334155; line-height: 1.45; }
+.why-line b { color: var(--text); }
+.meta-line { padding: 10px 14px 0; font-size: 11.5px; color: var(--muted); }
+.dots { color: var(--green); letter-spacing: 1px; font-size: 11px; cursor: help; }

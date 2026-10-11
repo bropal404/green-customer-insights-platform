@@ -20,7 +20,7 @@ The bank's data arrives as extracts from seven systems, each with its own format
 
 - 7 source systems, 71 files; 71 passed size and SHA-256 checks; row counts all match.
 - Transactions: 20,691,226 card-feed rows (41,301 replayed duplicates removed) and 7,616,570 payments-hub rows (75,989 legacy account numbers normalised) -> 28,266,495 transactions in 30 parts.
-- Quarantined from campaign_responses: 270 (prospect: no customer reference).
+- Quarantined from campaign_responses: 451 (prospect: no customer reference).
 - Quarantined from digital_activity: 1,890 (uid matches no customer).
 - Audit: 8 of 8 tables identical to the bank's system of record.
 - Audit: 28,266,495 of 28,266,495 transactions recovered; 0 missing, 0 unexpected, 0 on the wrong account, 0 on the wrong customer, 0 with any field different.
@@ -34,8 +34,8 @@ The bank's data arrives as extracts from seven systems, each with its own format
 | product_system/statement_preference_events.csv | 849 | 849 | - |
 | lending_assets/property_valuations.xml | 3,296 | 3,296 | properties without an EPC register match: 1,264 |
 | lending_assets/vehicle_records.csv | 2,232 | 2,232 | - |
-| crm_marketing/contacts.csv | 30,561 | 30,291 | customers with more than one contact id (merged): 291; prospect contacts (no customer reference): 270 |
-| crm_marketing/campaign_responses.csv | 27,265 | 26,995 | responses from prospects quarantined: 270; responses resolved through a second contact id: 130; outcome spellings harmonised: 12,785 |
+| crm_marketing/contacts.csv | 30,742 | 30,291 | customers with more than one contact id (merged): 291; prospect contacts (no customer reference): 451 |
+| crm_marketing/campaign_responses.csv | 45,590 | 45,139 | responses from prospects quarantined: 451; responses resolved through a second contact id: 229; outcome spellings harmonised: 21,302 |
 | digital_analytics/monthly_engagement.jsonl | 631,890 | 630,000 | records with no matching customer (prospects) quarantined: 1,890 |
 | card_processor/card_registry.csv | 46,717 | 46,717 | - |
 
@@ -52,7 +52,7 @@ Each harmonised table is fingerprinted (every cell in a canonical form, order-in
 | preference_changes | 849 | 849 | yes | - |
 | assets | 5,528 | 5,528 | yes | - |
 | digital_activity | 630,000 | 630,000 | yes | - |
-| campaign_responses | 26,995 | 26,995 | yes | - |
+| campaign_responses | 45,139 | 45,139 | yes | - |
 
 ### Column lineage
 
@@ -221,7 +221,7 @@ Monthly digital engagement per customer.
 | app_logins, web_logins, branch_visits, estatement_views | Counts per month. |
 | paperless_all_accounts | Whether every account was on online statements that month. |
 
-### campaign_responses (26,995 rows)
+### campaign_responses (45,139 rows)
 
 Earlier marketing contacts and responses (seed history for customer memory).
 
@@ -629,7 +629,6 @@ Every parameter lives in configs/simulation.yaml with its source or the word 'as
 - Atmospheric emissions: greenhouse gas emissions intensity by industry (SIC sections), 1990-2024 (ONS, Open Government Licence v3.0): https://www.ons.gov.uk/file?uri=/economy/environmentalaccounts/datasets/ukenvironmentalaccountsatmosphericemissionsgreenhousegasemissionsintensitybyeconomicsectorunitedkingdom/current/04atmosphericemissionsghgintensity.xlsx
 - ISO 18245 merchant category codes with descriptions (greggles/mcc-codes (GitHub), The Unlicense): https://raw.githubusercontent.com/greggles/mcc-codes/main/mcc_codes.csv
 - 68,000 synthetic US bank transaction descriptions in 17 categories (DoDataThings (Hugging Face), MIT): https://huggingface.co/datasets/DoDataThings/us-bank-transaction-categories-v2/resolve/main/transactions-synthetic.csv
-- Bank Marketing: 45,211 anonymised clients, term-deposit take-up (UCI Machine Learning Repository, CC BY 4.0): https://archive.ics.uci.edu/static/public/222/bank+marketing.zip
 - Price cap announcement 2025Q1 (Ofgem, Public web page): https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-january-and-31-march-2025
 - Price cap announcement 2025Q2 (Ofgem, Public web page): https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-april-and-30-june-2025
 - Price cap announcement 2025Q3 (Ofgem, Public web page): https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2025

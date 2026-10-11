@@ -8,6 +8,8 @@
 products:
   GP01:
     name: "EV Finance"
+    opportunity: EV_FINANCE          # identifier in recommendation records (brief, example output)
+    customer_headline: "An EV could cut your transport emissions"
     product_codes: [MOTOR-EV-GREEN]  # code in the bank's product system
     status: required
     description: "Finance for a battery-electric car, new or used."
@@ -25,6 +27,8 @@ products:
     impact_method: AVOIDED_EV_WTW_v1
   GP02:
     name: "Green Home Loan"
+    opportunity: GREEN_HOME_LOAN          # identifier in recommendation records (brief, example output)
+    customer_headline: "Upgrading your heating could cut your home's emissions"
     product_codes: [MTG-GREEN-FA]  # code in the bank's product system
     status: required
     description: "Additional mortgage borrowing for energy-efficiency improvements."
@@ -43,6 +47,8 @@ products:
     impact_method: AVOIDED_HOME_WTW_v1
   GP03:
     name: "Solar Finance"
+    opportunity: SOLAR_FINANCE          # identifier in recommendation records (brief, example output)
+    customer_headline: "Solar panels could cut your electricity emissions"
     product_codes: [LOAN-SOLAR]  # code in the bank's product system
     status: required
     description: "Finance for rooftop solar panels, with or without a home battery."
@@ -62,6 +68,8 @@ products:
     impact_method: AVOIDED_SOLAR_WTW_v1
   GP04:
     name: "Paperless Banking"
+    opportunity: PAPERLESS_BANKING          # identifier in recommendation records (brief, example output)
+    customer_headline: "Going paperless could cut paper and post"
     product_codes: [SVC-PAPERLESS]  # code in the bank's product system
     status: required
     description: "Switching paper statements and letters to online."
@@ -77,6 +85,8 @@ products:
     impact_method: AVOIDED_PAPER_v1
   GP05:
     name: "Green Investments"
+    opportunity: GREEN_INVESTMENTS          # identifier in recommendation records (brief, example output)
+    customer_headline: "Your investments could have a smaller carbon footprint"
     product_codes: [INV-SUSTAIN-FOCUS]  # code in the bank's product system
     status: optional
     description: "Information about investment funds that carry an FCA sustainability label. Signposting only, never a personal recommendation."
@@ -94,6 +104,8 @@ products:
     disclaimer: "Capital at risk. This is information, not advice."
   GP06:
     name: "Green Loans"
+    opportunity: GREEN_LOANS          # identifier in recommendation records (brief, example output)
+    customer_headline: "A green loan could help you make a low-carbon switch"
     product_codes: [PL-GREEN]  # code in the bank's product system
     status: optional
     description: "Unsecured personal loans for green purchases not covered by GP01-GP03."

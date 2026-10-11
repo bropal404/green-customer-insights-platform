@@ -82,12 +82,13 @@ def stage_explain(ctx, data: Path) -> dict:
 
 
 def stage_explain_llm(ctx, data: Path) -> dict:
-    from gcip.explain.llm import LocalExplainer
+    from gcip.explain.llm import make_explainer
     from gcip.explain.run import build_items, explain, reading_ease
     cfg = ctx.cfg["llm"]
     summary = json.loads((ctx.run_dir / "metrics" / "explanations.json").read_text())
-    if not cfg.get("enabled", True):
-        summary["llm_eval"] = {"skipped": "llm.enabled is false; templates only"}
+    explainer = make_explainer(cfg)
+    if explainer is None:
+        summary["llm_eval"] = {"skipped": f"LLM provider {cfg.get('provider')!r} is not available here; templates only"}
         ctx.save_json(summary, "metrics", "explanations.json")
         return summary["llm_eval"]
     recs = ctx.read_parquet("recommendations", "recommendations.parquet")
@@ -95,13 +96,13 @@ def stage_explain_llm(ctx, data: Path) -> dict:
     sample = recs.loc[[i for _, g in recs.groupby("product") for i in g.sample(min(per, len(g)), random_state=7).index]]
     items = build_items(sample)
     t0 = time.time()
-    explainer = LocalExplainer(cfg["model"], cfg["max_new_tokens"], cfg["dtype"])
-    ev = explain(items, generated=explainer.generate(items, cfg["batch_size"]))
+    ev = explain(items, generated=explainer.generate(items, cfg.get("concurrency", 4) if cfg.get("provider") == "gemini" else cfg["batch_size"]))
     ctx.save_parquet(ev, "explanations", "eval_set.parquet")
     passed = ev["source"] == "llm"
     problems = ev.loc[~passed, "guard_problems"].str.split(";").explode().str.strip().str.replace(r":.*", "", regex=True)
     summary["llm_eval"] = {
-        "model": cfg["model"], "runs_on": "local GPU, offline", "items": len(ev), "seconds": round(time.time() - t0, 1),
+        "model": cfg["model"] if cfg.get("provider") == "gemini" else cfg.get("local_model"),
+        "provider": cfg.get("provider"), "items": len(ev), "seconds": round(time.time() - t0, 1),
         "guard_pass_rate": round(float(passed.mean()), 3),
         "failure_reasons": {k: int(v) for k, v in problems.value_counts().items()},
         "pass_rate_by_product": ev.groupby("product")["source"].apply(lambda x: round(float((x == "llm").mean()), 3)).to_dict(),
@@ -153,7 +154,7 @@ def stage_memory(ctx, data: Path) -> dict:
 
 
 def stage_insights(ctx, data: Path) -> dict:
-    from gcip.insights.bank import build
+    from gcip.insights.bank import build, customer_monthly
     from gcip.models.propensity import model_table
     recs = ctx.read_parquet("recommendations", "recommendations.parquet")
     decisions = ctx.read_parquet("recommendations", "decisions.parquet")
@@ -161,6 +162,7 @@ def stage_insights(ctx, data: Path) -> dict:
     insights, trends = build(model_table(data, LIVE), recs, decisions, impact, data / "categorised", ctx.cfg["insights"]["segments_k"])
     ctx.save_json(insights, "insights", "bank_insights.json")
     ctx.save_parquet(trends, "insights", "monthly_trends.parquet")
+    ctx.save_parquet(customer_monthly(data / "categorised", pd.Timestamp(LIVE)), "insights", "customer_monthly_spend.parquet")
     return insights["overview"]
 
 
@@ -184,9 +186,10 @@ def main() -> None:
     parser.add_argument("--run-dir", default="runs/pipeline")
     parser.add_argument("--stages", nargs="*", default=STAGES, choices=STAGES)
     parser.add_argument("--force", nargs="*", default=[], choices=STAGES, help="rerun these stages even if done")
+    parser.add_argument("--llm-provider", choices=["gemini", "local", "none"], help="override llm.provider for this run")
     args = parser.parse_args()
     data = Path(args.data).resolve()
-    ctx = make_context(Path(args.run_dir).resolve())
+    ctx = make_context(Path(args.run_dir).resolve(), {"llm": {"provider": args.llm_provider}} if args.llm_provider else None)
     link = ctx.run_dir / "data"
     if not link.exists():
         link.symlink_to(data)

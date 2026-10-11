@@ -1,4 +1,4 @@
-# Optional: the local LLM that rewrites explanations (runs offline; any CUDA GPU with 6 GB, or CPU slowly).
+# Optional: llm.provider "local" (an open model on the local GPU instead of the Gemini API).
 torch>=2.4
 transformers==5.17.0
 huggingface_hub==1.5.0

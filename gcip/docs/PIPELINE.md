@@ -5,14 +5,16 @@ rules, and the results on the 30,000-customer build. The design reasons behind e
 public data is listed in `DATA_SOURCES.md`; the synthetic bank is described field by field in `DATA_CARD.md` and
 `data_contract/`.
 
-All customers are synthetic. Nothing is sent to an external service: the LLM runs on the local GPU.
+All customers are synthetic. The only external call is the optional Gemini Flash rewrite of an explanation's wording
+(the explanation text and its facts only; no identifiers).
 
 ## 1. One command
 
-`./run.sh` sets up `.venv`, downloads the prebuilt data and pipeline outputs (release bundles, checked against the SHA-256
-in `release/manifest.json`), downloads the local LLM, and serves the bank dashboard (`http://localhost:8050`) and the
-customer app (`http://localhost:8050/app/`). `./run.sh --rebuild` builds everything locally instead. Measured on a laptop
-(12 cores, 14 GB RAM, 6 GB GPU): data build 25 minutes, pipeline 7 minutes.
+`./run.sh` (about 2 minutes) installs 4 packages and serves the shipped 30,000-customer results in `demo/` (16 MB,
+refreshed by `scripts/make_demo.py`): the bank dashboard at `http://localhost:8050` and the customer app at
+`http://localhost:8050/app/`. `./run.sh --quick` (about 3-5 minutes) runs the whole chain live on a 2,000-customer bank
+and serves it; `./run.sh --rebuild` does the full 30,000-customer build (data 25 minutes, pipeline 7 minutes on a laptop
+with 12 cores and 14 GB RAM).
 
 ```
 public data (57 files)  --scripts/build_reference.py-->  data/reference/ (in the repo)
@@ -56,7 +58,7 @@ Each stage writes `runs/pipeline/_checkpoints/<stage>.done` and is skipped on a 
 | impact_checks | Engine inputs against true usage in the truth vault; one-at-a-time sensitivity | `metrics/impact_truth_recovery.json`, `metrics/impact_sensitivity.csv` | <1 s |
 | memory | Replay of 300 customers over 3 monthly rounds with responses drawn from the true take-up probability | `memory/replay_events.parquet`, `metrics/memory_replay.json` | 1 s |
 | insights | FR6: opportunity by product and region, decision funnel, footprint, 6 segments, monthly trends | `insights/bank_insights.json`, `insights/monthly_trends.parquet` | 19 s |
-| explain_llm | Local Qwen2.5-1.5B rewrites the body of 360 explanations (60 per product); guarded; passes replace templates | `explanations/eval_set.parquet` | 2.2 min |
+| explain_llm | The configured LLM rewrites the body of 360 explanations (60 per product); guarded; passes replace templates. Reported with the local Qwen2.5-1.5B (`--llm-provider local`); a free-tier Gemini key covers only about 20 requests a day per model (sample: 16 of 17 Gemini 3.8 Flash replies passed) | `explanations/eval_set.parquet`, `metrics/explanations_gemini_sample.json` | 2.2 min |
 | report | Every metric in one file | `summary.json` | <1 s |
 
 ## 5. Decision rules for a suggestion (`configs/pipeline.yaml` `recommend`)
@@ -110,14 +112,17 @@ electricity kWh within 20% for 39% (direct debits smooth bills). Hand-worked gol
 baseline, 2,170 kg avoided, GBP 873 a year less) matched exactly by an automated test. 131,656 customer x product
 estimates; 48,344 marked "insufficient data" rather than guessed.
 
-**FR5-FR7.** 5,478 suggestions for 4,824 customers; 292 credit offers routed to human review. All 5,478 template
-explanations pass the guards; the local LLM passes 67.8% of 360 rewrites (EV Finance 22%), and every rejection falls back
-to the template. On every suggestion: none for a blocked product or below its threshold, no solar to renters, nothing
+**FR5-FR7.** 5,437 suggestions for 4,792 customers; 291 credit offers routed to human review; 657 customer x product
+decisions held back by customer memory. All 5,437 template
+explanations pass the guards; the local Qwen2.5-1.5B passes 67.8% of 360 rewrites (EV Finance 22%), and every rejection
+falls back to the template. In the dashboards, "Rewrite" uses Gemini Flash behind the same guards. On every suggestion: none for a blocked product or below its threshold, no solar to renters, nothing
 without consent, vulnerable credit always to human review, at most 3 per customer (0 violations).
 
-**Memory.** Replay of 300 customers over 3 rounds: 0 products re-shown inside a cool-down; 122 and then 197 held back.
+**Memory.** On 30 September, CRM responses from the June and August 2026 campaigns pause 106-154 customers per product
+(dismissed) and 218-346 (not interested), stop 57-153 (already has it) and raise 442-866 (interested). Replay of 300
+customers over 3 rounds: 0 products re-shown inside a pause.
 
-**FR6.** Expected 925 take-ups, 1,237 t CO2e avoided a year and GBP 418k a year of customer savings; median visible
+**FR6.** Expected 914 take-ups, 1,242 t CO2e avoided a year and GBP 419k a year of customer savings; median visible
 footprint 4.3 t CO2e a year (transport 43%).
 
 ## 7. Tests
@@ -126,9 +131,12 @@ footprint 4.3 t CO2e a year (transport 43%).
 tamper detection (changed checksum, a one-penny change, an edited narrative), identifier collisions, account-number
 normalisation, FR4 golden case, published factors and prices, the insufficient-data path, memory cool-downs and events.
 
-## 8. Release bundles (`release/manifest.json`)
+## 8. Shipped results and release bundles
 
-| Bundle | Size | Contents | Fetched by `./run.sh` |
+`demo/` (in the repo, 16 MB) holds what the dashboards read for the 30,000-customer run. The complete generated data is
+published as release bundles (`release/manifest.json`), downloaded with `scripts/fetch_release.py` (`--all` for all three):
+
+| Bundle | Size | Contents | Default download |
 |---|---|---|---|
 | `gcip_outputs.tar.gz` | 8 MB | `runs/pipeline/`: models, scores, impact, recommendations, explanations, insights, metrics | yes |
 | `gcip_bank_core.tar.gz` | 430 MB | Customer 360 and features (both dates), labels, categorised transactions, product holdings, truth-vault labels and state, reports | yes |

@@ -1,0 +1,736 @@
+year,sic_section,industry,intensity,units,table_title
+1990,A,"Agriculture, forestry and fishing",5.72,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,B,Mining and quarrying,0.4,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,C,Manufacturing,1.4,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,D,"Electricity, gas, steam and air conditioning supply",2.22,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,E,"Water supply; sewerage, waste management and remediation activities",2.18,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,F,Construction,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,H,Transport and storage,1.38,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,I,Accommodation and food services,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,J,Information and communication,0.12,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,M,"Professional, scientific and technical activities",0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,O,Public administration and defence; compulsory social security,0.11,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,P,Education,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,Q,Human health and social work activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,R,"Arts, entertainment and recreation",0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1990,TOTAL,Total (Excluding consumer expenditure),0.5,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,A,"Agriculture, forestry and fishing",5.45,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,B,Mining and quarrying,0.38,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,C,Manufacturing,1.48,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,D,"Electricity, gas, steam and air conditioning supply",2.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,E,"Water supply; sewerage, waste management and remediation activities",2.31,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,F,Construction,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,H,Transport and storage,1.43,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,J,Information and communication,0.13,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,M,"Professional, scientific and technical activities",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,O,Public administration and defence; compulsory social security,0.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,P,Education,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,Q,Human health and social work activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,R,"Arts, entertainment and recreation",0.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,S,Other service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1991,TOTAL,Total (Excluding consumer expenditure),0.5,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,A,"Agriculture, forestry and fishing",5.29,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,B,Mining and quarrying,0.38,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,C,Manufacturing,1.42,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,D,"Electricity, gas, steam and air conditioning supply",1.89,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,E,"Water supply; sewerage, waste management and remediation activities",2.32,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,F,Construction,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,H,Transport and storage,1.41,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,J,Information and communication,0.13,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,M,"Professional, scientific and technical activities",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,O,Public administration and defence; compulsory social security,0.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,P,Education,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,Q,Human health and social work activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,R,"Arts, entertainment and recreation",0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1992,TOTAL,Total (Excluding consumer expenditure),0.49,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,A,"Agriculture, forestry and fishing",5.75,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,B,Mining and quarrying,0.35,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,C,Manufacturing,1.37,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,D,"Electricity, gas, steam and air conditioning supply",1.65,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,E,"Water supply; sewerage, waste management and remediation activities",2.26,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,H,Transport and storage,1.41,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,J,Information and communication,0.13,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,M,"Professional, scientific and technical activities",0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,O,Public administration and defence; compulsory social security,0.11,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,P,Education,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,Q,Human health and social work activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,R,"Arts, entertainment and recreation",0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1993,TOTAL,Total (Excluding consumer expenditure),0.46,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,A,"Agriculture, forestry and fishing",6.0,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,B,Mining and quarrying,0.26,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,C,Manufacturing,1.32,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,D,"Electricity, gas, steam and air conditioning supply",1.66,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,E,"Water supply; sewerage, waste management and remediation activities",2.23,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,H,Transport and storage,1.33,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,J,Information and communication,0.13,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,M,"Professional, scientific and technical activities",0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,O,Public administration and defence; compulsory social security,0.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,P,Education,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,Q,Human health and social work activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,R,"Arts, entertainment and recreation",0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1994,TOTAL,Total (Excluding consumer expenditure),0.44,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,A,"Agriculture, forestry and fishing",6.19,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,B,Mining and quarrying,0.26,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,C,Manufacturing,1.28,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,D,"Electricity, gas, steam and air conditioning supply",1.6,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,E,"Water supply; sewerage, waste management and remediation activities",2.24,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,H,Transport and storage,1.3,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,J,Information and communication,0.13,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,M,"Professional, scientific and technical activities",0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,O,Public administration and defence; compulsory social security,0.11,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,P,Education,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,Q,Human health and social work activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,R,"Arts, entertainment and recreation",0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1995,TOTAL,Total (Excluding consumer expenditure),0.44,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,A,"Agriculture, forestry and fishing",6.58,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,B,Mining and quarrying,0.26,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,C,Manufacturing,1.28,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,D,"Electricity, gas, steam and air conditioning supply",1.49,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,E,"Water supply; sewerage, waste management and remediation activities",2.22,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,H,Transport and storage,1.32,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,I,Accommodation and food services,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,J,Information and communication,0.13,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,M,"Professional, scientific and technical activities",0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,O,Public administration and defence; compulsory social security,0.11,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,P,Education,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,Q,Human health and social work activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,R,"Arts, entertainment and recreation",0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1996,TOTAL,Total (Excluding consumer expenditure),0.43,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,A,"Agriculture, forestry and fishing",6.37,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,B,Mining and quarrying,0.25,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,C,Manufacturing,1.21,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,D,"Electricity, gas, steam and air conditioning supply",1.37,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,E,"Water supply; sewerage, waste management and remediation activities",2.15,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,H,Transport and storage,1.35,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,J,Information and communication,0.11,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,M,"Professional, scientific and technical activities",0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,O,Public administration and defence; compulsory social security,0.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,P,Education,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,Q,Human health and social work activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,R,"Arts, entertainment and recreation",0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1997,TOTAL,Total (Excluding consumer expenditure),0.41,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,A,"Agriculture, forestry and fishing",5.44,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,B,Mining and quarrying,0.25,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,C,Manufacturing,1.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,D,"Electricity, gas, steam and air conditioning supply",1.32,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,E,"Water supply; sewerage, waste management and remediation activities",2.23,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,H,Transport and storage,1.3,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,J,Information and communication,0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,M,"Professional, scientific and technical activities",0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,O,Public administration and defence; compulsory social security,0.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,P,Education,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,Q,Human health and social work activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,R,"Arts, entertainment and recreation",0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1998,TOTAL,Total (Excluding consumer expenditure),0.4,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,A,"Agriculture, forestry and fishing",4.78,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,B,Mining and quarrying,0.23,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,C,Manufacturing,0.94,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,D,"Electricity, gas, steam and air conditioning supply",1.14,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,E,"Water supply; sewerage, waste management and remediation activities",2.27,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,H,Transport and storage,1.22,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,I,Accommodation and food services,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,J,Information and communication,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,M,"Professional, scientific and technical activities",0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,O,Public administration and defence; compulsory social security,0.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,P,Education,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,Q,Human health and social work activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,R,"Arts, entertainment and recreation",0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,S,Other service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+1999,TOTAL,Total (Excluding consumer expenditure),0.37,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,A,"Agriculture, forestry and fishing",4.26,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,B,Mining and quarrying,0.24,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,C,Manufacturing,0.86,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,D,"Electricity, gas, steam and air conditioning supply",1.27,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,E,"Water supply; sewerage, waste management and remediation activities",2.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,H,Transport and storage,1.24,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,I,Accommodation and food services,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,J,Information and communication,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,M,"Professional, scientific and technical activities",0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,O,Public administration and defence; compulsory social security,0.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,P,Education,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,Q,Human health and social work activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,R,"Arts, entertainment and recreation",0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,S,Other service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2000,TOTAL,Total (Excluding consumer expenditure),0.35,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,A,"Agriculture, forestry and fishing",4.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,B,Mining and quarrying,0.26,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,C,Manufacturing,0.79,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,D,"Electricity, gas, steam and air conditioning supply",1.13,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,E,"Water supply; sewerage, waste management and remediation activities",2.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,H,Transport and storage,1.31,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,I,Accommodation and food services,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,J,Information and communication,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,M,"Professional, scientific and technical activities",0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,O,Public administration and defence; compulsory social security,0.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,P,Education,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,Q,Human health and social work activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,R,"Arts, entertainment and recreation",0.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,S,Other service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2001,TOTAL,Total (Excluding consumer expenditure),0.35,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,A,"Agriculture, forestry and fishing",3.24,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,B,Mining and quarrying,0.25,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,C,Manufacturing,0.72,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,D,"Electricity, gas, steam and air conditioning supply",1.15,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,E,"Water supply; sewerage, waste management and remediation activities",2.14,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,H,Transport and storage,1.32,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,J,Information and communication,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,M,"Professional, scientific and technical activities",0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,N,Administrative and support service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,O,Public administration and defence; compulsory social security,0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,R,"Arts, entertainment and recreation",0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2002,TOTAL,Total (Excluding consumer expenditure),0.33,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,A,"Agriculture, forestry and fishing",3.39,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,B,Mining and quarrying,0.26,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,C,Manufacturing,0.71,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,D,"Electricity, gas, steam and air conditioning supply",1.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,E,"Water supply; sewerage, waste management and remediation activities",1.96,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,H,Transport and storage,1.3,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,J,Information and communication,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,M,"Professional, scientific and technical activities",0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,N,Administrative and support service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,O,Public administration and defence; compulsory social security,0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,R,"Arts, entertainment and recreation",0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,S,Other service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2003,TOTAL,Total (Excluding consumer expenditure),0.33,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,A,"Agriculture, forestry and fishing",3.85,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,B,Mining and quarrying,0.26,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,C,Manufacturing,0.69,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,D,"Electricity, gas, steam and air conditioning supply",1.21,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,E,"Water supply; sewerage, waste management and remediation activities",1.96,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,H,Transport and storage,1.29,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,J,Information and communication,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,M,"Professional, scientific and technical activities",0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,N,Administrative and support service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,O,Public administration and defence; compulsory social security,0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,R,"Arts, entertainment and recreation",0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,S,Other service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2004,TOTAL,Total (Excluding consumer expenditure),0.32,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,A,"Agriculture, forestry and fishing",3.55,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,B,Mining and quarrying,0.27,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,C,Manufacturing,0.67,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,D,"Electricity, gas, steam and air conditioning supply",1.41,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,E,"Water supply; sewerage, waste management and remediation activities",1.86,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,H,Transport and storage,1.3,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,J,Information and communication,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,M,"Professional, scientific and technical activities",0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,N,Administrative and support service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,O,Public administration and defence; compulsory social security,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,R,"Arts, entertainment and recreation",0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,S,Other service activities,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2005,TOTAL,Total (Excluding consumer expenditure),0.31,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,A,"Agriculture, forestry and fishing",3.5,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,B,Mining and quarrying,0.29,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,C,Manufacturing,0.6,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,D,"Electricity, gas, steam and air conditioning supply",1.36,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,E,"Water supply; sewerage, waste management and remediation activities",1.95,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,H,Transport and storage,1.16,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,J,Information and communication,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,M,"Professional, scientific and technical activities",0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,N,Administrative and support service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,O,Public administration and defence; compulsory social security,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,R,"Arts, entertainment and recreation",0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2006,TOTAL,Total (Excluding consumer expenditure),0.3,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,A,"Agriculture, forestry and fishing",3.87,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,B,Mining and quarrying,0.31,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,C,Manufacturing,0.59,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,D,"Electricity, gas, steam and air conditioning supply",1.39,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,E,"Water supply; sewerage, waste management and remediation activities",1.85,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,F,Construction,0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,H,Transport and storage,1.19,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,I,Accommodation and food services,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,J,Information and communication,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,N,Administrative and support service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,O,Public administration and defence; compulsory social security,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,R,"Arts, entertainment and recreation",0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2007,TOTAL,Total (Excluding consumer expenditure),0.29,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,A,"Agriculture, forestry and fishing",3.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,B,Mining and quarrying,0.34,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,C,Manufacturing,0.54,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,D,"Electricity, gas, steam and air conditioning supply",1.5,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,E,"Water supply; sewerage, waste management and remediation activities",1.68,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,F,Construction,0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,H,Transport and storage,1.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,I,Accommodation and food services,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,J,Information and communication,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,M,"Professional, scientific and technical activities",0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,N,Administrative and support service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,O,Public administration and defence; compulsory social security,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,R,"Arts, entertainment and recreation",0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2008,TOTAL,Total (Excluding consumer expenditure),0.28,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,A,"Agriculture, forestry and fishing",3.28,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,B,Mining and quarrying,0.37,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,C,Manufacturing,0.48,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,D,"Electricity, gas, steam and air conditioning supply",1.5,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,E,"Water supply; sewerage, waste management and remediation activities",1.5,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,F,Construction,0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,H,Transport and storage,1.15,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,J,Information and communication,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,N,Administrative and support service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,O,Public administration and defence; compulsory social security,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,R,"Arts, entertainment and recreation",0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,S,Other service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2009,TOTAL,Total (Excluding consumer expenditure),0.26,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,A,"Agriculture, forestry and fishing",3.87,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,B,Mining and quarrying,0.41,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,C,Manufacturing,0.51,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,D,"Electricity, gas, steam and air conditioning supply",1.58,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,E,"Water supply; sewerage, waste management and remediation activities",1.44,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,F,Construction,0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,H,Transport and storage,1.11,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,J,Information and communication,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,N,Administrative and support service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,O,Public administration and defence; compulsory social security,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,R,"Arts, entertainment and recreation",0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2010,TOTAL,Total (Excluding consumer expenditure),0.26,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,A,"Agriculture, forestry and fishing",3.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,B,Mining and quarrying,0.51,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,C,Manufacturing,0.5,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,D,"Electricity, gas, steam and air conditioning supply",1.51,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,E,"Water supply; sewerage, waste management and remediation activities",1.49,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,H,Transport and storage,1.12,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,I,Accommodation and food services,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,J,Information and communication,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,N,Administrative and support service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,O,Public administration and defence; compulsory social security,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,P,Education,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,R,"Arts, entertainment and recreation",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2011,TOTAL,Total (Excluding consumer expenditure),0.25,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,A,"Agriculture, forestry and fishing",3.52,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,B,Mining and quarrying,0.55,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,C,Manufacturing,0.47,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,D,"Electricity, gas, steam and air conditioning supply",1.68,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,E,"Water supply; sewerage, waste management and remediation activities",1.47,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,H,Transport and storage,1.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,N,Administrative and support service activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,O,Public administration and defence; compulsory social security,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,R,"Arts, entertainment and recreation",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2012,TOTAL,Total (Excluding consumer expenditure),0.25,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,A,"Agriculture, forestry and fishing",3.7,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,B,Mining and quarrying,0.62,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,C,Manufacturing,0.47,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,D,"Electricity, gas, steam and air conditioning supply",1.53,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,E,"Water supply; sewerage, waste management and remediation activities",1.37,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,H,Transport and storage,1.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,I,Accommodation and food services,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,N,Administrative and support service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,O,Public administration and defence; compulsory social security,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,R,"Arts, entertainment and recreation",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2013,TOTAL,Total (Excluding consumer expenditure),0.24,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,A,"Agriculture, forestry and fishing",2.7,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,B,Mining and quarrying,0.61,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,C,Manufacturing,0.45,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,D,"Electricity, gas, steam and air conditioning supply",1.48,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,E,"Water supply; sewerage, waste management and remediation activities",1.24,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,H,Transport and storage,1.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,I,Accommodation and food services,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,N,Administrative and support service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,O,Public administration and defence; compulsory social security,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,P,Education,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,R,"Arts, entertainment and recreation",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2014,TOTAL,Total (Excluding consumer expenditure),0.22,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,A,"Agriculture, forestry and fishing",3.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,B,Mining and quarrying,0.55,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,C,Manufacturing,0.42,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,D,"Electricity, gas, steam and air conditioning supply",1.24,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,E,"Water supply; sewerage, waste management and remediation activities",1.19,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,H,Transport and storage,1.12,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,N,Administrative and support service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,O,Public administration and defence; compulsory social security,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,R,"Arts, entertainment and recreation",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2015,TOTAL,Total (Excluding consumer expenditure),0.21,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,A,"Agriculture, forestry and fishing",3.18,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,B,Mining and quarrying,0.47,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,C,Manufacturing,0.4,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,D,"Electricity, gas, steam and air conditioning supply",1.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,E,"Water supply; sewerage, waste management and remediation activities",1.13,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,H,Transport and storage,1.14,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,N,Administrative and support service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,O,Public administration and defence; compulsory social security,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,P,Education,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,R,"Arts, entertainment and recreation",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2016,TOTAL,Total (Excluding consumer expenditure),0.19,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,A,"Agriculture, forestry and fishing",3.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,B,Mining and quarrying,0.51,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,C,Manufacturing,0.39,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,D,"Electricity, gas, steam and air conditioning supply",0.99,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,E,"Water supply; sewerage, waste management and remediation activities",1.16,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,H,Transport and storage,1.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,I,Accommodation and food services,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,N,Administrative and support service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,O,Public administration and defence; compulsory social security,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,R,"Arts, entertainment and recreation",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2017,TOTAL,Total (Excluding consumer expenditure),0.18,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,A,"Agriculture, forestry and fishing",3.39,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,B,Mining and quarrying,0.47,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,C,Manufacturing,0.37,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,D,"Electricity, gas, steam and air conditioning supply",1.1,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,E,"Water supply; sewerage, waste management and remediation activities",1.15,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,H,Transport and storage,1.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,I,Accommodation and food services,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,N,Administrative and support service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,O,Public administration and defence; compulsory social security,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,R,"Arts, entertainment and recreation",0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2018,TOTAL,Total (Excluding consumer expenditure),0.18,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,A,"Agriculture, forestry and fishing",2.94,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,B,Mining and quarrying,0.46,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,C,Manufacturing,0.36,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,D,"Electricity, gas, steam and air conditioning supply",0.99,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,E,"Water supply; sewerage, waste management and remediation activities",1.13,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,H,Transport and storage,1.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,N,Administrative and support service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,O,Public administration and defence; compulsory social security,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,P,Education,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,R,"Arts, entertainment and recreation",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2019,TOTAL,Total (Excluding consumer expenditure),0.17,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,A,"Agriculture, forestry and fishing",2.9,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,B,Mining and quarrying,0.42,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,C,Manufacturing,0.34,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,D,"Electricity, gas, steam and air conditioning supply",0.81,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,E,"Water supply; sewerage, waste management and remediation activities",1.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,H,Transport and storage,1.12,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,I,Accommodation and food services,0.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,N,Administrative and support service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,O,Public administration and defence; compulsory social security,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,P,Education,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,Q,Human health and social work activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,R,"Arts, entertainment and recreation",0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2020,TOTAL,Total (Excluding consumer expenditure),0.17,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,A,"Agriculture, forestry and fishing",2.85,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,B,Mining and quarrying,0.45,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,C,Manufacturing,0.33,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,D,"Electricity, gas, steam and air conditioning supply",1.09,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,E,"Water supply; sewerage, waste management and remediation activities",0.95,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,H,Transport and storage,0.92,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,I,Accommodation and food services,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,N,Administrative and support service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,O,Public administration and defence; compulsory social security,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,P,Education,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,Q,Human health and social work activities,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,R,"Arts, entertainment and recreation",0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2021,TOTAL,Total (Excluding consumer expenditure),0.16,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,A,"Agriculture, forestry and fishing",2.55,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,B,Mining and quarrying,0.42,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,C,Manufacturing,0.32,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,D,"Electricity, gas, steam and air conditioning supply",1.5,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,E,"Water supply; sewerage, waste management and remediation activities",0.94,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,H,Transport and storage,0.88,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,N,Administrative and support service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,O,Public administration and defence; compulsory social security,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,P,Education,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,R,"Arts, entertainment and recreation",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2022,TOTAL,Total (Excluding consumer expenditure),0.15,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,A,"Agriculture, forestry and fishing",2.73,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,B,Mining and quarrying,0.51,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,C,Manufacturing,0.3,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,D,"Electricity, gas, steam and air conditioning supply",1.49,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,E,"Water supply; sewerage, waste management and remediation activities",0.93,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,F,Construction,0.07,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,H,Transport and storage,0.86,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,J,Information and communication,0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,N,Administrative and support service activities,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,O,Public administration and defence; compulsory social security,0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,P,Education,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,R,"Arts, entertainment and recreation",0.04,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2023,TOTAL,Total (Excluding consumer expenditure),0.14,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,A,"Agriculture, forestry and fishing",2.71,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,B,Mining and quarrying,0.54,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,C,Manufacturing,0.28,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,D,"Electricity, gas, steam and air conditioning supply",1.49,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,E,"Water supply; sewerage, waste management and remediation activities",0.91,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,F,Construction,0.08,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,G,Wholesale and retail trade; repair of motor vehicles and motorcycles,0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,H,Transport and storage,0.88,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,I,Accommodation and food services,0.06,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,J,Information and communication,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,K,Financial and insurance activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,L,Real estate activities,0.004,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,M,"Professional, scientific and technical activities",0.01,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,N,Administrative and support service activities,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,O,Public administration and defence; compulsory social security,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,P,Education,0.02,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,Q,Human health and social work activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,R,"Arts, entertainment and recreation",0.05,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,S,Other service activities,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,T,Activities of households as employers; undifferentiated goods and services-producing activities of households for own use,0.03,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector
+2024,TOTAL,Total (Excluding consumer expenditure),0.14,thousand tonnes CO2e per GBP million GVA,Table 1a: Greenhouse gas emissions intensity by industry sector

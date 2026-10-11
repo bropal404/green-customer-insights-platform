@@ -1,0 +1,829 @@
+{
+  "systems": {
+    "core_banking": "Customer master, account master and month-end balances.",
+    "card_processor": "Card authorisations that settled: purchases and cash withdrawals, plus the card registry.",
+    "payments_hub": "Direct debits, standing orders, Faster Payments, credits, internal transfers and charges.",
+    "crm_marketing": "Campaign contacts and responses, keyed by CRM contact id, with a contact-to-customer crosswalk.",
+    "digital_analytics": "Monthly app, web, branch and e-statement activity.",
+    "lending_assets": "Property valuations from the mortgage origination system (EPC register match) and vehicle records for motor finance.",
+    "product_system": "Product holdings (including the paperless service) and statement-preference change events."
+  },
+  "files": {
+    "core_banking/customers.csv": {
+      "rows_in": 30000,
+      "rows_out": 30000,
+      "issues": {
+        "region names re-cased to the ONS spelling": 2379
+      }
+    },
+    "core_banking/accounts.csv": {
+      "rows_in": 80269,
+      "rows_out": 80269,
+      "issues": {}
+    },
+    "core_banking/balances.csv": {
+      "rows_in": 1617888,
+      "rows_out": 1617888,
+      "issues": {}
+    },
+    "product_system/holdings.csv": {
+      "rows_in": 81118,
+      "rows_out": 81118,
+      "issues": {}
+    },
+    "product_system/statement_preference_events.csv": {
+      "rows_in": 849,
+      "rows_out": 849,
+      "issues": {}
+    },
+    "lending_assets/property_valuations.xml": {
+      "rows_in": 3296,
+      "rows_out": 3296,
+      "issues": {
+        "properties without an EPC register match": 1264
+      }
+    },
+    "lending_assets/vehicle_records.csv": {
+      "rows_in": 2232,
+      "rows_out": 2232,
+      "issues": {}
+    },
+    "crm_marketing/contacts.csv": {
+      "rows_in": 30742,
+      "rows_out": 30291,
+      "issues": {
+        "customers with more than one contact id (merged)": 291,
+        "prospect contacts (no customer reference)": 451
+      }
+    },
+    "crm_marketing/campaign_responses.csv": {
+      "rows_in": 45590,
+      "rows_out": 45139,
+      "issues": {
+        "responses from prospects quarantined": 451,
+        "responses resolved through a second contact id": 229,
+        "outcome spellings harmonised": 21302
+      }
+    },
+    "digital_analytics/monthly_engagement.jsonl": {
+      "rows_in": 631890,
+      "rows_out": 630000,
+      "issues": {
+        "records with no matching customer (prospects) quarantined": 1890
+      }
+    },
+    "card_processor/card_registry.csv": {
+      "rows_in": 46717,
+      "rows_out": 46717,
+      "issues": {}
+    }
+  },
+  "control": {
+    "extract_date": "2026-09-30",
+    "files_listed": 71,
+    "files_verified": 71,
+    "failures": [],
+    "unlisted_files_ignored": [],
+    "row_count_mismatches": {}
+  },
+  "transactions": {
+    "card_rows": 20691226,
+    "card_replays_removed": 41301,
+    "payment_rows": 7616570,
+    "legacy_account_numbers_normalised": 75989,
+    "payment_duplicates_removed": 0,
+    "ids_in_both_feeds_removed": 0,
+    "unknown_payment_codes": 0,
+    "quarantined": 0,
+    "rows_out": 28266495,
+    "shards": 30,
+    "customers": 30000
+  },
+  "quarantine": {
+    "campaign_responses": {
+      "prospect: no customer reference": 451
+    },
+    "digital_activity": {
+      "uid matches no customer": 1890
+    }
+  },
+  "audit": {
+    "tables": {
+      "customers": {
+        "rows_expected": 30000,
+        "rows_ingested": 30000,
+        "exact_match": true,
+        "columns_missing": [],
+        "columns_extra": [],
+        "columns_differing": []
+      },
+      "accounts": {
+        "rows_expected": 80269,
+        "rows_ingested": 80269,
+        "exact_match": true,
+        "columns_missing": [],
+        "columns_extra": [],
+        "columns_differing": []
+      },
+      "balances": {
+        "rows_expected": 1617888,
+        "rows_ingested": 1617888,
+        "exact_match": true,
+        "columns_missing": [],
+        "columns_extra": [],
+        "columns_differing": []
+      },
+      "product_holdings": {
+        "rows_expected": 81118,
+        "rows_ingested": 81118,
+        "exact_match": true,
+        "columns_missing": [],
+        "columns_extra": [],
+        "columns_differing": []
+      },
+      "preference_changes": {
+        "rows_expected": 849,
+        "rows_ingested": 849,
+        "exact_match": true,
+        "columns_missing": [],
+        "columns_extra": [],
+        "columns_differing": []
+      },
+      "assets": {
+        "rows_expected": 5528,
+        "rows_ingested": 5528,
+        "exact_match": true,
+        "columns_missing": [],
+        "columns_extra": [],
+        "columns_differing": []
+      },
+      "digital_activity": {
+        "rows_expected": 630000,
+        "rows_ingested": 630000,
+        "exact_match": true,
+        "columns_missing": [],
+        "columns_extra": [],
+        "columns_differing": []
+      },
+      "campaign_responses": {
+        "rows_expected": 45139,
+        "rows_ingested": 45139,
+        "exact_match": true,
+        "columns_missing": [],
+        "columns_extra": [],
+        "columns_differing": []
+      }
+    },
+    "transactions": {
+      "expected": 28266495,
+      "recovered": 28266495,
+      "missing": 0,
+      "unexpected": 0,
+      "wrong_account": 0,
+      "wrong_customer": 0,
+      "field_mismatch": 0
+    },
+    "pass": true
+  },
+  "shards": [
+    {
+      "shard": "part-0000",
+      "card_rows": 690350,
+      "payment_rows": 250218,
+      "card_replays_removed": 1378,
+      "legacy_account_numbers_normalised": 2515,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 939190,
+      "quarantined": 0,
+      "audit": {
+        "expected": 939190,
+        "recovered": 939190,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0001",
+      "card_rows": 695939,
+      "payment_rows": 253159,
+      "card_replays_removed": 1389,
+      "legacy_account_numbers_normalised": 2368,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 947709,
+      "quarantined": 0,
+      "audit": {
+        "expected": 947709,
+        "recovered": 947709,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0002",
+      "card_rows": 678686,
+      "payment_rows": 251677,
+      "card_replays_removed": 1355,
+      "legacy_account_numbers_normalised": 2475,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 929008,
+      "quarantined": 0,
+      "audit": {
+        "expected": 929008,
+        "recovered": 929008,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0003",
+      "card_rows": 697970,
+      "payment_rows": 253243,
+      "card_replays_removed": 1393,
+      "legacy_account_numbers_normalised": 2573,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 949820,
+      "quarantined": 0,
+      "audit": {
+        "expected": 949820,
+        "recovered": 949820,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0004",
+      "card_rows": 707715,
+      "payment_rows": 254378,
+      "card_replays_removed": 1413,
+      "legacy_account_numbers_normalised": 2561,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 960680,
+      "quarantined": 0,
+      "audit": {
+        "expected": 960680,
+        "recovered": 960680,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0005",
+      "card_rows": 684962,
+      "payment_rows": 255994,
+      "card_replays_removed": 1367,
+      "legacy_account_numbers_normalised": 2551,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 939589,
+      "quarantined": 0,
+      "audit": {
+        "expected": 939589,
+        "recovered": 939589,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0006",
+      "card_rows": 688309,
+      "payment_rows": 253013,
+      "card_replays_removed": 1374,
+      "legacy_account_numbers_normalised": 2536,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 939948,
+      "quarantined": 0,
+      "audit": {
+        "expected": 939948,
+        "recovered": 939948,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0007",
+      "card_rows": 695925,
+      "payment_rows": 254571,
+      "card_replays_removed": 1389,
+      "legacy_account_numbers_normalised": 2646,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 949107,
+      "quarantined": 0,
+      "audit": {
+        "expected": 949107,
+        "recovered": 949107,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0008",
+      "card_rows": 695083,
+      "payment_rows": 253500,
+      "card_replays_removed": 1387,
+      "legacy_account_numbers_normalised": 2532,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 947196,
+      "quarantined": 0,
+      "audit": {
+        "expected": 947196,
+        "recovered": 947196,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0009",
+      "card_rows": 695865,
+      "payment_rows": 254487,
+      "card_replays_removed": 1389,
+      "legacy_account_numbers_normalised": 2590,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 948963,
+      "quarantined": 0,
+      "audit": {
+        "expected": 948963,
+        "recovered": 948963,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0010",
+      "card_rows": 685049,
+      "payment_rows": 254524,
+      "card_replays_removed": 1367,
+      "legacy_account_numbers_normalised": 2560,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 938206,
+      "quarantined": 0,
+      "audit": {
+        "expected": 938206,
+        "recovered": 938206,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0011",
+      "card_rows": 673640,
+      "payment_rows": 252753,
+      "card_replays_removed": 1345,
+      "legacy_account_numbers_normalised": 2476,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 925048,
+      "quarantined": 0,
+      "audit": {
+        "expected": 925048,
+        "recovered": 925048,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0012",
+      "card_rows": 693426,
+      "payment_rows": 254121,
+      "card_replays_removed": 1384,
+      "legacy_account_numbers_normalised": 2539,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 946163,
+      "quarantined": 0,
+      "audit": {
+        "expected": 946163,
+        "recovered": 946163,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0013",
+      "card_rows": 692549,
+      "payment_rows": 252951,
+      "card_replays_removed": 1382,
+      "legacy_account_numbers_normalised": 2484,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 944118,
+      "quarantined": 0,
+      "audit": {
+        "expected": 944118,
+        "recovered": 944118,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0014",
+      "card_rows": 687549,
+      "payment_rows": 255529,
+      "card_replays_removed": 1372,
+      "legacy_account_numbers_normalised": 2627,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 941706,
+      "quarantined": 0,
+      "audit": {
+        "expected": 941706,
+        "recovered": 941706,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0015",
+      "card_rows": 682168,
+      "payment_rows": 252898,
+      "card_replays_removed": 1362,
+      "legacy_account_numbers_normalised": 2576,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 933704,
+      "quarantined": 0,
+      "audit": {
+        "expected": 933704,
+        "recovered": 933704,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0016",
+      "card_rows": 690218,
+      "payment_rows": 253354,
+      "card_replays_removed": 1378,
+      "legacy_account_numbers_normalised": 2477,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 942194,
+      "quarantined": 0,
+      "audit": {
+        "expected": 942194,
+        "recovered": 942194,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0017",
+      "card_rows": 699823,
+      "payment_rows": 255703,
+      "card_replays_removed": 1397,
+      "legacy_account_numbers_normalised": 2570,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 954129,
+      "quarantined": 0,
+      "audit": {
+        "expected": 954129,
+        "recovered": 954129,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0018",
+      "card_rows": 700886,
+      "payment_rows": 254648,
+      "card_replays_removed": 1399,
+      "legacy_account_numbers_normalised": 2637,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 954135,
+      "quarantined": 0,
+      "audit": {
+        "expected": 954135,
+        "recovered": 954135,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0019",
+      "card_rows": 674096,
+      "payment_rows": 253559,
+      "card_replays_removed": 1346,
+      "legacy_account_numbers_normalised": 2526,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 926309,
+      "quarantined": 0,
+      "audit": {
+        "expected": 926309,
+        "recovered": 926309,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0020",
+      "card_rows": 704518,
+      "payment_rows": 254439,
+      "card_replays_removed": 1406,
+      "legacy_account_numbers_normalised": 2529,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 957551,
+      "quarantined": 0,
+      "audit": {
+        "expected": 957551,
+        "recovered": 957551,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0021",
+      "card_rows": 690681,
+      "payment_rows": 252813,
+      "card_replays_removed": 1379,
+      "legacy_account_numbers_normalised": 2543,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 942115,
+      "quarantined": 0,
+      "audit": {
+        "expected": 942115,
+        "recovered": 942115,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0022",
+      "card_rows": 679642,
+      "payment_rows": 255073,
+      "card_replays_removed": 1357,
+      "legacy_account_numbers_normalised": 2530,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 933358,
+      "quarantined": 0,
+      "audit": {
+        "expected": 933358,
+        "recovered": 933358,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0023",
+      "card_rows": 695866,
+      "payment_rows": 254835,
+      "card_replays_removed": 1389,
+      "legacy_account_numbers_normalised": 2516,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 949312,
+      "quarantined": 0,
+      "audit": {
+        "expected": 949312,
+        "recovered": 949312,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0024",
+      "card_rows": 677013,
+      "payment_rows": 255006,
+      "card_replays_removed": 1351,
+      "legacy_account_numbers_normalised": 2540,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 930668,
+      "quarantined": 0,
+      "audit": {
+        "expected": 930668,
+        "recovered": 930668,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0025",
+      "card_rows": 692225,
+      "payment_rows": 253872,
+      "card_replays_removed": 1382,
+      "legacy_account_numbers_normalised": 2524,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 944715,
+      "quarantined": 0,
+      "audit": {
+        "expected": 944715,
+        "recovered": 944715,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0026",
+      "card_rows": 670119,
+      "payment_rows": 252887,
+      "card_replays_removed": 1338,
+      "legacy_account_numbers_normalised": 2550,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 921668,
+      "quarantined": 0,
+      "audit": {
+        "expected": 921668,
+        "recovered": 921668,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0027",
+      "card_rows": 690118,
+      "payment_rows": 255310,
+      "card_replays_removed": 1377,
+      "legacy_account_numbers_normalised": 2545,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 944051,
+      "quarantined": 0,
+      "audit": {
+        "expected": 944051,
+        "recovered": 944051,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0028",
+      "card_rows": 702505,
+      "payment_rows": 254905,
+      "card_replays_removed": 1402,
+      "legacy_account_numbers_normalised": 2506,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 956008,
+      "quarantined": 0,
+      "audit": {
+        "expected": 956008,
+        "recovered": 956008,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    },
+    {
+      "shard": "part-0029",
+      "card_rows": 678331,
+      "payment_rows": 253150,
+      "card_replays_removed": 1354,
+      "legacy_account_numbers_normalised": 2387,
+      "payment_duplicates_removed": 0,
+      "unknown_payment_codes": 0,
+      "ids_in_both_feeds_removed": 0,
+      "rows_out": 930127,
+      "quarantined": 0,
+      "audit": {
+        "expected": 930127,
+        "recovered": 930127,
+        "missing": 0,
+        "unexpected": 0,
+        "wrong_account": 0,
+        "wrong_customer": 0,
+        "field_mismatch": 0
+      }
+    }
+  ],
+  "elapsed_seconds": 97.3,
+  "summary": [
+    "7 source systems, 71 files; 71 passed size and SHA-256 checks; row counts all match.",
+    "Transactions: 20,691,226 card-feed rows (41,301 replayed duplicates removed) and 7,616,570 payments-hub rows (75,989 legacy account numbers normalised) -> 28,266,495 transactions in 30 parts.",
+    "Quarantined from campaign_responses: 451 (prospect: no customer reference).",
+    "Quarantined from digital_activity: 1,890 (uid matches no customer).",
+    "Audit: 8 of 8 tables identical to the bank's system of record.",
+    "Audit: 28,266,495 of 28,266,495 transactions recovered; 0 missing, 0 unexpected, 0 on the wrong account, 0 on the wrong customer, 0 with any field different."
+  ]
+}

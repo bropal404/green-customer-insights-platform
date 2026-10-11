@@ -1,0 +1,6 @@
+section,column,type,allowed_values,unit,null_share_in_sample,example,description,source,used_by
+keys,customer_id,string,,,0.0,C100000,Customer key (primary key together with as_of).,core banking,every stage
+,product,category,GP01|GP02|GP03|GP04|GP05|GP06,,0.0,GP01,Green product code.,labels,
+,took_up,bool,,,0.0,False,Opened the green product between 1 April and 30 September 2026.,product system (green holding started in the window),
+,takeup_date,date (nullable),,,0.978,2026-08-06,Date the green product was opened.,product system,
+,split,category,train|validation|test,,0.0,validation,"Customer-level split from a salted hash of customer_id (70/15/15): fit on train, tune on validation, report on test.",pipeline,

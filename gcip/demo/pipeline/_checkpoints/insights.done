@@ -1,0 +1,14 @@
+{
+  "finished_at": "2026-10-11 05:29:27",
+  "customers": 30000,
+  "customers_with_a_recommendation": 4792,
+  "recommendations": 5437,
+  "shown": 5146,
+  "human_review": 291,
+  "expected_takeups": 914.0,
+  "expected_co2e_tonnes_per_year": 1241.6,
+  "co2e_tonnes_per_year_if_all_shown_taken_up": 9470.0,
+  "customer_savings_gbp_per_year_expected": 418843.0,
+  "footprint_kg_median": 4250.0,
+  "footprint_tonnes_total": 144781.0
+}

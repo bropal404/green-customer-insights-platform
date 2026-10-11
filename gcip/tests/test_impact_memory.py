@@ -86,3 +86,15 @@ def test_memory_events_override_older_responses():
     assert updated.loc[0, "last_response_GP01"] == "dismissed"
     shown, _ = recommend(scores, impact, updated, load_config("pipeline")["recommend"])
     assert "GP01" not in set(shown["product"])
+
+
+def test_reason_needs_supporting_data():
+    """A reason whose sentence the data contradicts (high gas use with no gas bills) is skipped for the next one."""
+    from gcip.models.reasons import top_reasons
+
+    rows = pd.DataFrame([{"gas_kwh_12m": 0.0, "area_gas_dom_mean_kwh": 9580, "bike_shop_spend_12m": 1680.0,
+                          "appliance_spend_12m": 0.0, "existing_borrowing": 1}])
+    reasons = pd.DataFrame([[0.9, 0.5, 0.3]], columns=["HIGH_GAS_USE", "GREEN_PURCHASE_INTENT", "EXISTING_BORROWING"])
+    codes, evidence = top_reasons(reasons, rows)
+    assert codes == [["GREEN_PURCHASE_INTENT", "EXISTING_BORROWING"]]
+    assert evidence[0][0] == "£1,680 at bike or appliance shops in 12 months"

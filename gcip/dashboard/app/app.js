@@ -4,6 +4,7 @@ const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const num = (x, d = 0) => (x === null || x === undefined || Number.isNaN(x)) ? "–" : Number(x).toLocaleString("en-GB", { maximumFractionDigits: d, minimumFractionDigits: d });
 const gbp = (x) => "£" + num(Math.abs(x));
+const fmtDate = (iso) => iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "";
 const kg = (x) => (Math.abs(x) >= 1000 ? num(x / 1000, 1) + " t" : num(x, x < 10 ? 1 : 0) + " kg");
 const NAMES = { fuel: "Fuel", electricity: "Electricity", gas: "Gas", public_transport: "Public transport", home_improvement: "Home improvement", automotive: "Car costs", utilities: "Utilities", other: "Everything else" };
 const COLOURS = { fuel: "#b91c1c", electricity: "#1d4ed8", gas: "#b45309", public_transport: "#15803d", home_improvement: "#7c3aed", automotive: "#334155", utilities: "#0f766e", other: "#cbd5e1" };
@@ -27,18 +28,26 @@ function money(s) {
   return { v: `${gbp(m)} ${m < 0 ? "less" : "more"} a year`, s: extra || "at today's prices" };
 }
 
+function dots(c) {
+  if (!c) return "";
+  return `<span class="dots" title="${esc(c.based_on || "")}">${"●".repeat(c.dots)}${"○".repeat(c.of - c.dots)}</span> ${esc(c.level)}`;
+}
+
 function suggestion(s, i) {
-  const m = money(s);
-  return `<div class="sugg">
-    <div class="sugg-head"><div class="k">Suggestion ${i + 1}</div><h3>${esc(s.name)}</h3></div>
+  const m = money(s), c = s.confidence_of_estimate;
+  const asOf = s.data_as_of ? fmtDate(s.data_as_of) : "";
+  return `<div class="sugg" data-card="${s.product}">
+    <div class="sugg-head"><div class="k">Suggestion ${i + 1} · ${esc(s.name)}</div><h3>${esc(s.headline || s.name)}</h3></div>
+    <div class="why-line"><b>Why you're seeing this:</b> ${esc((s.why_labels || []).join(", ") || "how you bank with us overall")}</div>
     <div class="tiles2">
-      <div class="t2 carbon"><div class="k">For the planet</div><div class="v">−${kg(s.co2e_kg_per_year)} CO2e a year</div><div class="s">${s.horizon_years > 1 ? `about ${kg(s.co2e_kg_horizon)} over ${num(s.horizon_years)} years` : esc(s.measure || "")}</div></div>
+      <div class="t2 carbon"><div class="k">Potential annual impact</div><div class="v">−${kg(s.co2e_kg_per_year)} CO2e</div><div class="s">estimate${s.method_short ? ` · ${esc(s.method_short)}` : ""}${s.horizon_years > 1 ? ` · about ${kg(s.co2e_kg_horizon)} over ${num(s.horizon_years)} years` : ""}</div></div>
       <div class="t2 money"><div class="k">For your pocket</div><div class="v">${esc(m.v)}</div><div class="s">${esc(m.s)}</div></div>
     </div>
+    <div class="meta-line">Data as of ${esc(asOf)}${c ? ` · Estimate confidence ${dots(c)}` : ""}</div>
     <div class="sugg-text">${esc(s.explanation)}</div>
-    <details><summary>Why am I seeing this?</summary>
+    <details><summary>More detail</summary>
       <ul>${(s.why || []).map((w) => `<li>${esc(w.charAt(0).toUpperCase() + w.slice(1))}</li>`).join("") || "<li>How you bank with us overall</li>"}</ul>
-      <div class="meta">${s.measure ? `Estimate for: ${esc(s.measure)}. ` : ""}Figures are estimates, not offers.${s.disclaimer ? " " + esc(s.disclaimer) : ""}</div>
+      <div class="meta">${s.method_label ? `How the impact was estimated: ${esc(s.method_label)}. ` : ""}${c && c.based_on ? `Estimate confidence is ${esc(c.level.toLowerCase())} because it uses: ${esc(c.based_on)}. ` : ""}Figures are estimates, not offers.${s.disclaimer ? " " + esc(s.disclaimer) : ""}</div>
     </details>
     <div class="sugg-actions">
       <button class="btn primary" data-fb="${s.product}|clicked">${esc(s.action || "Find out more")}</button>
@@ -47,6 +56,40 @@ function suggestion(s, i) {
       <button class="btn" data-fb="${s.product}|already_have">I already have this</button>
     </div>
   </div>`;
+}
+
+let current = null;
+const DONE = {
+  clicked: () => "Thanks, we've noted your interest and will send you the details in the app. This is not an application and nothing has been agreed.",
+  dismissed: (m) => `OK, we'll remind you after ${fmtDate(m.until)}.`,
+  not_interested: (m) => `Got it. We won't suggest this again before ${fmtDate(m.until)}.`,
+  already_have: () => "Thanks for telling us. We won't suggest this again.",
+};
+
+function markDone(card, id, response, m) {
+  const product = card.dataset.card;
+  card.classList.toggle("closed", response !== "clicked");
+  card.querySelector(".sugg-actions").innerHTML = `<div class="done">${esc(DONE[response](m || {}))} <button class="undo">Undo</button></div>`;
+  card.querySelector(".undo").onclick = async () => {
+    await api(`/api/customer/${id}/undo`, { product });
+    const i = current.suggestions.findIndex((x) => x.product === product);
+    const fresh = document.createElement("div");
+    fresh.innerHTML = suggestion(current.suggestions[i], i);
+    card.replaceWith(fresh.firstElementChild);
+    bind(document.querySelector(`[data-card="${product}"]`), id);
+  };
+}
+
+function bind(card, id) {
+  const product = card.dataset.card;
+  card.querySelectorAll("[data-fb]").forEach((b) => b.onclick = async () => {
+    const response = b.dataset.fb.split("|")[1];
+    card.querySelectorAll("button").forEach((x) => { x.disabled = true; });
+    try {
+      const doc = await api(`/api/customer/${id}/feedback`, { product, response });
+      markDone(card, id, response, (doc.memory || []).find((x) => x.product === product));
+    } catch (e) { toast(e.message); card.querySelectorAll("button").forEach((x) => { x.disabled = false; }); }
+  });
 }
 
 async function load(id) {
@@ -70,11 +113,11 @@ async function load(id) {
       <div class="chart-sm"><canvas id="monthly"></canvas></div>
     </div>
     <div class="foot">Estimates use your account data and published UK emission factors and prices. Spending from other banks isn't included.</div>`;
-  document.querySelectorAll("[data-fb]").forEach((b) => b.onclick = async () => {
-    const [product, response] = b.dataset.fb.split("|");
-    await api(`/api/customer/${id}/feedback`, { product, response });
-    toast({ clicked: "Thanks, we'll be in touch with the details.", dismissed: "OK, we'll remind you later.", not_interested: "Got it, we won't suggest this again for a while.", already_have: "Thanks for letting us know." }[response]);
-    load(id);
+  current = d;
+  document.querySelectorAll(".sugg").forEach((card) => bind(card, id));
+  (d.memory || []).filter((m) => m.response === "clicked" && m.source === "app").forEach((m) => {
+    const card = document.querySelector(`[data-card="${m.product}"]`);
+    if (card) markDone(card, id, "clicked", m);
   });
   if (chart) chart.destroy();
   if (window.Chart) {

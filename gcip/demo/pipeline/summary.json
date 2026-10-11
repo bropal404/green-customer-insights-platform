@@ -1,0 +1,2206 @@
+{
+  "data": null,
+  "propensity_report": {
+    "products": {
+      "GP01": {
+        "eligible_customers": 21636,
+        "positives": {
+          "train": 723,
+          "validation": 162,
+          "test": 164
+        },
+        "features_used": 37,
+        "lightgbm_rounds": 58,
+        "validation_pr_auc": 0.1316,
+        "test": {
+          "rules_baseline": {
+            "n": 3258,
+            "positives": 164,
+            "roc_auc": 0.6282,
+            "pr_auc": 0.0733,
+            "brier": 0.06312,
+            "ece": 0.08765,
+            "lift_top10": 2.255
+          },
+          "logistic_regression": {
+            "n": 3258,
+            "positives": 164,
+            "roc_auc": 0.7262,
+            "pr_auc": 0.13,
+            "brier": 0.04611,
+            "ece": 0.00563,
+            "lift_top10": 3.169
+          },
+          "lightgbm_raw": {
+            "n": 3258,
+            "positives": 164,
+            "roc_auc": 0.7275,
+            "pr_auc": 0.1487,
+            "brier": 0.04588,
+            "ece": 0.01219,
+            "lift_top10": 3.047
+          },
+          "lightgbm_calibrated": {
+            "n": 3258,
+            "positives": 164,
+            "roc_auc": 0.7276,
+            "pr_auc": 0.1288,
+            "brier": 0.04595,
+            "ece": 0.01038,
+            "lift_top10": 3.047
+          },
+          "oracle_p_true": {
+            "n": 3258,
+            "positives": 164,
+            "roc_auc": 0.8552,
+            "pr_auc": 0.2664,
+            "brier": 0.04211,
+            "ece": 0.00664,
+            "lift_top10": 4.57
+          },
+          "share_of_oracle_gap_closed": 0.438
+        },
+        "mean_confidence_test": 0.67,
+        "threshold": {
+          "base_rate": 0.04756,
+          "min_propensity": 0.09512,
+          "min_lift": 2.0,
+          "at_threshold": {
+            "validation": {
+              "selected_share": 0.141,
+              "takeup_rate_selected": 0.118,
+              "lift": 2.31,
+              "recall": 0.327
+            },
+            "test": {
+              "selected_share": 0.155,
+              "takeup_rate_selected": 0.1287,
+              "lift": 2.56,
+              "recall": 0.396
+            }
+          }
+        },
+        "fairness_test": {
+          "age_band": {
+            "18-34": {
+              "n": 702,
+              "take_up_rate": 0.0513,
+              "mean_propensity": 0.0506,
+              "selected_rate": 0.1211,
+              "roc_auc": 0.711
+            },
+            "35-54": {
+              "n": 1142,
+              "take_up_rate": 0.0569,
+              "mean_propensity": 0.0499,
+              "selected_rate": 0.1296,
+              "roc_auc": 0.7101
+            },
+            "55+": {
+              "n": 1414,
+              "take_up_rate": 0.0446,
+              "mean_propensity": 0.0428,
+              "selected_rate": 0.0997,
+              "roc_auc": 0.7464
+            }
+          },
+          "income_band": {
+            "100k_plus": {
+              "n": 622,
+              "take_up_rate": 0.1061,
+              "mean_propensity": 0.086,
+              "selected_rate": 0.3344,
+              "roc_auc": 0.6134
+            },
+            "15k_25k": {
+              "n": 346,
+              "take_up_rate": 0.0202,
+              "mean_propensity": 0.0157,
+              "selected_rate": 0.0,
+              "roc_auc": 0.72
+            },
+            "25k_40k": {
+              "n": 573,
+              "take_up_rate": 0.0244,
+              "mean_propensity": 0.0215,
+              "selected_rate": 0.0017,
+              "roc_auc": 0.7103
+            },
+            "40k_60k": {
+              "n": 671,
+              "take_up_rate": 0.0373,
+              "mean_propensity": 0.0346,
+              "selected_rate": 0.0253,
+              "roc_auc": 0.7115
+            },
+            "60k_100k": {
+              "n": 817,
+              "take_up_rate": 0.0624,
+              "mean_propensity": 0.0669,
+              "selected_rate": 0.1812,
+              "roc_auc": 0.6211
+            },
+            "under_15k": {
+              "n": 229,
+              "take_up_rate": 0.0044,
+              "mean_propensity": 0.0166,
+              "selected_rate": 0.0,
+              "roc_auc": 0.7544
+            }
+          },
+          "region": {
+            "East": {
+              "n": 405,
+              "take_up_rate": 0.042,
+              "mean_propensity": 0.0502,
+              "selected_rate": 0.1333,
+              "roc_auc": 0.7954
+            },
+            "East Midlands": {
+              "n": 263,
+              "take_up_rate": 0.0532,
+              "mean_propensity": 0.0444,
+              "selected_rate": 0.1255,
+              "roc_auc": 0.7311
+            },
+            "London": {
+              "n": 354,
+              "take_up_rate": 0.0452,
+              "mean_propensity": 0.0514,
+              "selected_rate": 0.1667,
+              "roc_auc": 0.727
+            },
+            "North East": {
+              "n": 157,
+              "take_up_rate": 0.0127,
+              "mean_propensity": 0.0386,
+              "selected_rate": 0.051,
+              "roc_auc": 0.9452
+            },
+            "North West": {
+              "n": 426,
+              "take_up_rate": 0.0587,
+              "mean_propensity": 0.0421,
+              "selected_rate": 0.0751,
+              "roc_auc": 0.702
+            },
+            "South East": {
+              "n": 551,
+              "take_up_rate": 0.0672,
+              "mean_propensity": 0.0548,
+              "selected_rate": 0.1525,
+              "roc_auc": 0.7456
+            },
+            "South West": {
+              "n": 325,
+              "take_up_rate": 0.0492,
+              "mean_propensity": 0.0481,
+              "selected_rate": 0.1046,
+              "roc_auc": 0.6945
+            },
+            "Wales": {
+              "n": 186,
+              "take_up_rate": 0.0323,
+              "mean_propensity": 0.0366,
+              "selected_rate": 0.043,
+              "roc_auc": 0.7148
+            },
+            "West Midlands": {
+              "n": 307,
+              "take_up_rate": 0.0651,
+              "mean_propensity": 0.0446,
+              "selected_rate": 0.1042,
+              "roc_auc": 0.6752
+            },
+            "Yorkshire and The Humber": {
+              "n": 284,
+              "take_up_rate": 0.0387,
+              "mean_propensity": 0.0435,
+              "selected_rate": 0.1056,
+              "roc_auc": 0.7041
+            }
+          },
+          "vulnerable": {
+            "False": {
+              "n": 2973,
+              "take_up_rate": 0.0518,
+              "mean_propensity": 0.0474,
+              "selected_rate": 0.1181,
+              "roc_auc": 0.7244
+            },
+            "True": {
+              "n": 285,
+              "take_up_rate": 0.0351,
+              "mean_propensity": 0.0416,
+              "selected_rate": 0.0807,
+              "roc_auc": 0.7647
+            }
+          }
+        },
+        "top_features": [
+          {
+            "feature": "income_monthly",
+            "gain_share": 0.1314
+          },
+          {
+            "feature": "balance_savings",
+            "gain_share": 0.0685
+          },
+          {
+            "feature": "spend_12m_automotive",
+            "gain_share": 0.0658
+          },
+          {
+            "feature": "area_car_share_bev",
+            "gain_share": 0.0643
+          },
+          {
+            "feature": "area_share_cars_0",
+            "gain_share": 0.0603
+          },
+          {
+            "feature": "customer_tenure_years",
+            "gain_share": 0.0566
+          },
+          {
+            "feature": "car_maintenance_spend_12m",
+            "gain_share": 0.0559
+          },
+          {
+            "feature": "logins_per_month_6m",
+            "gain_share": 0.0552
+          },
+          {
+            "feature": "fuel_spend_12m",
+            "gain_share": 0.0546
+          },
+          {
+            "feature": "fuel_spend_trend",
+            "gain_share": 0.0545
+          }
+        ]
+      },
+      "GP02": {
+        "eligible_customers": 6710,
+        "positives": {
+          "train": 207,
+          "validation": 49,
+          "test": 31
+        },
+        "features_used": 40,
+        "lightgbm_rounds": 50,
+        "validation_pr_auc": 0.132,
+        "test": {
+          "rules_baseline": {
+            "n": 1063,
+            "positives": 31,
+            "roc_auc": 0.5728,
+            "pr_auc": 0.0372,
+            "brier": 0.05554,
+            "ece": 0.11853,
+            "lift_top10": 1.617
+          },
+          "logistic_regression": {
+            "n": 1063,
+            "positives": 31,
+            "roc_auc": 0.5967,
+            "pr_auc": 0.0465,
+            "brier": 0.02936,
+            "ece": 0.02363,
+            "lift_top10": 1.294
+          },
+          "lightgbm_raw": {
+            "n": 1063,
+            "positives": 31,
+            "roc_auc": 0.6263,
+            "pr_auc": 0.0508,
+            "brier": 0.02853,
+            "ece": 0.01665,
+            "lift_top10": 1.617
+          },
+          "lightgbm_calibrated": {
+            "n": 1063,
+            "positives": 31,
+            "roc_auc": 0.6342,
+            "pr_auc": 0.0434,
+            "brier": 0.02851,
+            "ece": 0.01387,
+            "lift_top10": 1.941
+          },
+          "oracle_p_true": {
+            "n": 1063,
+            "positives": 31,
+            "roc_auc": 0.8117,
+            "pr_auc": 0.2573,
+            "brier": 0.02596,
+            "ece": 0.01566,
+            "lift_top10": 4.529
+          },
+          "share_of_oracle_gap_closed": 0.257
+        },
+        "mean_confidence_test": 0.664,
+        "threshold": {
+          "base_rate": 0.04437,
+          "min_propensity": 0.08875,
+          "min_lift": 2.0,
+          "at_threshold": {
+            "validation": {
+              "selected_share": 0.03,
+              "takeup_rate_selected": 0.2069,
+              "lift": 4.15,
+              "recall": 0.122
+            },
+            "test": {
+              "selected_share": 0.029,
+              "takeup_rate_selected": 0.0645,
+              "lift": 2.21,
+              "recall": 0.065
+            }
+          }
+        },
+        "fairness_test": {
+          "age_band": {
+            "18-34": {
+              "n": 207,
+              "take_up_rate": 0.0435,
+              "mean_propensity": 0.0402,
+              "selected_rate": 0.1836,
+              "roc_auc": 0.5833
+            },
+            "35-54": {
+              "n": 614,
+              "take_up_rate": 0.0293,
+              "mean_propensity": 0.0406,
+              "selected_rate": 0.1726,
+              "roc_auc": 0.6936
+            },
+            "55+": {
+              "n": 242,
+              "take_up_rate": 0.0165,
+              "mean_propensity": 0.0518,
+              "selected_rate": 0.3264,
+              "roc_auc": 0.552
+            }
+          },
+          "income_band": {
+            "100k_plus": {
+              "n": 336,
+              "take_up_rate": 0.0417,
+              "mean_propensity": 0.0466,
+              "selected_rate": 0.2589,
+              "roc_auc": 0.7134
+            },
+            "15k_25k": {
+              "n": 28,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0424,
+              "selected_rate": 0.0714,
+              "roc_auc": null
+            },
+            "25k_40k": {
+              "n": 114,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0356,
+              "selected_rate": 0.1053,
+              "roc_auc": null
+            },
+            "40k_60k": {
+              "n": 230,
+              "take_up_rate": 0.0261,
+              "mean_propensity": 0.0369,
+              "selected_rate": 0.1522,
+              "roc_auc": 0.6042
+            },
+            "60k_100k": {
+              "n": 346,
+              "take_up_rate": 0.0289,
+              "mean_propensity": 0.0461,
+              "selected_rate": 0.2486,
+              "roc_auc": 0.508
+            },
+            "under_15k": {
+              "n": 9,
+              "take_up_rate": 0.1111,
+              "mean_propensity": 0.0422,
+              "selected_rate": 0.1111,
+              "roc_auc": 0.5625
+            }
+          },
+          "region": {
+            "East": {
+              "n": 137,
+              "take_up_rate": 0.0438,
+              "mean_propensity": 0.041,
+              "selected_rate": 0.1898,
+              "roc_auc": 0.5611
+            },
+            "East Midlands": {
+              "n": 83,
+              "take_up_rate": 0.012,
+              "mean_propensity": 0.039,
+              "selected_rate": 0.1566,
+              "roc_auc": 0.4817
+            },
+            "London": {
+              "n": 132,
+              "take_up_rate": 0.0303,
+              "mean_propensity": 0.0455,
+              "selected_rate": 0.2197,
+              "roc_auc": 0.6445
+            },
+            "North East": {
+              "n": 46,
+              "take_up_rate": 0.0217,
+              "mean_propensity": 0.0386,
+              "selected_rate": 0.1522,
+              "roc_auc": 0.9111
+            },
+            "North West": {
+              "n": 149,
+              "take_up_rate": 0.0201,
+              "mean_propensity": 0.0417,
+              "selected_rate": 0.1946,
+              "roc_auc": 0.5856
+            },
+            "South East": {
+              "n": 178,
+              "take_up_rate": 0.0281,
+              "mean_propensity": 0.0507,
+              "selected_rate": 0.309,
+              "roc_auc": 0.6081
+            },
+            "South West": {
+              "n": 96,
+              "take_up_rate": 0.0312,
+              "mean_propensity": 0.0392,
+              "selected_rate": 0.2188,
+              "roc_auc": 0.8244
+            },
+            "Wales": {
+              "n": 52,
+              "take_up_rate": 0.0385,
+              "mean_propensity": 0.0373,
+              "selected_rate": 0.0962,
+              "roc_auc": 0.7
+            },
+            "West Midlands": {
+              "n": 95,
+              "take_up_rate": 0.0316,
+              "mean_propensity": 0.0409,
+              "selected_rate": 0.1789,
+              "roc_auc": 0.7681
+            },
+            "Yorkshire and The Humber": {
+              "n": 95,
+              "take_up_rate": 0.0316,
+              "mean_propensity": 0.0451,
+              "selected_rate": 0.2211,
+              "roc_auc": 0.4203
+            }
+          },
+          "vulnerable": {
+            "False": {
+              "n": 999,
+              "take_up_rate": 0.03,
+              "mean_propensity": 0.0432,
+              "selected_rate": 0.2112,
+              "roc_auc": 0.6337
+            },
+            "True": {
+              "n": 64,
+              "take_up_rate": 0.0156,
+              "mean_propensity": 0.0407,
+              "selected_rate": 0.1875,
+              "roc_auc": 0.6508
+            }
+          }
+        },
+        "top_features": [
+          {
+            "feature": "diy_spend_12m",
+            "gain_share": 0.0957
+          },
+          {
+            "feature": "diy_spend_3m",
+            "gain_share": 0.0755
+          },
+          {
+            "feature": "area_gas_dom_mean_kwh",
+            "gain_share": 0.0642
+          },
+          {
+            "feature": "spend_12m_home_improvement",
+            "gain_share": 0.0585
+          },
+          {
+            "feature": "customer_tenure_years",
+            "gain_share": 0.0552
+          },
+          {
+            "feature": "income_monthly",
+            "gain_share": 0.0531
+          },
+          {
+            "feature": "logins_per_month_6m",
+            "gain_share": 0.0527
+          },
+          {
+            "feature": "balance_current",
+            "gain_share": 0.0525
+          },
+          {
+            "feature": "spend_12m_utilities",
+            "gain_share": 0.0523
+          },
+          {
+            "feature": "mortgage_current_ltv",
+            "gain_share": 0.0511
+          }
+        ]
+      },
+      "GP03": {
+        "eligible_customers": 14628,
+        "positives": {
+          "train": 201,
+          "validation": 31,
+          "test": 56
+        },
+        "features_used": 33,
+        "lightgbm_rounds": 81,
+        "validation_pr_auc": 0.1113,
+        "test": {
+          "rules_baseline": {
+            "n": 2222,
+            "positives": 56,
+            "roc_auc": 0.6234,
+            "pr_auc": 0.0387,
+            "brier": 0.04029,
+            "ece": 0.08888,
+            "lift_top10": 2.681
+          },
+          "logistic_regression": {
+            "n": 2222,
+            "positives": 56,
+            "roc_auc": 0.7468,
+            "pr_auc": 0.103,
+            "brier": 0.0239,
+            "ece": 0.00744,
+            "lift_top10": 3.396
+          },
+          "lightgbm_raw": {
+            "n": 2222,
+            "positives": 56,
+            "roc_auc": 0.7201,
+            "pr_auc": 0.0783,
+            "brier": 0.02408,
+            "ece": 0.00816,
+            "lift_top10": 3.038
+          },
+          "lightgbm_calibrated": {
+            "n": 2222,
+            "positives": 56,
+            "roc_auc": 0.7259,
+            "pr_auc": 0.0665,
+            "brier": 0.02423,
+            "ece": 0.00609,
+            "lift_top10": 3.396
+          },
+          "oracle_p_true": {
+            "n": 2222,
+            "positives": 56,
+            "roc_auc": 0.9059,
+            "pr_auc": 0.3083,
+            "brier": 0.02076,
+            "ece": 0.0044,
+            "lift_top10": 6.077
+          },
+          "share_of_oracle_gap_closed": 0.363
+        },
+        "mean_confidence_test": 0.656,
+        "threshold": {
+          "base_rate": 0.01964,
+          "min_propensity": 0.03928,
+          "min_lift": 2.0,
+          "at_threshold": {
+            "validation": {
+              "selected_share": 0.129,
+              "takeup_rate_selected": 0.0391,
+              "lift": 2.74,
+              "recall": 0.355
+            },
+            "test": {
+              "selected_share": 0.126,
+              "takeup_rate_selected": 0.0753,
+              "lift": 2.99,
+              "recall": 0.375
+            }
+          }
+        },
+        "fairness_test": {
+          "age_band": {
+            "18-34": {
+              "n": 264,
+              "take_up_rate": 0.0152,
+              "mean_propensity": 0.0186,
+              "selected_rate": 0.0985,
+              "roc_auc": 0.613
+            },
+            "35-54": {
+              "n": 805,
+              "take_up_rate": 0.0236,
+              "mean_propensity": 0.0194,
+              "selected_rate": 0.1143,
+              "roc_auc": 0.6899
+            },
+            "55+": {
+              "n": 1153,
+              "take_up_rate": 0.0286,
+              "mean_propensity": 0.0194,
+              "selected_rate": 0.1396,
+              "roc_auc": 0.7574
+            }
+          },
+          "income_band": {
+            "100k_plus": {
+              "n": 501,
+              "take_up_rate": 0.0479,
+              "mean_propensity": 0.0388,
+              "selected_rate": 0.3413,
+              "roc_auc": 0.67
+            },
+            "15k_25k": {
+              "n": 188,
+              "take_up_rate": 0.0106,
+              "mean_propensity": 0.0048,
+              "selected_rate": 0.0,
+              "roc_auc": 0.4798
+            },
+            "25k_40k": {
+              "n": 355,
+              "take_up_rate": 0.0056,
+              "mean_propensity": 0.0068,
+              "selected_rate": 0.0,
+              "roc_auc": 0.3739
+            },
+            "40k_60k": {
+              "n": 478,
+              "take_up_rate": 0.0188,
+              "mean_propensity": 0.0134,
+              "selected_rate": 0.0607,
+              "roc_auc": 0.7319
+            },
+            "60k_100k": {
+              "n": 583,
+              "take_up_rate": 0.0326,
+              "mean_propensity": 0.0228,
+              "selected_rate": 0.1355,
+              "roc_auc": 0.6145
+            },
+            "under_15k": {
+              "n": 117,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0041,
+              "selected_rate": 0.0,
+              "roc_auc": null
+            }
+          },
+          "region": {
+            "East": {
+              "n": 269,
+              "take_up_rate": 0.0446,
+              "mean_propensity": 0.0242,
+              "selected_rate": 0.1636,
+              "roc_auc": 0.7341
+            },
+            "East Midlands": {
+              "n": 187,
+              "take_up_rate": 0.0214,
+              "mean_propensity": 0.0149,
+              "selected_rate": 0.0963,
+              "roc_auc": 0.7746
+            },
+            "London": {
+              "n": 224,
+              "take_up_rate": 0.0312,
+              "mean_propensity": 0.0292,
+              "selected_rate": 0.2143,
+              "roc_auc": 0.5329
+            },
+            "North East": {
+              "n": 105,
+              "take_up_rate": 0.019,
+              "mean_propensity": 0.009,
+              "selected_rate": 0.019,
+              "roc_auc": 0.6966
+            },
+            "North West": {
+              "n": 317,
+              "take_up_rate": 0.0126,
+              "mean_propensity": 0.0132,
+              "selected_rate": 0.0568,
+              "roc_auc": 0.6609
+            },
+            "South East": {
+              "n": 378,
+              "take_up_rate": 0.0397,
+              "mean_propensity": 0.0264,
+              "selected_rate": 0.1931,
+              "roc_auc": 0.7427
+            },
+            "South West": {
+              "n": 215,
+              "take_up_rate": 0.014,
+              "mean_propensity": 0.0182,
+              "selected_rate": 0.1163,
+              "roc_auc": 0.6415
+            },
+            "Wales": {
+              "n": 122,
+              "take_up_rate": 0.0164,
+              "mean_propensity": 0.0117,
+              "selected_rate": 0.0492,
+              "roc_auc": 0.7354
+            },
+            "West Midlands": {
+              "n": 206,
+              "take_up_rate": 0.0194,
+              "mean_propensity": 0.0202,
+              "selected_rate": 0.165,
+              "roc_auc": 0.8583
+            },
+            "Yorkshire and The Humber": {
+              "n": 199,
+              "take_up_rate": 0.0151,
+              "mean_propensity": 0.0124,
+              "selected_rate": 0.0553,
+              "roc_auc": 0.4626
+            }
+          },
+          "vulnerable": {
+            "False": {
+              "n": 2019,
+              "take_up_rate": 0.0267,
+              "mean_propensity": 0.0197,
+              "selected_rate": 0.1288,
+              "roc_auc": 0.7178
+            },
+            "True": {
+              "n": 203,
+              "take_up_rate": 0.0099,
+              "mean_propensity": 0.0158,
+              "selected_rate": 0.0936,
+              "roc_auc": 0.8632
+            }
+          }
+        },
+        "top_features": [
+          {
+            "feature": "income_monthly",
+            "gain_share": 0.1734
+          },
+          {
+            "feature": "ev_public_kwh_12m",
+            "gain_share": 0.1591
+          },
+          {
+            "feature": "balance_savings",
+            "gain_share": 0.1048
+          },
+          {
+            "feature": "elec_kwh_12m",
+            "gain_share": 0.0972
+          },
+          {
+            "feature": "area_pv_kwh_per_kwp_year",
+            "gain_share": 0.0828
+          },
+          {
+            "feature": "balance_current",
+            "gain_share": 0.0779
+          },
+          {
+            "feature": "area_elec_dom_median_kwh",
+            "gain_share": 0.0592
+          },
+          {
+            "feature": "logins_per_month_6m",
+            "gain_share": 0.0537
+          },
+          {
+            "feature": "age",
+            "gain_share": 0.0433
+          },
+          {
+            "feature": "area_pv_rate_per_household",
+            "gain_share": 0.0431
+          }
+        ]
+      },
+      "GP04": {
+        "eligible_customers": 6367,
+        "positives": {
+          "train": 549,
+          "validation": 114,
+          "test": 122
+        },
+        "features_used": 21,
+        "lightgbm_rounds": 148,
+        "validation_pr_auc": 0.5425,
+        "test": {
+          "rules_baseline": {
+            "n": 951,
+            "positives": 122,
+            "roc_auc": 0.737,
+            "pr_auc": 0.2492,
+            "brier": 0.11964,
+            "ece": 0.10305,
+            "lift_top10": 2.626
+          },
+          "logistic_regression": {
+            "n": 951,
+            "positives": 122,
+            "roc_auc": 0.814,
+            "pr_auc": 0.5609,
+            "brier": 0.08084,
+            "ece": 0.0196,
+            "lift_top10": 4.677
+          },
+          "lightgbm_raw": {
+            "n": 951,
+            "positives": 122,
+            "roc_auc": 0.8225,
+            "pr_auc": 0.5478,
+            "brier": 0.08189,
+            "ece": 0.01485,
+            "lift_top10": 4.349
+          },
+          "lightgbm_calibrated": {
+            "n": 951,
+            "positives": 122,
+            "roc_auc": 0.8207,
+            "pr_auc": 0.5292,
+            "brier": 0.08115,
+            "ece": 0.01205,
+            "lift_top10": 4.103
+          },
+          "oracle_p_true": {
+            "n": 951,
+            "positives": 122,
+            "roc_auc": 0.8271,
+            "pr_auc": 0.5838,
+            "brier": 0.07891,
+            "ece": 0.02218,
+            "lift_top10": 4.677
+          },
+          "share_of_oracle_gap_closed": 0.929
+        },
+        "mean_confidence_test": 0.8,
+        "threshold": {
+          "base_rate": 0.12257,
+          "min_propensity": 0.24514,
+          "min_lift": 2.0,
+          "at_threshold": {
+            "validation": {
+              "selected_share": 0.162,
+              "takeup_rate_selected": 0.4803,
+              "lift": 3.95,
+              "recall": 0.64
+            },
+            "test": {
+              "selected_share": 0.177,
+              "takeup_rate_selected": 0.4405,
+              "lift": 3.43,
+              "recall": 0.607
+            }
+          }
+        },
+        "fairness_test": {
+          "age_band": {
+            "18-34": {
+              "n": 32,
+              "take_up_rate": 0.5938,
+              "mean_propensity": 0.6453,
+              "selected_rate": 0.9688,
+              "roc_auc": 0.8927
+            },
+            "35-54": {
+              "n": 147,
+              "take_up_rate": 0.3265,
+              "mean_propensity": 0.3076,
+              "selected_rate": 0.5306,
+              "roc_auc": 0.801
+            },
+            "55+": {
+              "n": 772,
+              "take_up_rate": 0.0712,
+              "mean_propensity": 0.0788,
+              "selected_rate": 0.0453,
+              "roc_auc": 0.7063
+            }
+          },
+          "income_band": {
+            "100k_plus": {
+              "n": 131,
+              "take_up_rate": 0.145,
+              "mean_propensity": 0.1621,
+              "selected_rate": 0.2061,
+              "roc_auc": 0.7944
+            },
+            "15k_25k": {
+              "n": 119,
+              "take_up_rate": 0.0756,
+              "mean_propensity": 0.1103,
+              "selected_rate": 0.1176,
+              "roc_auc": 0.8293
+            },
+            "25k_40k": {
+              "n": 202,
+              "take_up_rate": 0.1634,
+              "mean_propensity": 0.1257,
+              "selected_rate": 0.1238,
+              "roc_auc": 0.8435
+            },
+            "40k_60k": {
+              "n": 201,
+              "take_up_rate": 0.1144,
+              "mean_propensity": 0.1246,
+              "selected_rate": 0.1493,
+              "roc_auc": 0.7585
+            },
+            "60k_100k": {
+              "n": 187,
+              "take_up_rate": 0.1711,
+              "mean_propensity": 0.1641,
+              "selected_rate": 0.2032,
+              "roc_auc": 0.8256
+            },
+            "under_15k": {
+              "n": 111,
+              "take_up_rate": 0.0541,
+              "mean_propensity": 0.1011,
+              "selected_rate": 0.0901,
+              "roc_auc": 0.9302
+            }
+          },
+          "region": {
+            "East": {
+              "n": 100,
+              "take_up_rate": 0.12,
+              "mean_propensity": 0.1605,
+              "selected_rate": 0.23,
+              "roc_auc": 0.8513
+            },
+            "East Midlands": {
+              "n": 79,
+              "take_up_rate": 0.1392,
+              "mean_propensity": 0.1166,
+              "selected_rate": 0.0886,
+              "roc_auc": 0.861
+            },
+            "London": {
+              "n": 99,
+              "take_up_rate": 0.1717,
+              "mean_propensity": 0.1425,
+              "selected_rate": 0.1414,
+              "roc_auc": 0.9333
+            },
+            "North East": {
+              "n": 44,
+              "take_up_rate": 0.0227,
+              "mean_propensity": 0.1271,
+              "selected_rate": 0.1364,
+              "roc_auc": 0.9186
+            },
+            "North West": {
+              "n": 119,
+              "take_up_rate": 0.0924,
+              "mean_propensity": 0.1082,
+              "selected_rate": 0.1008,
+              "roc_auc": 0.7769
+            },
+            "South East": {
+              "n": 160,
+              "take_up_rate": 0.1375,
+              "mean_propensity": 0.1327,
+              "selected_rate": 0.15,
+              "roc_auc": 0.7546
+            },
+            "South West": {
+              "n": 97,
+              "take_up_rate": 0.1237,
+              "mean_propensity": 0.1187,
+              "selected_rate": 0.1237,
+              "roc_auc": 0.873
+            },
+            "Wales": {
+              "n": 65,
+              "take_up_rate": 0.1077,
+              "mean_propensity": 0.1337,
+              "selected_rate": 0.1538,
+              "roc_auc": 0.9397
+            },
+            "West Midlands": {
+              "n": 97,
+              "take_up_rate": 0.1649,
+              "mean_propensity": 0.1541,
+              "selected_rate": 0.2165,
+              "roc_auc": 0.7616
+            },
+            "Yorkshire and The Humber": {
+              "n": 91,
+              "take_up_rate": 0.1429,
+              "mean_propensity": 0.1372,
+              "selected_rate": 0.1648,
+              "roc_auc": 0.7298
+            }
+          },
+          "vulnerable": {
+            "False": {
+              "n": 951,
+              "take_up_rate": 0.1283,
+              "mean_propensity": 0.1332,
+              "selected_rate": 0.1514,
+              "roc_auc": 0.8207
+            }
+          }
+        },
+        "top_features": [
+          {
+            "feature": "logins_per_month_6m",
+            "gain_share": 0.4493
+          },
+          {
+            "feature": "age",
+            "gain_share": 0.1746
+          },
+          {
+            "feature": "app_login_share_6m",
+            "gain_share": 0.0955
+          },
+          {
+            "feature": "customer_tenure_years",
+            "gain_share": 0.0681
+          },
+          {
+            "feature": "balance_current",
+            "gain_share": 0.0673
+          },
+          {
+            "feature": "income_monthly",
+            "gain_share": 0.0481
+          },
+          {
+            "feature": "balance_savings",
+            "gain_share": 0.0339
+          },
+          {
+            "feature": "debt_to_income_est",
+            "gain_share": 0.0187
+          },
+          {
+            "feature": "n_products",
+            "gain_share": 0.0172
+          },
+          {
+            "feature": "paper_accounts",
+            "gain_share": 0.0108
+          }
+        ]
+      },
+      "GP05": {
+        "eligible_customers": 6042,
+        "positives": {
+          "train": 294,
+          "validation": 45,
+          "test": 60
+        },
+        "features_used": 22,
+        "lightgbm_rounds": 109,
+        "validation_pr_auc": 0.2457,
+        "test": {
+          "rules_baseline": {
+            "n": 883,
+            "positives": 60,
+            "roc_auc": 0.6772,
+            "pr_auc": 0.1623,
+            "brier": 0.05967,
+            "ece": 0.04219,
+            "lift_top10": 4.181
+          },
+          "logistic_regression": {
+            "n": 883,
+            "positives": 60,
+            "roc_auc": 0.7637,
+            "pr_auc": 0.2415,
+            "brier": 0.05748,
+            "ece": 0.01018,
+            "lift_top10": 4.348
+          },
+          "lightgbm_raw": {
+            "n": 883,
+            "positives": 60,
+            "roc_auc": 0.747,
+            "pr_auc": 0.2473,
+            "brier": 0.05668,
+            "ece": 0.01804,
+            "lift_top10": 4.348
+          },
+          "lightgbm_calibrated": {
+            "n": 883,
+            "positives": 60,
+            "roc_auc": 0.7436,
+            "pr_auc": 0.2367,
+            "brier": 0.05633,
+            "ece": 0.01276,
+            "lift_top10": 4.348
+          },
+          "oracle_p_true": {
+            "n": 883,
+            "positives": 60,
+            "roc_auc": 0.8582,
+            "pr_auc": 0.4148,
+            "brier": 0.05033,
+            "ece": 0.0111,
+            "lift_top10": 5.184
+          },
+          "share_of_oracle_gap_closed": 0.367
+        },
+        "mean_confidence_test": 0.716,
+        "threshold": {
+          "base_rate": 0.06884,
+          "min_propensity": 0.13767,
+          "min_lift": 2.0,
+          "at_threshold": {
+            "validation": {
+              "selected_share": 0.089,
+              "takeup_rate_selected": 0.2025,
+              "lift": 4.0,
+              "recall": 0.356
+            },
+            "test": {
+              "selected_share": 0.103,
+              "takeup_rate_selected": 0.2857,
+              "lift": 4.2,
+              "recall": 0.433
+            }
+          }
+        },
+        "fairness_test": {
+          "age_band": {
+            "18-34": {
+              "n": 200,
+              "take_up_rate": 0.085,
+              "mean_propensity": 0.0967,
+              "selected_rate": 0.175,
+              "roc_auc": 0.7437
+            },
+            "35-54": {
+              "n": 354,
+              "take_up_rate": 0.0847,
+              "mean_propensity": 0.0666,
+              "selected_rate": 0.0904,
+              "roc_auc": 0.7388
+            },
+            "55+": {
+              "n": 329,
+              "take_up_rate": 0.0395,
+              "mean_propensity": 0.055,
+              "selected_rate": 0.0729,
+              "roc_auc": 0.7197
+            }
+          },
+          "income_band": {
+            "100k_plus": {
+              "n": 288,
+              "take_up_rate": 0.1042,
+              "mean_propensity": 0.1052,
+              "selected_rate": 0.1806,
+              "roc_auc": 0.742
+            },
+            "15k_25k": {
+              "n": 39,
+              "take_up_rate": 0.0256,
+              "mean_propensity": 0.0301,
+              "selected_rate": 0.0256,
+              "roc_auc": 1.0
+            },
+            "25k_40k": {
+              "n": 74,
+              "take_up_rate": 0.0541,
+              "mean_propensity": 0.0354,
+              "selected_rate": 0.0541,
+              "roc_auc": 0.4839
+            },
+            "40k_60k": {
+              "n": 183,
+              "take_up_rate": 0.0164,
+              "mean_propensity": 0.0434,
+              "selected_rate": 0.0492,
+              "roc_auc": 0.7667
+            },
+            "60k_100k": {
+              "n": 281,
+              "take_up_rate": 0.0783,
+              "mean_propensity": 0.0653,
+              "selected_rate": 0.089,
+              "roc_auc": 0.6813
+            },
+            "under_15k": {
+              "n": 18,
+              "take_up_rate": 0.0,
+              "mean_propensity": 0.0358,
+              "selected_rate": 0.0,
+              "roc_auc": null
+            }
+          },
+          "region": {
+            "East": {
+              "n": 113,
+              "take_up_rate": 0.1062,
+              "mean_propensity": 0.0775,
+              "selected_rate": 0.1504,
+              "roc_auc": 0.7475
+            },
+            "East Midlands": {
+              "n": 69,
+              "take_up_rate": 0.0435,
+              "mean_propensity": 0.0618,
+              "selected_rate": 0.087,
+              "roc_auc": 0.6843
+            },
+            "London": {
+              "n": 125,
+              "take_up_rate": 0.08,
+              "mean_propensity": 0.0607,
+              "selected_rate": 0.072,
+              "roc_auc": 0.6939
+            },
+            "North East": {
+              "n": 41,
+              "take_up_rate": 0.0732,
+              "mean_propensity": 0.0682,
+              "selected_rate": 0.0976,
+              "roc_auc": 0.6053
+            },
+            "North West": {
+              "n": 103,
+              "take_up_rate": 0.0388,
+              "mean_propensity": 0.0683,
+              "selected_rate": 0.1068,
+              "roc_auc": 0.7462
+            },
+            "South East": {
+              "n": 146,
+              "take_up_rate": 0.0685,
+              "mean_propensity": 0.0785,
+              "selected_rate": 0.1301,
+              "roc_auc": 0.8563
+            },
+            "South West": {
+              "n": 80,
+              "take_up_rate": 0.075,
+              "mean_propensity": 0.0548,
+              "selected_rate": 0.0625,
+              "roc_auc": 0.5146
+            },
+            "Wales": {
+              "n": 48,
+              "take_up_rate": 0.0208,
+              "mean_propensity": 0.0476,
+              "selected_rate": 0.0417,
+              "roc_auc": 0.9894
+            },
+            "West Midlands": {
+              "n": 81,
+              "take_up_rate": 0.0494,
+              "mean_propensity": 0.0773,
+              "selected_rate": 0.1235,
+              "roc_auc": 0.7013
+            },
+            "Yorkshire and The Humber": {
+              "n": 77,
+              "take_up_rate": 0.0909,
+              "mean_propensity": 0.0802,
+              "selected_rate": 0.1039,
+              "roc_auc": 0.8918
+            }
+          },
+          "vulnerable": {
+            "False": {
+              "n": 883,
+              "take_up_rate": 0.068,
+              "mean_propensity": 0.0691,
+              "selected_rate": 0.1031,
+              "roc_auc": 0.7436
+            }
+          }
+        },
+        "top_features": [
+          {
+            "feature": "stated_sustainability_preference",
+            "gain_share": 0.3849
+          },
+          {
+            "feature": "income_monthly",
+            "gain_share": 0.1088
+          },
+          {
+            "feature": "balance_savings",
+            "gain_share": 0.0665
+          },
+          {
+            "feature": "investment_transfer_total_12m",
+            "gain_share": 0.0642
+          },
+          {
+            "feature": "customer_tenure_years",
+            "gain_share": 0.0613
+          },
+          {
+            "feature": "logins_per_month_6m",
+            "gain_share": 0.0612
+          },
+          {
+            "feature": "age",
+            "gain_share": 0.0571
+          },
+          {
+            "feature": "green_supplier",
+            "gain_share": 0.0516
+          },
+          {
+            "feature": "balance_current",
+            "gain_share": 0.0467
+          },
+          {
+            "feature": "balance_investment",
+            "gain_share": 0.0353
+          }
+        ]
+      },
+      "GP06": {
+        "eligible_customers": 24479,
+        "positives": {
+          "train": 571,
+          "validation": 116,
+          "test": 106
+        },
+        "features_used": 26,
+        "lightgbm_rounds": 50,
+        "validation_pr_auc": 0.107,
+        "test": {
+          "rules_baseline": {
+            "n": 3696,
+            "positives": 106,
+            "roc_auc": 0.6254,
+            "pr_auc": 0.0669,
+            "brier": 0.05576,
+            "ece": 0.12403,
+            "lift_top10": 2.544
+          },
+          "logistic_regression": {
+            "n": 3696,
+            "positives": 106,
+            "roc_auc": 0.734,
+            "pr_auc": 0.1086,
+            "brier": 0.02714,
+            "ece": 0.0068,
+            "lift_top10": 3.77
+          },
+          "lightgbm_raw": {
+            "n": 3696,
+            "positives": 106,
+            "roc_auc": 0.7055,
+            "pr_auc": 0.1026,
+            "brier": 0.02697,
+            "ece": 0.00654,
+            "lift_top10": 3.581
+          },
+          "lightgbm_calibrated": {
+            "n": 3696,
+            "positives": 106,
+            "roc_auc": 0.7085,
+            "pr_auc": 0.0903,
+            "brier": 0.0273,
+            "ece": 0.00516,
+            "lift_top10": 3.675
+          },
+          "oracle_p_true": {
+            "n": 3696,
+            "positives": 106,
+            "roc_auc": 0.7917,
+            "pr_auc": 0.188,
+            "brier": 0.02581,
+            "ece": 0.00873,
+            "lift_top10": 4.9
+          },
+          "share_of_oracle_gap_closed": 0.5
+        },
+        "mean_confidence_test": 0.803,
+        "threshold": {
+          "base_rate": 0.03319,
+          "min_propensity": 0.06638,
+          "min_lift": 2.0,
+          "at_threshold": {
+            "validation": {
+              "selected_share": 0.062,
+              "takeup_rate_selected": 0.1216,
+              "lift": 3.75,
+              "recall": 0.233
+            },
+            "test": {
+              "selected_share": 0.073,
+              "takeup_rate_selected": 0.1227,
+              "lift": 4.28,
+              "recall": 0.311
+            }
+          }
+        },
+        "fairness_test": {
+          "age_band": {
+            "18-34": {
+              "n": 806,
+              "take_up_rate": 0.0372,
+              "mean_propensity": 0.0479,
+              "selected_rate": 0.2804,
+              "roc_auc": 0.6698
+            },
+            "35-54": {
+              "n": 1314,
+              "take_up_rate": 0.0373,
+              "mean_propensity": 0.0327,
+              "selected_rate": 0.1476,
+              "roc_auc": 0.7022
+            },
+            "55+": {
+              "n": 1576,
+              "take_up_rate": 0.0171,
+              "mean_propensity": 0.0227,
+              "selected_rate": 0.0654,
+              "roc_auc": 0.6607
+            }
+          },
+          "income_band": {
+            "100k_plus": {
+              "n": 690,
+              "take_up_rate": 0.0304,
+              "mean_propensity": 0.0255,
+              "selected_rate": 0.0971,
+              "roc_auc": 0.755
+            },
+            "15k_25k": {
+              "n": 403,
+              "take_up_rate": 0.0298,
+              "mean_propensity": 0.0371,
+              "selected_rate": 0.1985,
+              "roc_auc": 0.6007
+            },
+            "25k_40k": {
+              "n": 676,
+              "take_up_rate": 0.0311,
+              "mean_propensity": 0.0332,
+              "selected_rate": 0.1494,
+              "roc_auc": 0.6209
+            },
+            "40k_60k": {
+              "n": 796,
+              "take_up_rate": 0.0302,
+              "mean_propensity": 0.0311,
+              "selected_rate": 0.1294,
+              "roc_auc": 0.786
+            },
+            "60k_100k": {
+              "n": 897,
+              "take_up_rate": 0.0156,
+              "mean_propensity": 0.03,
+              "selected_rate": 0.1315,
+              "roc_auc": 0.6964
+            },
+            "under_15k": {
+              "n": 234,
+              "take_up_rate": 0.0598,
+              "mean_propensity": 0.0456,
+              "selected_rate": 0.2308,
+              "roc_auc": 0.6859
+            }
+          },
+          "region": {
+            "East": {
+              "n": 429,
+              "take_up_rate": 0.0303,
+              "mean_propensity": 0.0321,
+              "selected_rate": 0.1375,
+              "roc_auc": 0.6045
+            },
+            "East Midlands": {
+              "n": 288,
+              "take_up_rate": 0.0139,
+              "mean_propensity": 0.0306,
+              "selected_rate": 0.1389,
+              "roc_auc": 0.5902
+            },
+            "London": {
+              "n": 499,
+              "take_up_rate": 0.0301,
+              "mean_propensity": 0.0375,
+              "selected_rate": 0.1944,
+              "roc_auc": 0.7527
+            },
+            "North East": {
+              "n": 187,
+              "take_up_rate": 0.0374,
+              "mean_propensity": 0.0371,
+              "selected_rate": 0.1925,
+              "roc_auc": 0.5825
+            },
+            "North West": {
+              "n": 490,
+              "take_up_rate": 0.0367,
+              "mean_propensity": 0.0332,
+              "selected_rate": 0.1429,
+              "roc_auc": 0.8153
+            },
+            "South East": {
+              "n": 589,
+              "take_up_rate": 0.0221,
+              "mean_propensity": 0.0278,
+              "selected_rate": 0.0985,
+              "roc_auc": 0.7017
+            },
+            "South West": {
+              "n": 340,
+              "take_up_rate": 0.0353,
+              "mean_propensity": 0.0282,
+              "selected_rate": 0.1265,
+              "roc_auc": 0.7915
+            },
+            "Wales": {
+              "n": 209,
+              "take_up_rate": 0.0287,
+              "mean_propensity": 0.0319,
+              "selected_rate": 0.1196,
+              "roc_auc": 0.6129
+            },
+            "West Midlands": {
+              "n": 339,
+              "take_up_rate": 0.0295,
+              "mean_propensity": 0.0313,
+              "selected_rate": 0.1475,
+              "roc_auc": 0.7427
+            },
+            "Yorkshire and The Humber": {
+              "n": 326,
+              "take_up_rate": 0.0245,
+              "mean_propensity": 0.0294,
+              "selected_rate": 0.138,
+              "roc_auc": 0.6437
+            }
+          },
+          "vulnerable": {
+            "False": {
+              "n": 3374,
+              "take_up_rate": 0.0282,
+              "mean_propensity": 0.0319,
+              "selected_rate": 0.144,
+              "roc_auc": 0.7003
+            },
+            "True": {
+              "n": 322,
+              "take_up_rate": 0.0342,
+              "mean_propensity": 0.0304,
+              "selected_rate": 0.1149,
+              "roc_auc": 0.7784
+            }
+          }
+        },
+        "top_features": [
+          {
+            "feature": "pt_micromobility_trips_12m",
+            "gain_share": 0.1331
+          },
+          {
+            "feature": "bike_shop_spend_12m",
+            "gain_share": 0.1257
+          },
+          {
+            "feature": "income_monthly",
+            "gain_share": 0.0914
+          },
+          {
+            "feature": "balance_current",
+            "gain_share": 0.0879
+          },
+          {
+            "feature": "age",
+            "gain_share": 0.0818
+          },
+          {
+            "feature": "customer_tenure_years",
+            "gain_share": 0.0744
+          },
+          {
+            "feature": "balance_credit_card",
+            "gain_share": 0.071
+          },
+          {
+            "feature": "logins_per_month_6m",
+            "gain_share": 0.0694
+          },
+          {
+            "feature": "balance_savings",
+            "gain_share": 0.0632
+          },
+          {
+            "feature": "heat_kwh_12m",
+            "gain_share": 0.0556
+          }
+        ]
+      }
+    },
+    "ablations": {
+      "GP01": {
+        "full": {
+          "n": 3258,
+          "positives": 164,
+          "roc_auc": 0.7269,
+          "pr_auc": 0.1402,
+          "brier": 0.04571,
+          "ece": 0.0091,
+          "lift_top10": 3.108,
+          "features": 37
+        },
+        "calibration_off": {
+          "n": 3258,
+          "positives": 164,
+          "roc_auc": 0.726,
+          "pr_auc": 0.1514,
+          "brier": 0.0459,
+          "ece": 0.01009,
+          "lift_top10": 2.925,
+          "features": 37
+        },
+        "price_normalisation_off": {
+          "n": 3258,
+          "positives": 164,
+          "roc_auc": 0.7285,
+          "pr_auc": 0.1321,
+          "brier": 0.04583,
+          "ece": 0.01051,
+          "lift_top10": 2.803,
+          "features": 35
+        },
+        "coverage_flags_off": {
+          "n": 3258,
+          "positives": 164,
+          "roc_auc": 0.7248,
+          "pr_auc": 0.1291,
+          "brier": 0.04607,
+          "ece": 0.00938,
+          "lift_top10": 2.62,
+          "features": 36
+        },
+        "memory_off": {
+          "n": 3258,
+          "positives": 164,
+          "roc_auc": 0.7308,
+          "pr_auc": 0.1255,
+          "brier": 0.046,
+          "ece": 0.01209,
+          "lift_top10": 2.803,
+          "features": 32
+        },
+        "all_features": {
+          "n": 3258,
+          "positives": 164,
+          "roc_auc": 0.7353,
+          "pr_auc": 0.129,
+          "brier": 0.04598,
+          "ece": 0.00775,
+          "lift_top10": 2.864,
+          "features": 145
+        }
+      },
+      "GP02": {
+        "full": {
+          "n": 1063,
+          "positives": 31,
+          "roc_auc": 0.6572,
+          "pr_auc": 0.0577,
+          "brier": 0.02845,
+          "ece": 0.02341,
+          "lift_top10": 1.941,
+          "features": 40
+        },
+        "calibration_off": {
+          "n": 1063,
+          "positives": 31,
+          "roc_auc": 0.6517,
+          "pr_auc": 0.0608,
+          "brier": 0.02839,
+          "ece": 0.02263,
+          "lift_top10": 1.941,
+          "features": 40
+        },
+        "price_normalisation_off": {
+          "n": 1063,
+          "positives": 31,
+          "roc_auc": 0.6302,
+          "pr_auc": 0.0654,
+          "brier": 0.02821,
+          "ece": 0.01558,
+          "lift_top10": 1.294,
+          "features": 37
+        },
+        "coverage_flags_off": {
+          "n": 1063,
+          "positives": 31,
+          "roc_auc": 0.6462,
+          "pr_auc": 0.0439,
+          "brier": 0.0285,
+          "ece": 0.01635,
+          "lift_top10": 1.617,
+          "features": 38
+        },
+        "memory_off": {
+          "n": 1063,
+          "positives": 31,
+          "roc_auc": 0.6321,
+          "pr_auc": 0.0606,
+          "brier": 0.02827,
+          "ece": 0.01352,
+          "lift_top10": 1.941,
+          "features": 35
+        },
+        "all_features": {
+          "n": 1063,
+          "positives": 31,
+          "roc_auc": 0.6428,
+          "pr_auc": 0.0442,
+          "brier": 0.02851,
+          "ece": 0.01738,
+          "lift_top10": 1.617,
+          "features": 145
+        }
+      },
+      "GP03": {
+        "full": {
+          "n": 2222,
+          "positives": 56,
+          "roc_auc": 0.7113,
+          "pr_auc": 0.0701,
+          "brier": 0.02415,
+          "ece": 0.00721,
+          "lift_top10": 3.038,
+          "features": 33
+        },
+        "calibration_off": {
+          "n": 2222,
+          "positives": 56,
+          "roc_auc": 0.71,
+          "pr_auc": 0.0712,
+          "brier": 0.0242,
+          "ece": 0.00861,
+          "lift_top10": 2.86,
+          "features": 33
+        },
+        "price_normalisation_off": {
+          "n": 2222,
+          "positives": 56,
+          "roc_auc": 0.6956,
+          "pr_auc": 0.0714,
+          "brier": 0.02413,
+          "ece": 0.00843,
+          "lift_top10": 2.86,
+          "features": 31
+        },
+        "coverage_flags_off": {
+          "n": 2222,
+          "positives": 56,
+          "roc_auc": 0.7153,
+          "pr_auc": 0.0685,
+          "brier": 0.02415,
+          "ece": 0.00628,
+          "lift_top10": 3.038,
+          "features": 32
+        },
+        "memory_off": {
+          "n": 2222,
+          "positives": 56,
+          "roc_auc": 0.7115,
+          "pr_auc": 0.0629,
+          "brier": 0.02415,
+          "ece": 0.00702,
+          "lift_top10": 3.217,
+          "features": 28
+        },
+        "all_features": {
+          "n": 2222,
+          "positives": 56,
+          "roc_auc": 0.7342,
+          "pr_auc": 0.0687,
+          "brier": 0.02405,
+          "ece": 0.00767,
+          "lift_top10": 3.396,
+          "features": 145
+        }
+      },
+      "GP04": {
+        "full": {
+          "n": 951,
+          "positives": 122,
+          "roc_auc": 0.8171,
+          "pr_auc": 0.5074,
+          "brier": 0.08299,
+          "ece": 0.00993,
+          "lift_top10": 4.431,
+          "features": 21
+        },
+        "calibration_off": {
+          "n": 951,
+          "positives": 122,
+          "roc_auc": 0.8175,
+          "pr_auc": 0.535,
+          "brier": 0.08293,
+          "ece": 0.00986,
+          "lift_top10": 4.349,
+          "features": 21
+        },
+        "price_normalisation_off": {
+          "n": 951,
+          "positives": 122,
+          "roc_auc": 0.8171,
+          "pr_auc": 0.5074,
+          "brier": 0.08299,
+          "ece": 0.00993,
+          "lift_top10": 4.431,
+          "features": 21
+        },
+        "coverage_flags_off": {
+          "n": 951,
+          "positives": 122,
+          "roc_auc": 0.8192,
+          "pr_auc": 0.5166,
+          "brier": 0.08188,
+          "ece": 0.01832,
+          "lift_top10": 4.349,
+          "features": 20
+        },
+        "memory_off": {
+          "n": 951,
+          "positives": 122,
+          "roc_auc": 0.8143,
+          "pr_auc": 0.5125,
+          "brier": 0.08283,
+          "ece": 0.0132,
+          "lift_top10": 4.349,
+          "features": 16
+        },
+        "all_features": {
+          "n": 951,
+          "positives": 122,
+          "roc_auc": 0.8077,
+          "pr_auc": 0.5181,
+          "brier": 0.08273,
+          "ece": 0.01785,
+          "lift_top10": 4.513,
+          "features": 145
+        }
+      },
+      "GP05": {
+        "full": {
+          "n": 883,
+          "positives": 60,
+          "roc_auc": 0.7424,
+          "pr_auc": 0.2191,
+          "brier": 0.05672,
+          "ece": 0.01235,
+          "lift_top10": 4.348,
+          "features": 22
+        },
+        "calibration_off": {
+          "n": 883,
+          "positives": 60,
+          "roc_auc": 0.7457,
+          "pr_auc": 0.2258,
+          "brier": 0.05738,
+          "ece": 0.01312,
+          "lift_top10": 4.348,
+          "features": 22
+        },
+        "price_normalisation_off": {
+          "n": 883,
+          "positives": 60,
+          "roc_auc": 0.7424,
+          "pr_auc": 0.2191,
+          "brier": 0.05672,
+          "ece": 0.01235,
+          "lift_top10": 4.348,
+          "features": 22
+        },
+        "coverage_flags_off": {
+          "n": 883,
+          "positives": 60,
+          "roc_auc": 0.7358,
+          "pr_auc": 0.2194,
+          "brier": 0.05733,
+          "ece": 0.01386,
+          "lift_top10": 4.515,
+          "features": 21
+        },
+        "memory_off": {
+          "n": 883,
+          "positives": 60,
+          "roc_auc": 0.74,
+          "pr_auc": 0.2295,
+          "brier": 0.05745,
+          "ece": 0.01283,
+          "lift_top10": 4.348,
+          "features": 17
+        },
+        "all_features": {
+          "n": 883,
+          "positives": 60,
+          "roc_auc": 0.7409,
+          "pr_auc": 0.2442,
+          "brier": 0.05592,
+          "ece": 0.02234,
+          "lift_top10": 4.683,
+          "features": 145
+        }
+      },
+      "GP06": {
+        "full": {
+          "n": 3696,
+          "positives": 106,
+          "roc_auc": 0.7171,
+          "pr_auc": 0.0957,
+          "brier": 0.02755,
+          "ece": 0.00907,
+          "lift_top10": 4.052,
+          "features": 26
+        },
+        "calibration_off": {
+          "n": 3696,
+          "positives": 106,
+          "roc_auc": 0.7246,
+          "pr_auc": 0.1085,
+          "brier": 0.02687,
+          "ece": 0.0071,
+          "lift_top10": 3.864,
+          "features": 26
+        },
+        "price_normalisation_off": {
+          "n": 3696,
+          "positives": 106,
+          "roc_auc": 0.7195,
+          "pr_auc": 0.0967,
+          "brier": 0.02739,
+          "ece": 0.00931,
+          "lift_top10": 3.77,
+          "features": 24
+        },
+        "coverage_flags_off": {
+          "n": 3696,
+          "positives": 106,
+          "roc_auc": 0.7217,
+          "pr_auc": 0.0999,
+          "brier": 0.02728,
+          "ece": 0.00754,
+          "lift_top10": 3.77,
+          "features": 25
+        },
+        "memory_off": {
+          "n": 3696,
+          "positives": 106,
+          "roc_auc": 0.7251,
+          "pr_auc": 0.0961,
+          "brier": 0.02728,
+          "ece": 0.0074,
+          "lift_top10": 4.052,
+          "features": 21
+        },
+        "all_features": {
+          "n": 3696,
+          "positives": 106,
+          "roc_auc": 0.7338,
+          "pr_auc": 0.1055,
+          "brier": 0.02684,
+          "ece": 0.00627,
+          "lift_top10": 4.241,
+          "features": 145
+        }
+      }
+    },
+    "config": {
+      "optuna_trials": 40,
+      "bootstrap_models": 5
+    },
+    "elapsed_seconds": 311.1
+  },
+  "explanations": {
+    "explanations": 5437,
+    "template_guard_pass": 5437,
+    "reading_ease_mean": 73.7,
+    "words_mean": 74.3,
+    "llm_eval": {
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "provider": "local",
+      "items": 360,
+      "seconds": 128.7,
+      "guard_pass_rate": 0.711,
+      "failure_reasons": {
+        "numbers dropped": 103,
+        "changes the time period to monthly": 25,
+        "banned claim": 4,
+        "numbers not in the facts": 3
+      },
+      "pass_rate_by_product": {
+        "GP01": 0.217,
+        "GP02": 0.867,
+        "GP03": 1.0,
+        "GP04": 0.917,
+        "GP05": 0.833,
+        "GP06": 0.433
+      },
+      "words_mean": {
+        "llm": 70.0,
+        "template": 71.3
+      },
+      "reading_ease_mean": {
+        "llm": 59.5,
+        "template": 72.3
+      }
+    },
+    "source": {
+      "template": 5181,
+      "llm": 256
+    }
+  },
+  "impact_truth_recovery": {
+    "note": "Engine inputs read from transactions at the 31 March 2026 snapshot vs the simulator's true annual usage. Only customers whose spend is visible (fuel bought on our cards, energy bills paid from our accounts).",
+    "fuel_litres": {
+      "customers": 16745,
+      "median_ratio": 1.057,
+      "median_abs_pct_error": 7.4,
+      "within_20pct": 0.827,
+      "correlation": 0.953
+    },
+    "gas_kwh": {
+      "customers": 19111,
+      "median_ratio": 1.05,
+      "median_abs_pct_error": 27.9,
+      "within_20pct": 0.388,
+      "correlation": 0.57
+    },
+    "electricity_kwh": {
+      "customers": 24880,
+      "median_ratio": 0.939,
+      "median_abs_pct_error": 29.9,
+      "within_20pct": 0.388,
+      "correlation": 0.775
+    },
+    "transport_co2e_kg": {
+      "customers": 16745,
+      "median_ratio": 1.057,
+      "median_abs_pct_error": 7.4,
+      "within_20pct": 0.827,
+      "correlation": 0.955
+    },
+    "home_energy_co2e_kg": {
+      "customers": 24880,
+      "median_ratio": 1.084,
+      "median_abs_pct_error": 22.1,
+      "within_20pct": 0.47,
+      "correlation": 0.743
+    },
+    "coverage": {
+      "customers": 30000,
+      "car_owners": 20113,
+      "fuel_visible": 16745,
+      "energy_bills_visible": 24880
+    }
+  },
+  "memory_replay": {
+    "customers": 300,
+    "rounds": [
+      {
+        "round": 1,
+        "date": "2026-09-30",
+        "customers": 300,
+        "shown": 327,
+        "customers_shown_something": 287,
+        "suppressed_by_memory": 8,
+        "responses": {
+          "clicked": 110,
+          "none": 93,
+          "dismissed": 72,
+          "not_interested": 52
+        }
+      },
+      {
+        "round": 2,
+        "date": "2026-10-30",
+        "customers": 300,
+        "shown": 205,
+        "customers_shown_something": 193,
+        "suppressed_by_memory": 132,
+        "reshown_within_cooldown": 0,
+        "clicked_reshown": 110,
+        "clicked_previous_round": 110,
+        "new_products_shown": 2,
+        "responses": {
+          "clicked": 85,
+          "dismissed": 53,
+          "none": 41,
+          "not_interested": 26
+        }
+      },
+      {
+        "round": 3,
+        "date": "2026-11-29",
+        "customers": 300,
+        "shown": 126,
+        "customers_shown_something": 119,
+        "suppressed_by_memory": 208,
+        "reshown_within_cooldown": 0,
+        "clicked_reshown": 85,
+        "clicked_previous_round": 85,
+        "new_products_shown": 0,
+        "responses": {
+          "clicked": 59,
+          "none": 32,
+          "dismissed": 24,
+          "not_interested": 11
+        }
+      }
+    ],
+    "cooldown_days": {
+      "dismissed": 90,
+      "not_interested": 180
+    }
+  },
+  "insights_overview": {
+    "customers": 30000,
+    "customers_with_a_recommendation": 4792,
+    "recommendations": 5437,
+    "shown": 5146,
+    "human_review": 291,
+    "expected_takeups": 914.0,
+    "expected_co2e_tonnes_per_year": 1241.6,
+    "co2e_tonnes_per_year_if_all_shown_taken_up": 9470.0,
+    "customer_savings_gbp_per_year_expected": 418843.0,
+    "footprint_kg_median": 4250.0,
+    "footprint_tonnes_total": 144781.0
+  },
+  "stage_seconds": {
+    "impact": 0.2,
+    "recommend": 0.9,
+    "explain": 1.0,
+    "impact_checks": 0.5,
+    "memory": 1.0,
+    "insights": 30.1,
+    "propensity": 311.8,
+    "explain_llm": 129.8,
+    "report": 0.0
+  }
+}

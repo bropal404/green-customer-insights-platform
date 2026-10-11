@@ -257,16 +257,21 @@ def build_digital(s: pd.DataFrame, takeups: pd.DataFrame, months: np.ndarray, rn
 
 
 def build_campaigns(s: pd.DataFrame, labels: pd.DataFrame, prior: pd.DataFrame, rng: np.random.Generator) -> pd.DataFrame:
-    """Earlier marketing contacts and responses: the seed history for customer memory."""
+    """Marketing contacts and responses: the history customer memory starts from. Three waves before the training date
+    and two in the summer of 2026, so memory is in force on the live date (a dismissal in August is still paused on
+    30 September). Customers who took the product up before a wave say they already have it."""
     p = labels.pivot(index="customer_id", columns="product", values="p_true").loc[s["customer_id"]].values
+    taken = labels.pivot(index="customer_id", columns="product", values="takeup_date").loc[s["customer_id"]]
     products = np.array(["GP01", "GP02", "GP03", "GP04", "GP05", "GP06"])
     rows = []
-    for k, sent in enumerate(["2025-05-15", "2025-10-15", "2026-02-16"]):
+    for k, sent in enumerate(["2025-05-15", "2025-10-15", "2026-02-16", "2026-06-15", "2026-08-17"]):
         targeted = rng.random(len(s)) < 0.30
         product_idx = rng.integers(0, 6, len(s))
         p_take = p[np.arange(len(s)), product_idx]
         prior_hold = np.array([prior[f"prior_{products[j]}"].values[i] if f"prior_{products[j]}" in prior else False
                                for i, j in enumerate(product_idx)])
+        took = pd.to_datetime(taken.values[np.arange(len(s)), product_idx])
+        prior_hold = prior_hold | (pd.notna(took) & (took < pd.Timestamp(sent)))
         clicked = rng.random(len(s)) < np.clip(0.04 + 3.0 * p_take, 0, 0.6)
         dismissed = ~clicked & (rng.random(len(s)) < 0.10)
         not_interested = ~clicked & ~dismissed & (rng.random(len(s)) < 0.05 + 0.1 * (p_take < 0.01))

@@ -15,3 +15,8 @@ deliverables/*.log
 deliverables/*.out
 # working notes
 BUILD_STATUS.md
+# the top-level repo ignores *.csv; the reference data and metrics here are needed
+!*.csv
+# written by the dashboard when someone clicks a response button
+demo/pipeline/memory/dashboard_events.parquet
+demo/pipeline/explanations/llm_cache.jsonl

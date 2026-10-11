@@ -1,13 +1,18 @@
-"""Optional LLM rephrasing of each template explanation (FR5), run offline on a local GPU, checked by gcip.explain.guards.
+"""Optional LLM rephrasing of each template explanation (FR5), checked by gcip.explain.guards.
 
-Nothing is trained and nothing leaves the machine: an open instruction model (configs/pipeline.yaml `llm.model`, default
-Qwen2.5-1.5B-Instruct, fits a 6 GB laptop GPU in fp16) sees only the structured facts and the template draft. Anything
-that fails a guard falls back to the template, so every customer still gets a correct explanation. On a multi-GPU node,
-`python -m gcip.explain.run` under torchrun gives each rank every WORLD_SIZE-th record.
+Nothing is trained. The LLM only rewrites the body of a template explanation; the fixed compliance sentence (data date,
+caveat, disclaimer) is appended unchanged, and anything that fails a guard falls back to the template. Two backends:
+
+  gemini  Gemini Flash through the Gemini API (default at inference time; key in GEMINI_API_KEY, e.g. gcip/.env).
+          Only the template draft and its facts are sent: no name, customer id, account or transaction.
+  local   an open model on the local GPU (Qwen2.5-1.5B-Instruct; `pip install -r requirements-llm.txt`), fully offline.
+
+`make_explainer(cfg)` returns the configured backend, or None when it is not available (templates only).
 """
 
 from __future__ import annotations
 
+import json
 import os
 import threading
 
@@ -90,3 +95,125 @@ class LocalExplainer:
 def generate(items: list[dict], model_name: str, batch_size: int = 8, max_new_tokens: int = 220, dtype: str = "float16") -> list[str]:
     """One-shot helper used by gcip.explain.run."""
     return LocalExplainer(model_name, max_new_tokens, dtype).generate(items, batch_size)
+
+
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]
+
+
+def load_env(path=ROOT / ".env") -> None:
+    """KEY=value lines from gcip/.env (git-ignored) into the environment, without overriding what is already set."""
+    if path.exists():
+        for line in path.read_text().splitlines():
+            if "=" in line and not line.lstrip().startswith("#"):
+                key, value = line.split("=", 1)
+                os.environ.setdefault(key.strip(), value.strip().strip('"'))
+
+
+class GeminiExplainer:
+    """Gemini Flash over HTTPS (standard library only), temperature 0. When one model's quota is used up (HTTP 429
+    "quota"), the next model in `models` is tried. Replies are cached on disk, so the same rewrite never costs twice."""
+
+    def __init__(self, models: list[str], max_new_tokens: int = 300, timeout: float = 30.0, cache=None):
+        load_env()
+        self.key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+        if not self.key:
+            raise RuntimeError("GEMINI_API_KEY is not set (put it in gcip/.env)")
+        self.models, self.max_new_tokens, self.timeout = list(models), max_new_tokens, timeout
+        self.exhausted: set[str] = set()
+        self.cache_path = cache
+        self.cache: dict[str, str] = {}
+        self.lock = threading.Lock()
+        if cache is not None and cache.exists():
+            for line in cache.read_text().splitlines():
+                row = json.loads(line)
+                self.cache[row["key"]] = row["text"]
+        self.last_model: str | None = None
+
+    def _body(self, item: dict) -> dict:
+        msgs = messages(item["facts"], item.get("body", item["draft"]))
+        role = {"user": "user", "assistant": "model"}
+        return {"systemInstruction": {"parts": [{"text": msgs[0]["content"]}]},
+                "contents": [{"role": role[m["role"]], "parts": [{"text": m["content"]}]} for m in msgs[1:]],
+                # thinking off: the answer is a short rewrite, and thinking tokens would eat the output allowance
+                "generationConfig": {"temperature": 0, "maxOutputTokens": max(self.max_new_tokens, 1024),
+                                     "thinkingConfig": {"thinkingBudget": 0}}}
+
+    def _call(self, model: str, body: dict) -> str:
+        import time
+        import urllib.error
+        import urllib.request
+
+        request = urllib.request.Request(GEMINI_URL.format(model=model), data=json.dumps(body).encode(),
+                                         headers={"Content-Type": "application/json", "x-goog-api-key": self.key})
+        for attempt in range(3):
+            try:
+                with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                    reply = json.loads(response.read())
+                parts = reply["candidates"][0]["content"].get("parts", [])
+                return normalise("".join(p.get("text", "") for p in parts if not p.get("thought")))
+            except urllib.error.HTTPError as err:
+                detail = err.read()[:400].decode(errors="replace")
+                if err.code == 429 and "quota" in detail.lower():
+                    raise QuotaExhausted(model) from None
+                if err.code in (429, 500, 503) and attempt < 2:
+                    time.sleep(2 ** attempt)
+                    continue
+                raise RuntimeError(f"Gemini API error {err.code}: {detail[:200]}") from None
+        raise RuntimeError("Gemini API did not answer")
+
+    def rephrase(self, item: dict) -> str:
+        import hashlib
+
+        body = self._body(item)
+        key = hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()
+        if key in self.cache:
+            return self.cache[key]
+        for model in self.models:
+            if model in self.exhausted:
+                continue
+            try:
+                text = self._call(model, body)
+            except QuotaExhausted:
+                self.exhausted.add(model)
+                continue
+            self.last_model = model
+            with self.lock:
+                self.cache[key] = text
+                if self.cache_path is not None:
+                    self.cache_path.parent.mkdir(parents=True, exist_ok=True)
+                    with self.cache_path.open("a") as fh:
+                        fh.write(json.dumps({"key": key, "model": model, "text": text}) + "\n")
+            return text
+        raise RuntimeError("the Gemini quota for this API key is used up for today (all configured models)")
+
+    def generate(self, items: list[dict], batch_size: int = 4) -> list[str | None]:
+        """Rewrites for many items, `batch_size` requests at a time; a failed request gives None (template kept)."""
+        from concurrent.futures import ThreadPoolExecutor
+
+        def one(item):
+            try:
+                return self.rephrase(item)
+            except RuntimeError:
+                return None
+        with ThreadPoolExecutor(max_workers=max(1, batch_size)) as pool:
+            return list(pool.map(one, items))
+
+
+class QuotaExhausted(Exception):
+    pass
+
+
+def make_explainer(cfg: dict, cache=None):
+    """The configured LLM backend (`llm.provider`: gemini, local or none), or None when it cannot run here."""
+    provider = cfg.get("provider", "none")
+    try:
+        if provider == "gemini":
+            return GeminiExplainer([cfg["model"], *cfg.get("fallback_models", [])], cfg.get("max_new_tokens", 300), cache=cache)
+        if provider == "local":
+            import torch  # noqa: F401  (fails fast when the optional packages are not installed)
+            return LocalExplainer(cfg.get("local_model", "Qwen/Qwen2.5-1.5B-Instruct"), cfg.get("max_new_tokens", 220),
+                                  cfg.get("dtype", "float16"))
+    except (RuntimeError, ImportError):
+        return None
+    return None

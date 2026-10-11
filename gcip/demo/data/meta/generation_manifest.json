@@ -1,0 +1,689 @@
+{
+  "customers": 30000,
+  "seed": 20261010,
+  "extract_date": "2026-09-30",
+  "elapsed_seconds": 26.3,
+  "config": {
+    "seed": 20261010,
+    "population": {
+      "n_customers": 30000,
+      "geography": "England and Wales, 318 local authorities (2023 boundaries)",
+      "source": "reference/la_profile.csv (Census 2021 TS054/TS044/TS045/TS046/TS017/TS061)",
+      "min_age": 18,
+      "max_age": 90,
+      "age_bands": [
+        [
+          18,
+          24
+        ],
+        [
+          25,
+          34
+        ],
+        [
+          35,
+          44
+        ],
+        [
+          45,
+          54
+        ],
+        [
+          55,
+          64
+        ],
+        [
+          65,
+          74
+        ],
+        [
+          75,
+          90
+        ]
+      ],
+      "age_given_tenure": {
+        "owned_outright": [
+          0.01,
+          0.04,
+          0.07,
+          0.12,
+          0.2,
+          0.3,
+          0.26
+        ],
+        "mortgage": [
+          0.02,
+          0.21,
+          0.31,
+          0.27,
+          0.15,
+          0.03,
+          0.01
+        ],
+        "social_rent": [
+          0.08,
+          0.17,
+          0.17,
+          0.17,
+          0.16,
+          0.13,
+          0.12
+        ],
+        "private_rent": [
+          0.16,
+          0.36,
+          0.22,
+          0.13,
+          0.08,
+          0.03,
+          0.02
+        ]
+      },
+      "income_decile_given_tenure": {
+        "owned_outright": [
+          0.08,
+          0.14,
+          0.13,
+          0.11,
+          0.1,
+          0.09,
+          0.09,
+          0.09,
+          0.08,
+          0.09
+        ],
+        "mortgage": [
+          0.01,
+          0.02,
+          0.04,
+          0.07,
+          0.1,
+          0.12,
+          0.14,
+          0.15,
+          0.16,
+          0.19
+        ],
+        "social_rent": [
+          0.22,
+          0.22,
+          0.17,
+          0.12,
+          0.09,
+          0.07,
+          0.05,
+          0.03,
+          0.02,
+          0.01
+        ],
+        "private_rent": [
+          0.1,
+          0.1,
+          0.11,
+          0.12,
+          0.12,
+          0.12,
+          0.11,
+          0.1,
+          0.07,
+          0.05
+        ]
+      },
+      "flat_multiplier_given_tenure": {
+        "owned_outright": 0.55,
+        "mortgage": 0.65,
+        "social_rent": 2.2,
+        "private_rent": 2.1
+      },
+      "car_odds_multiplier": {
+        "flat": 0.45,
+        "decile_log_odds_slope": 0.24
+      },
+      "employment_given_age": {
+        "18-24": [
+          0.62,
+          0.05,
+          0.0,
+          0.25,
+          0.08
+        ],
+        "25-34": [
+          0.8,
+          0.11,
+          0.0,
+          0.03,
+          0.06
+        ],
+        "35-44": [
+          0.79,
+          0.14,
+          0.0,
+          0.01,
+          0.06
+        ],
+        "45-54": [
+          0.77,
+          0.15,
+          0.01,
+          0.0,
+          0.07
+        ],
+        "55-64": [
+          0.62,
+          0.15,
+          0.13,
+          0.0,
+          0.1
+        ],
+        "65-74": [
+          0.12,
+          0.08,
+          0.76,
+          0.0,
+          0.04
+        ],
+        "75-90": [
+          0.02,
+          0.02,
+          0.95,
+          0.0,
+          0.01
+        ]
+      },
+      "income_region_shift": {
+        "London": [
+          1,
+          0.4
+        ],
+        "South East": [
+          1,
+          0.2
+        ],
+        "North East": [
+          -1,
+          0.25
+        ],
+        "Wales": [
+          -1,
+          0.2
+        ],
+        "Yorkshire and The Humber": [
+          -1,
+          0.1
+        ]
+      },
+      "vulnerability_rate": 0.06
+    },
+    "hidden_traits": {
+      "green": {
+        "age_under_40": 0.3,
+        "decile_scaled": 0.15,
+        "london": 0.2,
+        "residual_sd": 1.0
+      },
+      "liquidity": {
+        "decile_scaled": 0.7,
+        "age_over_55": 0.3,
+        "residual_sd": 0.75
+      },
+      "stay": {
+        "age_over_45": 0.4,
+        "owner": 0.3,
+        "residual_sd": 1.0
+      },
+      "digital": {
+        "age_scaled": -0.8,
+        "decile_scaled": 0.15,
+        "residual_sd": 0.65
+      },
+      "risk": {
+        "decile_scaled": 0.25,
+        "age_over_65": -0.4,
+        "residual_sd": 1.0
+      }
+    },
+    "vehicles": {
+      "source_fuel_mix": "reference/la_profile.csv car_share_* (DfT VEH0105 + VEH0142, private cars, 2026 Q2)",
+      "source_mileage": "reference/nts_mileage_by_fuel.csv and nts_mileage_bands.csv (NTS0901/NTS0904, England 2025)",
+      "mileage_income_slope": 0.06,
+      "young_car_share": {
+        "petrol": 0.17,
+        "diesel": 0.05,
+        "hev": 0.4,
+        "phev": 0.45,
+        "bev": 0.6
+      },
+      "max_age_years": 25,
+      "km_per_litre_centre": {
+        "petrol": 12.85,
+        "diesel": 14.96,
+        "hev": 16.0,
+        "phev": 25.0
+      },
+      "km_per_litre_sd_log": 0.15,
+      "ev_kwh_per_km_centre": 0.205,
+      "ev_kwh_per_km_sd_log": 0.12,
+      "phev_electric_share": 0.45,
+      "tank_litres": [
+        40,
+        65
+      ],
+      "round_amount_fill_share": 0.4,
+      "forecourt_shop_rate_per_fill": 0.25,
+      "cash_fuel_customer_share": 0.1,
+      "cash_fuel_fill_share": 0.55,
+      "external_card_customer_share": 0.08,
+      "public_charging_share_bev": {
+        "offstreet": 0.15,
+        "onstreet": 0.85
+      },
+      "public_charge_price_gbp_per_kwh": {
+        "slow": 0.55,
+        "rapid": 0.79
+      },
+      "motor_finance_share_of_cars": 0.38,
+      "motor_finance_with_us_share": 0.3,
+      "motor_finance_term_months": [
+        36,
+        48
+      ],
+      "ulez_noncompliant_share_london": 0.04
+    },
+    "homes": {
+      "source": "reference/la_profile.csv; reference/consumption_distribution_2024.csv (DESNZ 2024)",
+      "floor_area_m2": {
+        "detached": 140,
+        "semi": 92,
+        "terraced": 82,
+        "flat": 61,
+        "caravan": 45
+      },
+      "floor_area_sd_log": 0.22,
+      "floor_area_income_slope": 0.06,
+      "elec_income_slope": 0.04,
+      "epc_band_probs": {
+        "detached": [
+          0.01,
+          0.05,
+          0.3,
+          0.4,
+          0.16,
+          0.06,
+          0.02
+        ],
+        "semi": [
+          0.0,
+          0.03,
+          0.36,
+          0.44,
+          0.13,
+          0.03,
+          0.01
+        ],
+        "terraced": [
+          0.0,
+          0.03,
+          0.38,
+          0.42,
+          0.13,
+          0.03,
+          0.01
+        ],
+        "flat": [
+          0.0,
+          0.08,
+          0.55,
+          0.28,
+          0.07,
+          0.01,
+          0.01
+        ],
+        "caravan": [
+          0.0,
+          0.0,
+          0.05,
+          0.25,
+          0.35,
+          0.2,
+          0.15
+        ]
+      },
+      "gas_demand_by_epc": [
+        0.45,
+        0.6,
+        0.8,
+        1.0,
+        1.25,
+        1.55,
+        1.85
+      ],
+      "gas_demand_area_elasticity": 0.75,
+      "electric_heating_kwh_per_m2": 70,
+      "heat_pump_spf": 2.93,
+      "boiler_efficiency": 0.84,
+      "elec_household_size_elasticity": 0.35,
+      "pv_kwp_mean": 4.0,
+      "pv_kwp_sd_log": 0.2,
+      "pv_self_consumption": 0.45,
+      "roof_suitable_share": 0.72,
+      "oil_price_gbp_per_litre": 0.66,
+      "lpg_price_gbp_per_litre": 0.7,
+      "burning_oil_kwh_per_litre": 10.35,
+      "billing": {
+        "dual_fuel_single_dd_share": 0.68,
+        "separate_dd_share": 0.2,
+        "prepayment_share": 0.12,
+        "paid_from_other_bank_share": 0.14,
+        "green_supplier_boost": 0.8
+      },
+      "water_bill_gbp_month": [
+        32,
+        62
+      ],
+      "council_tax_gbp_month": [
+        110,
+        320
+      ],
+      "rent_gbp_month": {
+        "private": {
+          "London": [
+            1500,
+            2900
+          ],
+          "default": [
+            700,
+            1450
+          ]
+        },
+        "social": [
+          380,
+          640
+        ]
+      },
+      "mortgage": {
+        "term_years": [
+          15,
+          30
+        ],
+        "two_year_fix_share": 0.55,
+        "with_us_share": 0.38,
+        "paid_from_other_bank_share": 0.08,
+        "epc_match_rate": 0.95
+      }
+    },
+    "banking": {
+      "savings_account_share": 0.58,
+      "credit_card_share": 0.55,
+      "personal_loan_share": 0.11,
+      "investments_share": 0.35,
+      "investments_with_us_share": 0.3,
+      "stated_sustainability_pref_known_share": 0.3,
+      "paper_statement_share_by_age": {
+        "18-24": 0.04,
+        "25-34": 0.05,
+        "35-44": 0.07,
+        "45-54": 0.1,
+        "55-64": 0.16,
+        "65-74": 0.27,
+        "75-90": 0.45
+      },
+      "digitally_inactive_target_share": 0.07,
+      "arrears_rate": 0.035,
+      "overdraft_heavy_rate": 0.07
+    },
+    "transactions": {
+      "start": "2025-01-01",
+      "end": "2026-09-30",
+      "source_spend": "reference/family_spending_a6_fye2025.csv (ONS FS A6 by income decile)",
+      "other_spend_codes": [
+        "1",
+        "2",
+        "3",
+        "5",
+        "8",
+        "9",
+        "11",
+        "12"
+      ],
+      "other_spend_capture_share": 0.8,
+      "household_size_elasticity": 0.45,
+      "local_business_share": 0.18,
+      "descriptor_truncate_dd": 18,
+      "card_last4_per_customer": true
+    },
+    "events": {
+      "house_move": 0.006,
+      "new_car": 0.011,
+      "new_baby": 0.004,
+      "retirement_if_60_plus": 0.008,
+      "loan_payoff_tracked": true
+    },
+    "label_model": {
+      "GP01": {
+        "drivers": {
+          "log_km": 0.7,
+          "log_km_sq": -0.3,
+          "car_age": 0.35,
+          "loan_ending_12m": 1.1,
+          "offstreet": 0.6,
+          "income": 0.25,
+          "multi_car": 0.2,
+          "clean_air_charges": 0.8,
+          "area_ev_share": 0.3
+        },
+        "traits": {
+          "green": 0.9,
+          "liquidity": 0.5
+        }
+      },
+      "GP02": {
+        "drivers": {
+          "epc_low": 0.9,
+          "heat_intensity": 0.55,
+          "recent_move": 0.8,
+          "diy": 0.45,
+          "income": 0.2,
+          "mortgage_with_us": 0.5,
+          "household_size": 0.15
+        },
+        "traits": {
+          "green": 0.7,
+          "stay": 0.6,
+          "liquidity": 0.2
+        }
+      },
+      "GP03": {
+        "drivers": {
+          "log_elec": 0.65,
+          "solar_yield": 0.35,
+          "ev_at_home": 0.7,
+          "daytime_home": 0.45,
+          "income": 0.3,
+          "detached": 0.35
+        },
+        "traits": {
+          "green": 0.8,
+          "liquidity": 0.5
+        }
+      },
+      "GP04": {
+        "drivers": {
+          "log_logins": 0.85,
+          "app_user": 0.7,
+          "age": -0.45,
+          "paper_accounts": 0.2
+        },
+        "traits": {
+          "digital": 0.9
+        }
+      },
+      "GP05": {
+        "drivers": {
+          "invests_with_us": 0.6,
+          "log_investment": 0.35,
+          "regular_investor": 0.45,
+          "stated_pref": 1.2,
+          "green_supplier": 0.5,
+          "income": 0.25
+        },
+        "traits": {
+          "green": 1.0,
+          "risk": 0.55
+        }
+      },
+      "GP06": {
+        "drivers": {
+          "existing_borrowing": 0.6,
+          "purchase_intent": 1.3,
+          "cyclist": 0.7,
+          "owner_outright_high_gas": 0.5,
+          "income": -0.15,
+          "age": -0.25
+        },
+        "traits": {
+          "green": 0.7,
+          "liquidity": -0.5
+        }
+      }
+    },
+    "labels": {
+      "cutoff": "2026-03-31",
+      "window_start": "2026-04-01",
+      "window_end": "2026-09-30",
+      "target_rate": {
+        "GP01": 0.055,
+        "GP02": 0.045,
+        "GP03": 0.035,
+        "GP04": 0.12,
+        "GP05": 0.06,
+        "GP06": 0.035
+      },
+      "prior_holding_rate": {
+        "GP01": 0.015,
+        "GP02": 0.01,
+        "GP03": 0.008,
+        "GP04": 0.0,
+        "GP05": 0.02,
+        "GP06": 0.006
+      }
+    },
+    "observability": {
+      "mcc_present_card": 0.97,
+      "dd_reference_has_fuel_tag": 0.35
+    },
+    "splits": {
+      "train": 0.7,
+      "validation": 0.15,
+      "test": 0.15,
+      "hash_salt": "gcip-ps1"
+    }
+  },
+  "files": {
+    "sources/_control.json": 12621,
+    "sources/card_processor/card_registry.csv": 2446041,
+    "sources/card_processor/part-0000.parquet": 10261407,
+    "sources/card_processor/part-0001.parquet": 10338360,
+    "sources/card_processor/part-0002.parquet": 10095785,
+    "sources/card_processor/part-0003.parquet": 10367647,
+    "sources/card_processor/part-0004.parquet": 10489045,
+    "sources/card_processor/part-0005.parquet": 10208076,
+    "sources/card_processor/part-0006.parquet": 10204346,
+    "sources/card_processor/part-0007.parquet": 10347549,
+    "sources/card_processor/part-0008.parquet": 10315967,
+    "sources/card_processor/part-0009.parquet": 10353698,
+    "sources/card_processor/part-0010.parquet": 10204033,
+    "sources/card_processor/part-0011.parquet": 10031216,
+    "sources/card_processor/part-0012.parquet": 10294353,
+    "sources/card_processor/part-0013.parquet": 10290005,
+    "sources/card_processor/part-0014.parquet": 10239611,
+    "sources/card_processor/part-0015.parquet": 10184670,
+    "sources/card_processor/part-0016.parquet": 10247414,
+    "sources/card_processor/part-0017.parquet": 10383221,
+    "sources/card_processor/part-0018.parquet": 10370004,
+    "sources/card_processor/part-0019.parquet": 10067451,
+    "sources/card_processor/part-0020.parquet": 10416238,
+    "sources/card_processor/part-0021.parquet": 10250485,
+    "sources/card_processor/part-0022.parquet": 10102568,
+    "sources/card_processor/part-0023.parquet": 10360621,
+    "sources/card_processor/part-0024.parquet": 10094912,
+    "sources/card_processor/part-0025.parquet": 10319858,
+    "sources/card_processor/part-0026.parquet": 10000188,
+    "sources/card_processor/part-0027.parquet": 10245631,
+    "sources/card_processor/part-0028.parquet": 10397728,
+    "sources/card_processor/part-0029.parquet": 10117919,
+    "sources/core_banking/accounts.csv": 6446929,
+    "sources/core_banking/balances.csv": 55299577,
+    "sources/core_banking/customers.csv": 2326747,
+    "sources/crm_marketing/campaign_responses.csv": 3122705,
+    "sources/crm_marketing/contacts.csv": 1013000,
+    "sources/digital_analytics/monthly_engagement.jsonl": 85681708,
+    "sources/lending_assets/property_valuations.xml": 784178,
+    "sources/lending_assets/vehicle_records.csv": 101981,
+    "sources/payments_hub/part-0000.csv.gz": 2514715,
+    "sources/payments_hub/part-0001.csv.gz": 2534366,
+    "sources/payments_hub/part-0002.csv.gz": 2530476,
+    "sources/payments_hub/part-0003.csv.gz": 2536270,
+    "sources/payments_hub/part-0004.csv.gz": 2557161,
+    "sources/payments_hub/part-0005.csv.gz": 2564496,
+    "sources/payments_hub/part-0006.csv.gz": 2537815,
+    "sources/payments_hub/part-0007.csv.gz": 2553883,
+    "sources/payments_hub/part-0008.csv.gz": 2545864,
+    "sources/payments_hub/part-0009.csv.gz": 2551893,
+    "sources/payments_hub/part-0010.csv.gz": 2547756,
+    "sources/payments_hub/part-0011.csv.gz": 2536726,
+    "sources/payments_hub/part-0012.csv.gz": 2549092,
+    "sources/payments_hub/part-0013.csv.gz": 2541180,
+    "sources/payments_hub/part-0014.csv.gz": 2562166,
+    "sources/payments_hub/part-0015.csv.gz": 2535298,
+    "sources/payments_hub/part-0016.csv.gz": 2539863,
+    "sources/payments_hub/part-0017.csv.gz": 2561127,
+    "sources/payments_hub/part-0018.csv.gz": 2559010,
+    "sources/payments_hub/part-0019.csv.gz": 2546615,
+    "sources/payments_hub/part-0020.csv.gz": 2553697,
+    "sources/payments_hub/part-0021.csv.gz": 2532119,
+    "sources/payments_hub/part-0022.csv.gz": 2557975,
+    "sources/payments_hub/part-0023.csv.gz": 2557208,
+    "sources/payments_hub/part-0024.csv.gz": 2556936,
+    "sources/payments_hub/part-0025.csv.gz": 2546980,
+    "sources/payments_hub/part-0026.csv.gz": 2533350,
+    "sources/payments_hub/part-0027.csv.gz": 2564472,
+    "sources/payments_hub/part-0028.csv.gz": 2549069,
+    "sources/payments_hub/part-0029.csv.gz": 2531722,
+    "sources/product_system/holdings.csv": 4577712,
+    "sources/product_system/statement_preference_events.csv": 41636,
+    "truth_vault/labels.parquet": 1178874,
+    "truth_vault/merchant_directory.parquet": 506555,
+    "truth_vault/state.parquet": 6207642,
+    "truth_vault/system_of_record.json": 5480,
+    "truth_vault/transaction_truth/part-0000.parquet": 12029386,
+    "truth_vault/transaction_truth/part-0001.parquet": 12272633,
+    "truth_vault/transaction_truth/part-0002.parquet": 12038136,
+    "truth_vault/transaction_truth/part-0003.parquet": 12257679,
+    "truth_vault/transaction_truth/part-0004.parquet": 12417452,
+    "truth_vault/transaction_truth/part-0005.parquet": 12162024,
+    "truth_vault/transaction_truth/part-0006.parquet": 12139120,
+    "truth_vault/transaction_truth/part-0007.parquet": 12162158,
+    "truth_vault/transaction_truth/part-0008.parquet": 12209043,
+    "truth_vault/transaction_truth/part-0009.parquet": 12229339,
+    "truth_vault/transaction_truth/part-0010.parquet": 12119458,
+    "truth_vault/transaction_truth/part-0011.parquet": 11852877,
+    "truth_vault/transaction_truth/part-0012.parquet": 12219972,
+    "truth_vault/transaction_truth/part-0013.parquet": 12130559,
+    "truth_vault/transaction_truth/part-0014.parquet": 12134576,
+    "truth_vault/transaction_truth/part-0015.parquet": 12139339,
+    "truth_vault/transaction_truth/part-0016.parquet": 12138951,
+    "truth_vault/transaction_truth/part-0017.parquet": 12226875,
+    "truth_vault/transaction_truth/part-0018.parquet": 12255038,
+    "truth_vault/transaction_truth/part-0019.parquet": 11973129,
+    "truth_vault/transaction_truth/part-0020.parquet": 12284103,
+    "truth_vault/transaction_truth/part-0021.parquet": 12130845,
+    "truth_vault/transaction_truth/part-0022.parquet": 11950532,
+    "truth_vault/transaction_truth/part-0023.parquet": 12266990,
+    "truth_vault/transaction_truth/part-0024.parquet": 11986143,
+    "truth_vault/transaction_truth/part-0025.parquet": 12150405,
+    "truth_vault/transaction_truth/part-0026.parquet": 11862950,
+    "truth_vault/transaction_truth/part-0027.parquet": 12204781,
+    "truth_vault/transaction_truth/part-0028.parquet": 12309073,
+    "truth_vault/transaction_truth/part-0029.parquet": 12051187
+  }
+}

@@ -11,8 +11,10 @@ GET  /api/me/<id>                          customer app: only what the customer 
                                            to them in plain language; no scores, codes or flags)
 POST /api/customer/<id>/feedback           {"product": "GP01", "response": "not_interested"}: stored in memory, then the
                                            customer's recommendations are made again
-POST /api/customer/<id>/explain            {"product": "GP01"}: rephrase that explanation with the local LLM, guarded
-POST /api/memory/reset                     forget the feedback given in the dashboard
+POST /api/customer/<id>/undo               {"product": "GP01"}: remove the latest app response for that product
+POST /api/customer/<id>/explain            {"product": "GP01"}: rewrite that explanation with the LLM (Gemini Flash), guarded
+GET  /api/memory                           customer memory across the bank: active pauses, stops, interest, recent responses
+POST /api/memory/reset                     forget the feedback given in the dashboards
 """
 
 from __future__ import annotations
@@ -37,6 +39,7 @@ import pyarrow.parquet as pq  # noqa: E402
 from gcip.config import load_config  # noqa: E402
 from gcip.explain.run import build_items, compose, explain  # noqa: E402
 from gcip.insights.bank import footprint  # noqa: E402
+from gcip.models.reasons import LABELS as REASON_LABELS  # noqa: E402
 from gcip.memory.replay import RESPONSES, apply_events, empty_events  # noqa: E402
 from gcip.recommend.engine import recommend  # noqa: E402
 from gcip.serve.documents import clean, document  # noqa: E402
@@ -49,9 +52,9 @@ SPEND_CATEGORIES = ["fuel", "electricity", "gas", "public_transport", "home_impr
 class State:
     """Everything the dashboard reads, loaded once; feedback updates one customer at a time."""
 
-    def __init__(self, run_dir: Path):
+    def __init__(self, run_dir: Path, data_dir: Path | None = None):
         self.run_dir = run_dir
-        data = run_dir / "data"
+        data = self.data_dir = data_dir or run_dir / "data"
         self.cfg = load_config("pipeline")
         self.lock = threading.Lock()
         self.c360 = pd.read_parquet(data / f"customer_360_{LIVE}.parquet")
@@ -63,8 +66,12 @@ class State:
         self.explanations = pd.read_parquet(run_dir / "explanations" / "explanations.parquet")
         self.trends = pd.read_parquet(run_dir / "insights" / "monthly_trends.parquet")
         self.thresholds = json.loads((run_dir / "models" / "thresholds.json").read_text())
+        self.products_cfg = load_config("products")["products"]
+        self.carbon_cfg = load_config("carbon")
+        spend = run_dir / "insights" / "customer_monthly_spend.parquet"
+        self.customer_spend = pd.read_parquet(spend).set_index("customer_id") if spend.exists() else None
         self.parts = []  # (first customer, last customer, path): each categorised part holds whole customers
-        for path in sorted((data / "categorised").glob("part-*.parquet")):
+        for path in sorted((data / "categorised").glob("part-*.parquet")) if self.customer_spend is None else []:
             col = pq.ParquetFile(path).schema_arrow.get_field_index("customer_id")
             stats = [rg.column(col).statistics for rg in (pq.ParquetFile(path).metadata.row_group(i)
                                                           for i in range(pq.ParquetFile(path).metadata.num_row_groups))]
@@ -73,11 +80,9 @@ class State:
         self.events = pd.read_parquet(self.events_path) if self.events_path.exists() else empty_events()
         self.overview = self._overview()
         self.index = self._index()
-        llm = self.cfg["llm"]
-        self.explainer = None
-        if llm.get("enabled", True):
-            from gcip.explain.llm import LocalExplainer
-            self.explainer = LocalExplainer(llm["model"], llm["max_new_tokens"], llm["dtype"])  # loads on first use
+        from gcip.explain.llm import make_explainer
+        # Gemini Flash with GEMINI_API_KEY (falls back across models on quota; replies cached on disk), else templates only
+        self.explainer = make_explainer(self.cfg["llm"], cache=run_dir / "explanations" / "llm_cache.jsonl")
         for customer_id in self.events["customer_id"].unique():
             self._recompute(customer_id)
 
@@ -92,6 +97,7 @@ class State:
             "insights": self._json("insights", "bank_insights.json"),
             "models": report.get("products"), "ablations": report.get("ablations"),
             "explanations": self._json("metrics", "explanations.json"),
+            "gemini_sample": self._json("metrics", "explanations_gemini_sample.json"),
             "impact_truth_recovery": self._json("metrics", "impact_truth_recovery.json"),
             "impact_sensitivity": pd.read_csv(sens).to_dict("records") if sens.exists() else [],
             "memory_replay": self._json("metrics", "memory_replay.json"),
@@ -103,7 +109,7 @@ class State:
         })
 
     def _data_status(self) -> dict:
-        meta = self.run_dir / "data" / "meta"
+        meta = self.data_dir / "meta"
         out = {"customers": int(len(self.c360))}
         if (meta / "data_validation.json").exists():
             v = json.loads((meta / "data_validation.json").read_text())
@@ -146,13 +152,90 @@ class State:
         self.decisions = pd.concat([self.decisions[self.decisions["customer_id"] != customer_id], decisions], ignore_index=True)
         self.explanations = pd.concat([self.explanations[self.explanations["customer_id"] != customer_id], expl], ignore_index=True)
 
+    def describe(self, rec: dict) -> dict:
+        """What a person needs to read a suggestion: opportunity id, headline, short reasons, the impact method in words,
+        and estimate confidence (the PCAF data-quality score turned round so that more dots means more confidence)."""
+        product = rec["product"]
+        spec = self.products_cfg.get(product, {})
+        try:
+            score = int(rec.get("data_quality"))
+        except (TypeError, ValueError):
+            score = None
+        level = {2: "High", 3: "Good", 4: "Partial", 5: "Low"}.get(score)
+        return {"opportunity": spec.get("opportunity", product), "headline": spec.get("customer_headline", rec.get("product_name")),
+                "why_labels": [REASON_LABELS.get(c, c.replace("_", " ").lower())
+                               for c in (list(rec["reason_codes"]) if rec.get("reason_codes") is not None else [])],
+                "method_label": self.carbon_cfg.get("method_labels", {}).get(rec.get("method")),
+                "method_short": self.carbon_cfg.get("method_short", {}).get(rec.get("method")),
+                "confidence_of_estimate": None if score is None else {
+                    "level": level, "dots": 6 - score, "of": 4, "pcaf_score": score,
+                    "based_on": self.carbon_cfg.get("data_quality", {}).get(product, {}).get(score)}}
+
+    def _effect(self, response: str, date) -> tuple[str, str | None]:
+        """What a stored response does to suggestions on the as-of date: (effect, until)."""
+        as_of = pd.Timestamp(LIVE)
+        cool = self.cfg["recommend"]["cooldown_days"]
+        if response in cool and pd.notna(date):
+            until = pd.Timestamp(date) + pd.Timedelta(days=cool[response])
+            if until > as_of:
+                return f"paused ({response.replace('_', ' ')})", until.strftime("%Y-%m-%d")
+            return f"pause ended ({response.replace('_', ' ')})", until.strftime("%Y-%m-%d")
+        if response == "already_have":
+            return "stopped (already has it)", None
+        if response == "clicked":
+            return "priority raised (interested)", None
+        return "no effect", None
+
+    def memory_of(self, customer_id: str) -> list[dict]:
+        """Per product: the latest response (CRM history or the apps), its date and source, and its effect now."""
+        names = self.overview["products"]
+        c = apply_events(self.c360[self.c360["customer_id"] == customer_id], self.events[self.events["customer_id"] == customer_id])
+        if c.empty:
+            return []
+        row = c.iloc[0]
+        ev = self.events[self.events["customer_id"] == customer_id]
+        out = []
+        for product, name in names.items():
+            response = row.get(f"last_response_{product}") or "none"
+            date = row.get(f"last_response_date_{product}")
+            mine = ev[ev["product"] == product]
+            source = "app" if len(mine) and pd.Timestamp(mine["response_date"].max()) == pd.Timestamp(date) else "CRM campaign"
+            effect, until = self._effect(response, date)
+            out.append(clean({"product": product, "name": name, "response": response,
+                              "date": None if pd.isna(date) else pd.Timestamp(date), "source": None if response == "none" else source,
+                              "effect": effect, "until": until}))
+        return out
+
+    def memory_summary(self) -> dict:
+        """Bank view of customer memory on the as-of date: active pauses, stops and interest per product, recent responses."""
+        names = self.overview["products"]
+        c = apply_events(self.c360, self.events)
+        rows = []
+        for product, name in names.items():
+            resp, date = c[f"last_response_{product}"].fillna("none"), pd.to_datetime(c[f"last_response_date_{product}"])
+            counts = {"responses": int((~resp.isin(["none"])).sum())}
+            for kind in ("dismissed", "not_interested"):
+                days = (pd.Timestamp(LIVE) - date).dt.days
+                counts[f"paused_{kind}"] = int(((resp == kind) & (days < self.cfg["recommend"]["cooldown_days"][kind])).sum())
+            counts["stopped_already_have"] = int((resp == "already_have").sum())
+            counts["interested"] = int((resp == "clicked").sum())
+            rows.append({"product": product, "name": name} | counts)
+        recent = self.events.sort_index(ascending=False).head(25)
+        return clean({"as_of": LIVE, "cooldown_days": self.cfg["recommend"]["cooldown_days"], "products": rows,
+                      "app_responses": len(self.events),
+                      "recent": [{"customer_id": r.customer_id, "product": names.get(r.product, r.product), "response": r.response,
+                                  "source": r.source} for r in recent.itertuples()],
+                      "replay": self.overview.get("memory_replay")})
+
     def customer(self, customer_id: str) -> dict | None:
         doc = document(customer_id, self.c360, self.features, self.recs, self.explanations, self.decisions, self.events)
         if doc is not None:
             items = {i["product"]: i["facts"] for i in build_items(self.recs[self.recs["customer_id"] == customer_id])}
             for rec in doc["recommendations"]:
                 rec["facts"] = clean(items.get(rec["product"]))
+                rec.update(clean(self.describe(rec)))
             doc["llm_available"] = self.explainer is not None
+            doc["memory"] = self.memory_of(customer_id)
         return doc
 
     def me(self, customer_id: str) -> dict | None:
@@ -173,8 +256,9 @@ class State:
         suggestions = []
         for rec in recs.to_dict("records"):
             fx = facts[rec["product"]]
-            suggestions.append({
+            suggestions.append(self.describe(rec) | {
                 "product": rec["product"], "name": rec["product_name"], "action": rec["customer_action"],
+                "data_as_of": rec.get("data_timestamp"),
                 "explanation": expl.get((customer_id, rec["product"]), ""),
                 "why": fx["reasons"], "disclaimer": fx["disclaimer"], "measure": rec.get("measure"),
                 "co2e_kg_per_year": rec.get("co2e_avoided_kg_per_year"), "co2e_kg_horizon": rec.get("co2e_avoided_kg_horizon"),
@@ -183,21 +267,25 @@ class State:
         return clean({"customer_id": customer_id, "as_of": row["as_of"], "region": row["region"],
                       "footprint": {"transport_kg": fp["transport_kg"], "home_kg": fp["home_kg"], "total_kg": fp["total_kg"],
                                     "region_median_kg": regions.get(row["region"], {}).get("footprint_kg_median")},
-                      "spend_12m": spend, "monthly": monthly,
+                      "spend_12m": spend, "monthly": monthly, "memory": self.memory_of(customer_id),
                       "suggestions": suggestions})
 
     def monthly(self, customer_id: str, as_of: pd.Timestamp) -> dict:
         """The customer's debit spend per month and category over the last 12 months."""
+        start = (as_of - pd.DateOffset(months=11)).to_period("M").to_timestamp()
+        months = [str(m) for m in pd.period_range(start, as_of, freq="M")]
+        if self.customer_spend is not None:  # precomputed by the insights stage
+            rows = self.customer_spend.loc[[customer_id]] if customer_id in self.customer_spend.index else self.customer_spend.iloc[:0]
+            g = rows.groupby(["category", "month"], observed=True)["spend"].sum()
+            return {"months": months, "series": {c: [round(float(g.get((c, m), 0.0)), 2) for m in months] for c in SPEND_CATEGORIES}}
         path = next((p for lo, hi, p in self.parts if lo <= customer_id <= hi), None)
         if path is None:
             return {"months": [], "series": {}}
         t = pq.read_table(path, columns=["customer_id", "booking_datetime", "amount", "credit_debit_indicator", "pred_category"],
                           filters=[("customer_id", "==", customer_id)]).to_pandas()
-        start = (as_of - pd.DateOffset(months=11)).to_period("M").to_timestamp()
         t = t[(t["credit_debit_indicator"] == "Debit") & (t["booking_datetime"] >= start) & (t["booking_datetime"] <= as_of + pd.Timedelta(days=1))]
         t["month"] = t["booking_datetime"].dt.to_period("M").astype(str)
         t["category"] = t["pred_category"].str.lower().str.replace(" ", "_")
-        months = [str(m) for m in pd.period_range(start, as_of, freq="M")]
         g = t.groupby(["category", "month"])["amount"].sum()
         return {"months": months, "series": {c: [round(float(g.get((c, m), 0.0)), 2) for m in months] for c in SPEND_CATEGORIES}}
 
@@ -211,6 +299,17 @@ class State:
             self._recompute(customer_id)
         return self.customer(customer_id)
 
+    def undo(self, customer_id: str, product: str) -> dict | None:
+        """Remove the latest app response for this customer and product (earlier CRM history is untouched)."""
+        with self.lock:
+            mine = self.events[(self.events["customer_id"] == customer_id) & (self.events["product"] == product)]
+            if len(mine):
+                self.events = self.events.drop(index=mine.index[-1])
+                self.events.to_parquet(self.events_path, index=False)
+                self.events = self.events.reset_index(drop=True)
+                self._recompute(customer_id)
+        return self.customer(customer_id)
+
     def reset(self) -> None:
         with self.lock:
             customers = self.events["customer_id"].unique()
@@ -222,7 +321,7 @@ class State:
 
     def rephrase(self, customer_id: str, product: str) -> dict:
         if self.explainer is None:
-            return {"error": "the local LLM is disabled (llm.enabled); the template explanation stays"}
+            return {"error": "Rewrite needs a Gemini API key: add GEMINI_API_KEY=... to gcip/.env and restart. The standard wording stays."}
         from gcip.explain.guards import check
         rec = self.recs[(self.recs["customer_id"] == customer_id) & (self.recs["product"] == product)]
         if rec.empty:
@@ -230,15 +329,15 @@ class State:
         item = build_items(rec)[0]
         try:
             text = compose(item, self.explainer.rephrase(item))
-        except Exception as exc:  # e.g. no GPU memory: keep the template
-            return {"error": f"local LLM failed: {exc}"}
+        except Exception as exc:  # API error, rate limit or no GPU memory: keep the template
+            return {"error": f"Rewrite failed ({exc}); the standard wording stays."}
         problems = check(text, item["facts"], draft=item["draft"]) if text else ["no reply from the LLM"]
         if not problems:
             with self.lock:
                 hit = (self.explanations["customer_id"] == customer_id) & (self.explanations["product"] == product)
                 self.explanations.loc[hit, ["explanation", "source"]] = [text, "llm"]
         return {"text": text, "passed": not problems, "problems": problems, "template": item["draft"],
-                "model": self.cfg["llm"]["model"]}
+                "model": getattr(self.explainer, "last_model", None) or self.cfg["llm"]["model"]}
 
     def customers(self, q: str, product: str, status: str, limit: int, offset: int) -> dict:
         d = self.index
@@ -290,6 +389,8 @@ def make_handler(state: State, static: Path):
                 return super().do_GET()
             if parts[1:] == ["overview"]:
                 return self._send(state.overview)
+            if parts[1:] == ["memory"]:
+                return self._send(state.memory_summary())
             if parts[1:] == ["trends"]:
                 return self._send(state.trend(q.get("region", "")))
             if parts[1:] == ["customers"]:
@@ -314,6 +415,8 @@ def make_handler(state: State, static: Path):
                 if body.get("response") not in FEEDBACK or body.get("product") not in state.overview["products"]:
                     return self._send({"error": "bad feedback"}, HTTPStatus.BAD_REQUEST)
                 return self._send(state.feedback(parts[2], body["product"], body["response"]))
+            if len(parts) == 4 and parts[1] == "customer" and parts[3] == "undo":
+                return self._send(state.undo(parts[2], body.get("product", "")))
             if len(parts) == 4 and parts[1] == "customer" and parts[3] == "explain":
                 return self._send(state.rephrase(parts[2], body.get("product", "")))
             return self._send({"error": "unknown endpoint"}, HTTPStatus.NOT_FOUND)
@@ -324,12 +427,21 @@ def make_handler(state: State, static: Path):
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--run-dir", default="runs/pipeline")
+    parser.add_argument("--data-dir", default=None, help="data directory (default: <run-dir>/data)")
     parser.add_argument("--port", type=int, default=8050)
     parser.add_argument("--host", default="127.0.0.1")
     args = parser.parse_args()
-    state = State(Path(args.run_dir).resolve())
-    server = ThreadingHTTPServer((args.host, args.port), make_handler(state, ROOT / "dashboard"))
-    print(f"dashboard: http://{args.host}:{args.port}", flush=True)
+    state = State(Path(args.run_dir).resolve(), Path(args.data_dir).resolve() if args.data_dir else None)
+    handler = make_handler(state, ROOT / "dashboard")
+    for port in range(args.port, args.port + 20):  # move on if the port is taken (e.g. another copy is running)
+        try:
+            server = ThreadingHTTPServer((args.host, port), handler)
+            break
+        except OSError:
+            print(f"port {port} is in use, trying {port + 1}", flush=True)
+    else:
+        raise SystemExit(f"no free port between {args.port} and {args.port + 19}")
+    print(f"Bank dashboard: http://localhost:{port}     Customer app: http://localhost:{port}/app/", flush=True)
     server.serve_forever()
 
 

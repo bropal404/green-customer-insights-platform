@@ -1,0 +1,14 @@
+section,column,type,allowed_values,unit,null_share_in_sample,example,description,source,used_by
+,transaction_id,string,,,0.0,T00000000000,Transaction key.,card processor / payments hub,
+keys,customer_id,string,,,0.0,C100000,Customer key (primary key together with as_of).,core banking,every stage
+,account_id,string,,,0.0,C100000-CA,Account key '<customer_id>-<account type>'.,harmonised in FR1,
+,booking_datetime,datetime,,,0.0,2025-01-02 14:47:36,Booking date and time.,card processor / payments hub,
+,amount,float,,GBP,0.0,7.99,"Amount, always positive.",card processor / payments hub,
+,credit_debit_indicator,category,Credit|Debit,,0.0,Debit,Money in (Credit) or out (Debit).,card processor / payments hub,
+,transaction_information,string,,,0.0,NETFLIX.COM CD 5975,Statement narrative as the customer sees it.,card processor / payments hub,
+,merchant_category_code,string (nullable),,,0.296,4899,ISO 18245 merchant category code; card payments only.,card processor,
+,payment_type,category,DEB|DD|SO|FPO|FPI|BGC|CPT|TFR|CHG,,0.0,DEB,"DEB card, DD direct debit, SO standing order, FPO/FPI faster payment out/in, BGC credit, CPT cash, TFR transfer, CHG charge.",harmonised in FR1,
+,pred_category,category,Fuel|Electricity|Gas|Public Transport|Home Improvement|Automotive|Utilities|Other,,0.0,Other,Predicted category: exactly one of the eight.,FR2,
+,pred_sub_category,string,,,0.0,subscriptions,Predicted sub-category (rolls up to pred_category).,FR2,
+,cat_confidence,float,,probability,0.0,0.94,Confidence of the predicted category.,FR2,
+,layer,string,,,0.0,mcc:4899,"Which layer decided the category (rule, lookup or model).",FR2,

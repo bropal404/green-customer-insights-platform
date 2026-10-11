@@ -1,0 +1,8 @@
+{
+  "finished_at": "2026-10-11 05:28:53",
+  "rows": 180000,
+  "status": {
+    "ok": 131656,
+    "insufficient_data": 48344
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "finished_at": "2026-10-11 05:31:37",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "provider": "local",
+  "items": 360,
+  "seconds": 128.7,
+  "guard_pass_rate": 0.711,
+  "failure_reasons": {
+    "numbers dropped": 103,
+    "changes the time period to monthly": 25,
+    "banned claim": 4,
+    "numbers not in the facts": 3
+  },
+  "pass_rate_by_product": {
+    "GP01": 0.217,
+    "GP02": 0.867,
+    "GP03": 1.0,
+    "GP04": 0.917,
+    "GP05": 0.833,
+    "GP06": 0.433
+  },
+  "words_mean": {
+    "llm": 70.0,
+    "template": 71.3
+  },
+  "reading_ease_mean": {
+    "llm": 59.5,
+    "template": 72.3
+  }
+}

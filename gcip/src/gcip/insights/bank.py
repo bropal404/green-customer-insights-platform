@@ -143,6 +143,22 @@ def monthly_trends(categorised: Path, regions: pd.Series) -> pd.DataFrame:
     return out.rename(columns={"pred_category": "category"})
 
 
+def customer_monthly(categorised: Path, as_of: pd.Timestamp, months: int = 12) -> pd.DataFrame:
+    """Each customer's debit spend per month and category over the last `months` months (what the customer app shows)."""
+    start = (as_of - pd.DateOffset(months=months - 1)).to_period("M").to_timestamp()
+    parts = []
+    for path in sorted(categorised.glob("part-*.parquet")):
+        t = pd.read_parquet(path, columns=["customer_id", "booking_datetime", "amount", "credit_debit_indicator", "pred_category"])
+        t = t[(t["credit_debit_indicator"] == "Debit") & (t["booking_datetime"] >= start)
+              & (t["booking_datetime"] < as_of + pd.Timedelta(days=1))]
+        t = t.assign(month=t["booking_datetime"].dt.to_period("M").astype(str),
+                     category=t["pred_category"].str.lower().str.replace(" ", "_"))
+        parts.append(t.groupby(["customer_id", "month", "category"], as_index=False)["amount"].sum())
+    out = pd.concat(parts, ignore_index=True).rename(columns={"amount": "spend"})
+    out["spend"] = out["spend"].round(2).astype("float32")
+    return out.astype({"customer_id": "category", "month": "category", "category": "category"})
+
+
 def build(table: pd.DataFrame, recs: pd.DataFrame, decisions: pd.DataFrame, impact: pd.DataFrame, categorised: Path,
           k: int = 6) -> tuple[dict, pd.DataFrame]:
     """Bank-level insights as one JSON-ready dict, plus the monthly trend table."""

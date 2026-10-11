@@ -53,15 +53,18 @@ recommend:
   clicked_priority_boost: 0.10
 
 llm:
-  # Explanations are written by templates for every recommendation. A local open model only rephrases them, offline
-  # on this machine's GPU (nothing is trained, no API is called); each rephrasing must pass the guards
-  # (gcip.explain.guards) or the template is kept.
-  enabled: true
-  model: Qwen/Qwen2.5-1.5B-Instruct   # fp16 fits a 6 GB laptop GPU; Qwen/Qwen2.5-3B-Instruct on an 11 GB GPU
+  # Explanations are written by templates for every suggestion. An LLM only rewrites their body (the compliance sentence
+  # with the data date and disclaimer is fixed text), nothing is trained, and every rewrite must pass the guards
+  # (gcip.explain.guards) or the template is kept. Without the provider (no key, no GPU) everything stays as templates.
+  provider: gemini               # gemini (API key in GEMINI_API_KEY, e.g. gcip/.env) | local (offline GPU) | none
+  model: gemini-3.8-flash
+  fallback_models: [gemini-3.5-flash, gemini-3.1-flash-lite]   # tried in order when a model's daily quota is used up
+  concurrency: 4                 # parallel API requests in the explain_llm stage
+  local_model: Qwen/Qwen2.5-1.5B-Instruct   # provider local: pip install -r requirements-llm.txt
   dtype: float16
-  max_new_tokens: 220
+  max_new_tokens: 300
   batch_size: 16
-  eval_set_size: 360             # 60 per product, rephrased and checked in the pipeline; the dashboard rephrases on demand
+  eval_set_size: 360             # 60 per product, rewritten and checked by the explain_llm stage
 
 memory:
   replay_customers: 300

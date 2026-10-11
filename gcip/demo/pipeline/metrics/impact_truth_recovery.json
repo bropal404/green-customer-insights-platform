@@ -1,0 +1,44 @@
+{
+  "note": "Engine inputs read from transactions at the 31 March 2026 snapshot vs the simulator's true annual usage. Only customers whose spend is visible (fuel bought on our cards, energy bills paid from our accounts).",
+  "fuel_litres": {
+    "customers": 16745,
+    "median_ratio": 1.057,
+    "median_abs_pct_error": 7.4,
+    "within_20pct": 0.827,
+    "correlation": 0.953
+  },
+  "gas_kwh": {
+    "customers": 19111,
+    "median_ratio": 1.05,
+    "median_abs_pct_error": 27.9,
+    "within_20pct": 0.388,
+    "correlation": 0.57
+  },
+  "electricity_kwh": {
+    "customers": 24880,
+    "median_ratio": 0.939,
+    "median_abs_pct_error": 29.9,
+    "within_20pct": 0.388,
+    "correlation": 0.775
+  },
+  "transport_co2e_kg": {
+    "customers": 16745,
+    "median_ratio": 1.057,
+    "median_abs_pct_error": 7.4,
+    "within_20pct": 0.827,
+    "correlation": 0.955
+  },
+  "home_energy_co2e_kg": {
+    "customers": 24880,
+    "median_ratio": 1.084,
+    "median_abs_pct_error": 22.1,
+    "within_20pct": 0.47,
+    "correlation": 0.743
+  },
+  "coverage": {
+    "customers": 30000,
+    "car_owners": 20113,
+    "fuel_visible": 16745,
+    "energy_bills_visible": 24880
+  }
+}

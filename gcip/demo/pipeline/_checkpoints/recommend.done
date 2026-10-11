@@ -1,0 +1,17 @@
+{
+  "finished_at": "2026-10-11 05:34:18",
+  "recommendations": 5437,
+  "customers": 4792,
+  "status": {
+    "recommended": 5146,
+    "human_review": 291
+  },
+  "by_product": {
+    "GP01": 2089,
+    "GP03": 1251,
+    "GP06": 918,
+    "GP04": 791,
+    "GP05": 284,
+    "GP02": 104
+  }
+}

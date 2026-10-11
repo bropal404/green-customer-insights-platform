@@ -1,0 +1,78 @@
+{
+  "finished_at": "2026-10-11 05:28:56",
+  "truth_recovery": {
+    "fuel_litres": {
+      "customers": 16745,
+      "median_ratio": 1.057,
+      "median_abs_pct_error": 7.4,
+      "within_20pct": 0.827,
+      "correlation": 0.953
+    },
+    "gas_kwh": {
+      "customers": 19111,
+      "median_ratio": 1.05,
+      "median_abs_pct_error": 27.9,
+      "within_20pct": 0.388,
+      "correlation": 0.57
+    },
+    "electricity_kwh": {
+      "customers": 24880,
+      "median_ratio": 0.939,
+      "median_abs_pct_error": 29.9,
+      "within_20pct": 0.388,
+      "correlation": 0.775
+    },
+    "transport_co2e_kg": {
+      "customers": 16745,
+      "median_ratio": 1.057,
+      "median_abs_pct_error": 7.4,
+      "within_20pct": 0.827,
+      "correlation": 0.955
+    },
+    "home_energy_co2e_kg": {
+      "customers": 24880,
+      "median_ratio": 1.084,
+      "median_abs_pct_error": 22.1,
+      "within_20pct": 0.47,
+      "correlation": 0.743
+    },
+    "coverage": {
+      "customers": 30000,
+      "car_owners": 20113,
+      "fuel_visible": 16745,
+      "energy_bills_visible": 24880
+    }
+  },
+  "largest_swings": [
+    {
+      "assumption": "km_per_litre",
+      "product": "GP06",
+      "co2e_swing_pct": 41.9,
+      "money_swing_pct": 42.1
+    },
+    {
+      "assumption": "pv_yield",
+      "product": "GP03",
+      "co2e_swing_pct": 40.0,
+      "money_swing_pct": 38.7
+    },
+    {
+      "assumption": "km_per_litre",
+      "product": "GP01",
+      "co2e_swing_pct": 14.7,
+      "money_swing_pct": 82.2
+    },
+    {
+      "assumption": "heat_pump_efficiency",
+      "product": "GP02",
+      "co2e_swing_pct": 13.3,
+      "money_swing_pct": 511.4
+    },
+    {
+      "assumption": "boiler_efficiency",
+      "product": "GP02",
+      "co2e_swing_pct": 6.4,
+      "money_swing_pct": 245.4
+    }
+  ]
+}

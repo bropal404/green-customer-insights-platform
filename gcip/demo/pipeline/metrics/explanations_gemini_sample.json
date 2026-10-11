@@ -1,0 +1,10 @@
+{
+ "model": "gemini-3.8-flash",
+ "requests": 360,
+ "replies": 17,
+ "passed_guards": 16,
+ "note": "free-tier key: the daily quota ran out after these replies; the 360-item evaluation uses the local model",
+ "failure_reasons_among_replies": [
+  "numbers dropped: ['13003']; numbers not in the facts: ['13033']"
+ ]
+}

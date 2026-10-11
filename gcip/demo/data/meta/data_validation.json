@@ -1,0 +1,969 @@
+{
+  "checks": [
+    {
+      "check": "tenure share: owned_outright",
+      "simulated": 0.3288,
+      "reference": 0.3283,
+      "relative_gap": 0.0016,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "Census 2021 TS054"
+    },
+    {
+      "check": "tenure share: mortgage",
+      "simulated": 0.2977,
+      "reference": 0.2971,
+      "relative_gap": 0.0022,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "Census 2021 TS054"
+    },
+    {
+      "check": "tenure share: social_rent",
+      "simulated": 0.1667,
+      "reference": 0.1706,
+      "relative_gap": 0.0228,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "Census 2021 TS054"
+    },
+    {
+      "check": "tenure share: private_rent",
+      "simulated": 0.2067,
+      "reference": 0.204,
+      "relative_gap": 0.0133,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "Census 2021 TS054"
+    },
+    {
+      "check": "households in flats",
+      "simulated": 0.2176,
+      "reference": 0.2169,
+      "relative_gap": 0.0033,
+      "tolerance": 0.15,
+      "pass": true,
+      "source": "Census 2021 TS044"
+    },
+    {
+      "check": "households with no car",
+      "simulated": 0.2327,
+      "reference": 0.2331,
+      "relative_gap": 0.0017,
+      "tolerance": 0.15,
+      "pass": true,
+      "source": "Census 2021 TS045"
+    },
+    {
+      "check": "mains gas central heating",
+      "simulated": 0.7643,
+      "reference": 0.781,
+      "relative_gap": 0.0214,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "Census 2021 TS046"
+    },
+    {
+      "check": "battery-electric share of primary cars",
+      "simulated": 0.0325,
+      "reference": 0.032,
+      "relative_gap": 0.015,
+      "tolerance": 0.35,
+      "pass": true,
+      "source": "DfT VEH0142/VEH0105 2026 Q2"
+    },
+    {
+      "check": "homes with solar PV",
+      "simulated": 0.0658,
+      "reference": 0.0667,
+      "relative_gap": 0.0132,
+      "tolerance": 0.3,
+      "pass": true,
+      "source": "DESNZ renewables by LA 2025"
+    },
+    {
+      "check": "mean annual mileage, primary car (miles)",
+      "simulated": 7546.3541,
+      "reference": 7100.0,
+      "relative_gap": 0.0629,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "NTS0901 2025"
+    },
+    {
+      "check": "mean domestic gas use, gas homes (kWh)",
+      "simulated": 11360.3848,
+      "reference": 11305.6519,
+      "relative_gap": 0.0048,
+      "tolerance": 0.15,
+      "pass": true,
+      "source": "DESNZ sub-national gas 2024"
+    },
+    {
+      "check": "median domestic electricity use (kWh)",
+      "simulated": 2585.0,
+      "reference": 2501.857,
+      "relative_gap": 0.0332,
+      "tolerance": 0.2,
+      "pass": true,
+      "source": "DESNZ sub-national electricity 2024"
+    },
+    {
+      "check": "household reference persons aged 65+ (owned outright)",
+      "simulated": 0.6302,
+      "reference": 0.6271,
+      "relative_gap": 0.0049,
+      "tolerance": 0.15,
+      "pass": true,
+      "source": "Census 2021 RM201"
+    },
+    {
+      "check": "household reference persons aged 65+ (social rent)",
+      "simulated": 0.2599,
+      "reference": 0.2659,
+      "relative_gap": 0.0225,
+      "tolerance": 0.15,
+      "pass": true,
+      "source": "Census 2021 RM201"
+    },
+    {
+      "check": "household reference persons in work",
+      "simulated": 0.6283,
+      "reference": 0.6254,
+      "relative_gap": 0.0047,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "Census 2021 RM133"
+    },
+    {
+      "check": "household reference persons retired",
+      "simulated": 0.256,
+      "reference": 0.2567,
+      "relative_gap": 0.0027,
+      "tolerance": 0.15,
+      "pass": true,
+      "source": "Census 2021 RM133"
+    },
+    {
+      "check": "self-employed share of workers",
+      "simulated": 0.1639,
+      "reference": 0.1697,
+      "relative_gap": 0.0342,
+      "tolerance": 0.2,
+      "pass": true,
+      "source": "Census 2021 TS066"
+    },
+    {
+      "check": "households with dependent children",
+      "simulated": 0.2855,
+      "reference": 0.2837,
+      "relative_gap": 0.0061,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "Census 2021 TS003"
+    },
+    {
+      "check": "homes with 4 or more bedrooms",
+      "simulated": 0.2085,
+      "reference": 0.2107,
+      "relative_gap": 0.0103,
+      "tolerance": 0.15,
+      "pass": true,
+      "source": "Census 2021 TS050"
+    },
+    {
+      "check": "homes with an EPC on the register",
+      "simulated": 0.6681,
+      "reference": 0.6759,
+      "relative_gap": 0.0114,
+      "tolerance": 0.05,
+      "pass": true,
+      "source": "NEED 2025"
+    },
+    {
+      "check": "rated homes in EPC band C or better",
+      "simulated": 0.4921,
+      "reference": 0.4899,
+      "relative_gap": 0.0044,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "NEED 2025"
+    },
+    {
+      "check": "mean rate on 2-year fixed mortgages (%)",
+      "simulated": 5.0585,
+      "reference": 5.0567,
+      "relative_gap": 0.0004,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "Bank of England quoted rates 2023-24"
+    },
+    {
+      "check": "median age of petrol cars aged 3+ (years)",
+      "simulated": 10.1,
+      "reference": 9.5,
+      "relative_gap": 0.0632,
+      "tolerance": 0.15,
+      "pass": true,
+      "source": "DVSA MOT 2024"
+    },
+    {
+      "check": "mileage of petrol cars aged 10-14 vs 3-5 (ratio)",
+      "simulated": 0.8807,
+      "reference": 0.8739,
+      "relative_gap": 0.0077,
+      "tolerance": 0.1,
+      "pass": true,
+      "source": "DVSA MOT 2024"
+    },
+    {
+      "check": "mean monthly fuel spend (GBP)",
+      "simulated": 84.5227,
+      "reference": 79.9067,
+      "relative_gap": 0.0578,
+      "tolerance": 0.3,
+      "pass": true,
+      "source": "ONS Family Spending FYE 2025 A6"
+    },
+    {
+      "check": "fuel spend gradient across income deciles (correlation)",
+      "simulated": 0.957,
+      "reference": 1.0,
+      "relative_gap": 0.043,
+      "tolerance": 0.25,
+      "pass": true,
+      "source": "ONS Family Spending FYE 2025 A6"
+    },
+    {
+      "check": "mean monthly food and drink spend (GBP)",
+      "simulated": 317.5152,
+      "reference": 294.5973,
+      "relative_gap": 0.0778,
+      "tolerance": 0.2,
+      "pass": true,
+      "source": "ONS Family Spending FYE 2025 A6"
+    },
+    {
+      "check": "food and drink spend gradient across income deciles (correlation)",
+      "simulated": 0.9998,
+      "reference": 1.0,
+      "relative_gap": 0.0002,
+      "tolerance": 0.25,
+      "pass": true,
+      "source": "ONS Family Spending FYE 2025 A6"
+    },
+    {
+      "check": "mean monthly home energy spend (GBP)",
+      "simulated": 150.8739,
+      "reference": 147.55,
+      "relative_gap": 0.0225,
+      "tolerance": 0.25,
+      "pass": true,
+      "source": "ONS Family Spending FYE 2025 A6"
+    },
+    {
+      "check": "home energy spend gradient across income deciles (correlation)",
+      "simulated": 0.9602,
+      "reference": 1.0,
+      "relative_gap": 0.0398,
+      "tolerance": 0.25,
+      "pass": true,
+      "source": "ONS Family Spending FYE 2025 A6"
+    },
+    {
+      "check": "GP01 take-up among eligible",
+      "simulated": 0.0554,
+      "reference": 0.055,
+      "relative_gap": 0.0078,
+      "tolerance": 0.35,
+      "pass": true,
+      "source": "label model target"
+    },
+    {
+      "check": "GP02 take-up among eligible",
+      "simulated": 0.0475,
+      "reference": 0.045,
+      "relative_gap": 0.0556,
+      "tolerance": 0.35,
+      "pass": true,
+      "source": "label model target"
+    },
+    {
+      "check": "GP03 take-up among eligible",
+      "simulated": 0.0321,
+      "reference": 0.035,
+      "relative_gap": 0.0834,
+      "tolerance": 0.35,
+      "pass": true,
+      "source": "label model target"
+    },
+    {
+      "check": "GP04 take-up among eligible",
+      "simulated": 0.1205,
+      "reference": 0.12,
+      "relative_gap": 0.0045,
+      "tolerance": 0.35,
+      "pass": true,
+      "source": "label model target"
+    },
+    {
+      "check": "GP05 take-up among eligible",
+      "simulated": 0.0579,
+      "reference": 0.06,
+      "relative_gap": 0.0351,
+      "tolerance": 0.35,
+      "pass": true,
+      "source": "label model target"
+    },
+    {
+      "check": "GP06 take-up among eligible",
+      "simulated": 0.0345,
+      "reference": 0.035,
+      "relative_gap": 0.0133,
+      "tolerance": 0.35,
+      "pass": true,
+      "source": "label model target"
+    }
+  ],
+  "passed": 36,
+  "total": 36,
+  "spend_by_decile": {
+    "fuel": {
+      "decile": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "simulated": [
+        52.4,
+        55.9,
+        65.8,
+        71.3,
+        81.1,
+        87.5,
+        96.9,
+        105.2,
+        114.3,
+        121.4
+      ],
+      "ons_a6": [
+        26.4,
+        35.5,
+        54.6,
+        76.3,
+        81.0,
+        89.7,
+        100.1,
+        112.2,
+        110.1,
+        113.1
+      ]
+    },
+    "food and drink": {
+      "decile": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "simulated": [
+        175.4,
+        214.9,
+        244.4,
+        307.9,
+        292.3,
+        345.9,
+        368.1,
+        371.1,
+        418.3,
+        457.2
+      ],
+      "ons_a6": [
+        170.2,
+        203.1,
+        227.8,
+        283.6,
+        268.7,
+        315.1,
+        337.7,
+        340.1,
+        383.4,
+        416.3
+      ]
+    },
+    "home energy": {
+      "decile": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "simulated": [
+        137.6,
+        135.9,
+        141.0,
+        143.8,
+        147.0,
+        150.1,
+        157.0,
+        160.5,
+        164.9,
+        174.6
+      ],
+      "ons_a6": [
+        108.3,
+        123.9,
+        127.8,
+        140.8,
+        147.3,
+        143.9,
+        152.1,
+        163.4,
+        167.7,
+        200.2
+      ]
+    }
+  },
+  "takeup_overlap_counts": {
+    "GP01": {
+      "GP01": 1056,
+      "GP02": 36,
+      "GP03": 28,
+      "GP04": 29,
+      "GP05": 61,
+      "GP06": 37
+    },
+    "GP02": {
+      "GP01": 36,
+      "GP02": 327,
+      "GP03": 12,
+      "GP04": 5,
+      "GP05": 18,
+      "GP06": 9
+    },
+    "GP03": {
+      "GP01": 28,
+      "GP02": 12,
+      "GP03": 293,
+      "GP04": 7,
+      "GP05": 8,
+      "GP06": 14
+    },
+    "GP04": {
+      "GP01": 29,
+      "GP02": 5,
+      "GP03": 7,
+      "GP04": 849,
+      "GP05": 17,
+      "GP06": 25
+    },
+    "GP05": {
+      "GP01": 61,
+      "GP02": 18,
+      "GP03": 8,
+      "GP04": 17,
+      "GP05": 502,
+      "GP06": 30
+    },
+    "GP06": {
+      "GP01": 37,
+      "GP02": 9,
+      "GP03": 14,
+      "GP04": 25,
+      "GP05": 30,
+      "GP06": 948
+    }
+  },
+  "eligibility_overlap_counts": {
+    "GP01": {
+      "GP01": 19051,
+      "GP02": 5508,
+      "GP03": 7182,
+      "GP04": 4647,
+      "GP05": 6702,
+      "GP06": 18521
+    },
+    "GP02": {
+      "GP01": 5508,
+      "GP02": 6884,
+      "GP03": 3732,
+      "GP04": 868,
+      "GP05": 3120,
+      "GP06": 6805
+    },
+    "GP03": {
+      "GP01": 7182,
+      "GP02": 3732,
+      "GP03": 9133,
+      "GP04": 2602,
+      "GP05": 3310,
+      "GP06": 8896
+    },
+    "GP04": {
+      "GP01": 4647,
+      "GP02": 868,
+      "GP03": 2602,
+      "GP04": 7043,
+      "GP05": 1809,
+      "GP06": 6434
+    },
+    "GP05": {
+      "GP01": 6702,
+      "GP02": 3120,
+      "GP03": 3310,
+      "GP04": 1809,
+      "GP05": 8671,
+      "GP06": 8544
+    },
+    "GP06": {
+      "GP01": 18521,
+      "GP02": 6805,
+      "GP03": 8896,
+      "GP04": 6434,
+      "GP05": 8544,
+      "GP06": 27450
+    }
+  },
+  "observability": {
+    "transactions_per_customer_month": 44.9,
+    "category_share": {
+      "Other": 0.7607,
+      "Automotive": 0.0631,
+      "Public Transport": 0.0438,
+      "Fuel": 0.0417,
+      "Home Improvement": 0.0312,
+      "Utilities": 0.0291,
+      "Electricity": 0.0204,
+      "Gas": 0.0102
+    },
+    "card_share": 0.7058,
+    "mcc_present_on_card": 0.97,
+    "local_merchant_share": 0.1074,
+    "customers_with_energy_bills_visible": 0.8559,
+    "drivers_buying_some_fuel_in_cash": 0.0988,
+    "drivers_fuel_on_external_card": 0.0787,
+    "mortgages_visible": 0.9189,
+    "customers_eligible_for_two_or_more_products": 0.7857
+  },
+  "boundary_examples": {
+    "B1 Fuel vs Automotive": [
+      {
+        "transaction_information": "SHELL UK COLCHESTER CD 5975",
+        "amount": 76.88,
+        "true_category": "Fuel",
+        "true_sub_category": "road_fuel"
+      },
+      {
+        "transaction_information": "ESURE INSURANCE",
+        "amount": 51.19,
+        "true_category": "Automotive",
+        "true_sub_category": "motor_insurance"
+      },
+      {
+        "transaction_information": "JET COLCHESTER CD 4770",
+        "amount": 29.86,
+        "true_category": "Fuel",
+        "true_sub_category": "road_fuel"
+      },
+      {
+        "transaction_information": "GULF SERVICE STN COLCHEST CD 5975",
+        "amount": 63.2,
+        "true_category": "Fuel",
+        "true_sub_category": "road_fuel"
+      },
+      {
+        "transaction_information": "NATIONAL TYRES COLCHESTER CD 5975",
+        "amount": 152.61,
+        "true_category": "Automotive",
+        "true_sub_category": "maintenance"
+      },
+      {
+        "transaction_information": "SAINSBURYS PFS 3503 CD 5975",
+        "amount": 58.26,
+        "true_category": "Fuel",
+        "true_sub_category": "road_fuel"
+      }
+    ],
+    "B2 Public EV charging is Fuel": [
+      {
+        "transaction_information": "MER UK CHARGING CD 4147",
+        "amount": 7.16,
+        "true_category": "Fuel",
+        "true_sub_category": "ev_public_charging"
+      },
+      {
+        "transaction_information": "INSTAVOLT CD 9973",
+        "amount": 6.05,
+        "true_category": "Fuel",
+        "true_sub_category": "ev_public_charging"
+      },
+      {
+        "transaction_information": "BP PULSE RUGBY CD 9973",
+        "amount": 3.91,
+        "true_category": "Fuel",
+        "true_sub_category": "ev_public_charging"
+      },
+      {
+        "transaction_information": "CONNECTED KERBS CD 9973",
+        "amount": 7.95,
+        "true_category": "Fuel",
+        "true_sub_category": "ev_public_charging"
+      },
+      {
+        "transaction_information": "UBITRICITY CD 9973",
+        "amount": 22.81,
+        "true_category": "Fuel",
+        "true_sub_category": "ev_public_charging"
+      },
+      {
+        "transaction_information": "SHELL RECHARGE CD 2537",
+        "amount": 11.87,
+        "true_category": "Fuel",
+        "true_sub_category": "ev_public_charging"
+      }
+    ],
+    "B3 Forecourt shop is Other": [
+      {
+        "transaction_information": "MORRISONS PETROL COLCHEST CD 5975",
+        "amount": 4.47,
+        "true_category": "Other",
+        "true_sub_category": "forecourt_shop"
+      },
+      {
+        "transaction_information": "SHELL COLCHESTER CD 5975",
+        "amount": 3.38,
+        "true_category": "Other",
+        "true_sub_category": "forecourt_shop"
+      },
+      {
+        "transaction_information": "JET PETROL 9296 CD 4770",
+        "amount": 2.34,
+        "true_category": "Other",
+        "true_sub_category": "forecourt_shop"
+      },
+      {
+        "transaction_information": "MOTOR FUEL GROUP TRAFFORD CD 7011",
+        "amount": 5.87,
+        "true_category": "Other",
+        "true_sub_category": "forecourt_shop"
+      },
+      {
+        "transaction_information": "ASDA PFS 2322 CD 7415",
+        "amount": 5.47,
+        "true_category": "Other",
+        "true_sub_category": "forecourt_shop"
+      },
+      {
+        "transaction_information": "BP 6114 CD 9973",
+        "amount": 4.78,
+        "true_category": "Other",
+        "true_sub_category": "forecourt_shop"
+      }
+    ],
+    "B4 Dual fuel and delivered fuels are Utilities": [
+      {
+        "transaction_information": "OVO ENERGY 19Y1E1P7",
+        "amount": 96.0,
+        "true_category": "Utilities",
+        "true_sub_category": "dual_fuel_energy"
+      },
+      {
+        "transaction_information": "E.ON NEXT",
+        "amount": 209.0,
+        "true_category": "Utilities",
+        "true_sub_category": "dual_fuel_energy"
+      },
+      {
+        "transaction_information": "CHESHIRE EAST OIL SUPPLIE CD 6297",
+        "amount": 240.71,
+        "true_category": "Utilities",
+        "true_sub_category": "heating_oil_lpg"
+      },
+      {
+        "transaction_information": "ADAMS HEATING OILS CD 6297",
+        "amount": 253.61,
+        "true_category": "Utilities",
+        "true_sub_category": "heating_oil_lpg"
+      },
+      {
+        "transaction_information": "EXETER OIL SUPPLIES CD 6297",
+        "amount": 257.86,
+        "true_category": "Utilities",
+        "true_sub_category": "heating_oil_lpg"
+      },
+      {
+        "transaction_information": "JOHNSON HEATING OILS CD 6297",
+        "amount": 264.77,
+        "true_category": "Utilities",
+        "true_sub_category": "heating_oil_lpg"
+      }
+    ],
+    "B5 Prepayment top-ups follow the meter": [
+      {
+        "transaction_information": "PAYPOINT BIRMINGHAM CD 9899",
+        "amount": 20.0,
+        "true_category": "Electricity",
+        "true_sub_category": "electricity_prepayment"
+      },
+      {
+        "transaction_information": "OVO ENERGY PREPAY CD 9899",
+        "amount": 20.0,
+        "true_category": "Electricity",
+        "true_sub_category": "electricity_prepayment"
+      },
+      {
+        "transaction_information": "PAYZONE BIRMINGHAM CD 9899",
+        "amount": 20.0,
+        "true_category": "Electricity",
+        "true_sub_category": "electricity_prepayment"
+      },
+      {
+        "transaction_information": "POST OFFICE BIRMINGHAM CD 9899",
+        "amount": 25.0,
+        "true_category": "Electricity",
+        "true_sub_category": "electricity_prepayment"
+      },
+      {
+        "transaction_information": "BG TOP UP ELEC CD 2038",
+        "amount": 10.0,
+        "true_category": "Electricity",
+        "true_sub_category": "electricity_prepayment"
+      },
+      {
+        "transaction_information": "BG PAYG GAS CD 2038",
+        "amount": 25.0,
+        "true_category": "Gas",
+        "true_sub_category": "gas_prepayment"
+      }
+    ],
+    "B6 Clean-air charges are Automotive": [
+      {
+        "transaction_information": "GOV.UK CLEAN AIR ZONE CD 9732",
+        "amount": 8.0,
+        "true_category": "Automotive",
+        "true_sub_category": "parking_charges"
+      },
+      {
+        "transaction_information": "TFL CONGESTION CHARGE CD 4589",
+        "amount": 15.0,
+        "true_category": "Automotive",
+        "true_sub_category": "parking_charges"
+      },
+      {
+        "transaction_information": "TFL.GOV.UK/ULEZ CD 6762",
+        "amount": 12.5,
+        "true_category": "Automotive",
+        "true_sub_category": "parking_charges"
+      }
+    ],
+    "B7 Taxis are Other, bike share is Public Transport": [
+      {
+        "transaction_information": "BOLT.EU/O/1A0KHXWF CD 4770",
+        "amount": 31.51,
+        "true_category": "Other",
+        "true_sub_category": "taxi_ridehail"
+      },
+      {
+        "transaction_information": "COLCHESTER TAXIS CD 5975",
+        "amount": 9.92,
+        "true_category": "Other",
+        "true_sub_category": "taxi_ridehail"
+      },
+      {
+        "transaction_information": "UBER BV CD 4770",
+        "amount": 23.89,
+        "true_category": "Other",
+        "true_sub_category": "taxi_ridehail"
+      },
+      {
+        "transaction_information": "COLCHESTER PRIVATE HIRE CD 5975",
+        "amount": 28.24,
+        "true_category": "Other",
+        "true_sub_category": "taxi_ridehail"
+      },
+      {
+        "transaction_information": "TIER DOTT CD 4770",
+        "amount": 3.71,
+        "true_category": "Public Transport",
+        "true_sub_category": "micromobility"
+      },
+      {
+        "transaction_information": "BIRMINGHAM TAXIS CD 9899",
+        "amount": 14.22,
+        "true_category": "Other",
+        "true_sub_category": "taxi_ridehail"
+      }
+    ],
+    "B8 Appliances are Home Improvement": [
+      {
+        "transaction_information": "CURRYS BIRMINGHAM CD 9899",
+        "amount": 686.31,
+        "true_category": "Home Improvement",
+        "true_sub_category": "appliances"
+      },
+      {
+        "transaction_information": "APPLIANCES DIRECT CD 3966",
+        "amount": 434.41,
+        "true_category": "Home Improvement",
+        "true_sub_category": "appliances"
+      },
+      {
+        "transaction_information": "HUGHES ELECTRICAL CD 0966",
+        "amount": 486.91,
+        "true_category": "Home Improvement",
+        "true_sub_category": "appliances"
+      },
+      {
+        "transaction_information": "NORWICH DOMESTIC APPLIANC CD 3763",
+        "amount": 711.54,
+        "true_category": "Home Improvement",
+        "true_sub_category": "appliances"
+      },
+      {
+        "transaction_information": "AO.COM CD 6783",
+        "amount": 338.16,
+        "true_category": "Home Improvement",
+        "true_sub_category": "appliances"
+      },
+      {
+        "transaction_information": "SOUTHAMPTON DOMESTIC APPL CD 1582",
+        "amount": 415.25,
+        "true_category": "Home Improvement",
+        "true_sub_category": "appliances"
+      }
+    ],
+    "B9 Motor vs home insurance": [
+      {
+        "transaction_information": "AVIVA",
+        "amount": 31.43,
+        "true_category": "Other",
+        "true_sub_category": "insurance_other"
+      },
+      {
+        "transaction_information": "ESURE INSURANCE",
+        "amount": 51.19,
+        "true_category": "Automotive",
+        "true_sub_category": "motor_insurance"
+      },
+      {
+        "transaction_information": "ADMIRAL INSURANCE",
+        "amount": 53.42,
+        "true_category": "Automotive",
+        "true_sub_category": "motor_insurance"
+      },
+      {
+        "transaction_information": "AXA INSURANCE UK",
+        "amount": 103.8,
+        "true_category": "Automotive",
+        "true_sub_category": "motor_insurance"
+      },
+      {
+        "transaction_information": "AXA INSURANCE UK",
+        "amount": 45.21,
+        "true_category": "Other",
+        "true_sub_category": "insurance_other"
+      },
+      {
+        "transaction_information": "VITALITY HEALTH",
+        "amount": 43.93,
+        "true_category": "Other",
+        "true_sub_category": "insurance_other"
+      }
+    ],
+    "B10 Supplier credits keep the supplier's category": [
+      {
+        "transaction_information": "E.ON NEXT",
+        "amount": 38.93,
+        "true_category": "Utilities",
+        "true_sub_category": "dual_fuel_energy"
+      },
+      {
+        "transaction_information": "OCTOPUS ELEC ACC 19Y4UQT0",
+        "amount": 42.56,
+        "true_category": "Electricity",
+        "true_sub_category": "electricity_bill"
+      },
+      {
+        "transaction_information": "OCTOPUS SEG PAYMENT",
+        "amount": 73.68,
+        "true_category": "Electricity",
+        "true_sub_category": "electricity_bill"
+      },
+      {
+        "transaction_information": "GOOD ENERGY ELECTRICITY",
+        "amount": 102.73,
+        "true_category": "Electricity",
+        "true_sub_category": "electricity_bill"
+      },
+      {
+        "transaction_information": "SO ENERGY ENERGY 19YAE9KO",
+        "amount": 73.77,
+        "true_category": "Utilities",
+        "true_sub_category": "dual_fuel_energy"
+      },
+      {
+        "transaction_information": "OVO SEG PAYMENT",
+        "amount": 75.27,
+        "true_category": "Electricity",
+        "true_sub_category": "electricity_bill"
+      }
+    ],
+    "B11 Housing payments are Other": [
+      {
+        "transaction_information": "ISLE OF ANGLESEY PROPERTY",
+        "amount": 1346.0,
+        "true_category": "Other",
+        "true_sub_category": "housing"
+      },
+      {
+        "transaction_information": "WORCESTER PROPERTY MGMT",
+        "amount": 909.0,
+        "true_category": "Other",
+        "true_sub_category": "housing"
+      },
+      {
+        "transaction_information": "BRISTOL PROPERTY MGMT",
+        "amount": 814.0,
+        "true_category": "Other",
+        "true_sub_category": "housing"
+      },
+      {
+        "transaction_information": "MTG 4377",
+        "amount": 385.69,
+        "true_category": "Other",
+        "true_sub_category": "housing"
+      },
+      {
+        "transaction_information": "NATWEST MORTGAGE",
+        "amount": 440.94,
+        "true_category": "Other",
+        "true_sub_category": "housing"
+      },
+      {
+        "transaction_information": "ARTHUR BAKER RENT",
+        "amount": 954.0,
+        "true_category": "Other",
+        "true_sub_category": "housing"
+      }
+    ]
+  }
+}

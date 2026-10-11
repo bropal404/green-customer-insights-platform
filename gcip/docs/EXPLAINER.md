@@ -316,6 +316,14 @@ Signal check on the 2,000 build (cross-validated, 20-65 buyers per product): AUC
 
 ---
 
+**Output record.** Every suggestion is a record in the brief's format: `customer_id`, `opportunity` (EV_FINANCE,
+GREEN_HOME_LOAN, SOLAR_FINANCE, PAPERLESS_BANKING, GREEN_INVESTMENTS, GREEN_LOANS), `propensity`, `confidence`,
+`reason_codes` (fixed identifiers such as HIGH_FUEL_SPEND, HIGH_ANNUAL_MILEAGE, EXISTING_VEHICLE), `evidence` (one
+sentence per code from the customer's own data) and `data_timestamp`, plus the impact. A reason code is reported only
+when the customer's data supports its sentence: a feature can raise a score through its absence (no gas bills make a
+heat pump more likely for an oil-heated home), and "HIGH_GAS_USE: about 0 kWh" would mislead, so such a code is skipped
+and the next strongest supported one is used (244 of 5,437 suggestions end up with no code and show "overall fit").
+
 ## 12. FR4 impact engine: carbon and money [built]
 
 Deterministic (same inputs give the same output). Carbon uses DESNZ 2026 factors on a **well-to-wheel** boundary
@@ -347,6 +355,12 @@ sensitivity table (for example, km per litre moves the EV money statement by 82%
 worked by hand from the DESNZ factors and prices (1,000 litres of petrol: 2,656 kg baseline, 2,170 kg avoided, £873 a year
 less), checked by an automated test.
 
+**Estimate confidence (how data quality is shown).** Each estimate carries a PCAF data-quality score from 1 (verified
+data) to 5 (averages only); 1 is never claimed. Because "1 is best" reads the wrong way round, people see it turned into
+estimate confidence: score 2 = High (●●●●), 3 = Good (●●●○), 4 = Partial (●●○○), 5 = Low (●○○○), with what it rests on
+from `configs/carbon.yaml` (for EV Finance: High = the car is on our books and fuel was bought in 10+ of the last 12
+months; Low = only evidence of a car, so national average mileage is used). The PCAF score stays in every record.
+
 An honest finding the engine surfaces: at 2026 prices (electricity about 3.6x the price of gas), heat pumps cut a lot of
 carbon but save little money, so their payback is long; the platform says so instead of overselling.
 
@@ -364,7 +378,7 @@ Order of decisions for each customer and product, each recorded for audit:
    confidence is not "low" (>= 0.45); the product avoids at least 100 kg CO2e a year (Paperless exempt: small by nature).
    Why relative and not e.g. 50%: six-month take-up rates are 2-12%, so almost no customer is above 50%; what matters is
    how much likelier than average, and calibration makes "2x the take-up rate" mean the same on every product. The
-   earlier fixed 2% floor let in customers no likelier than average (27,461 suggestions; now 5,478);
+   earlier fixed 2% floor let in customers no likelier than average (27,461 suggestions; now 5,437);
 5. GP06 Green Loans steps aside when GP01, GP02 or GP03 is recommended;
 6. rank by propensity x confidence, at most 3 per customer (the business view also keeps expected kg CO2e avoided);
 7. credit products for customers with a vulnerability flag go to human review instead of being sent.
@@ -374,17 +388,22 @@ statement, data-quality score, method, and the data timestamp (FR7).
 
 Explanations (FR5) are generated from that record only. Every recommendation gets a deterministic template explanation:
 a body (why, what it changes, what it costs) and a fixed compliance sentence (the data date, "prices and your situation can
-change", and the GP05 disclaimer). All 5,478 templates on the 30,000 build pass the guards.
+change", and the GP05 disclaimer). All 5,437 templates on the 30,000 build pass the guards.
 
-The LLM is optional, small and local: Qwen2.5-1.5B-Instruct runs offline on the laptop GPU (no API, no data leaves the
-machine, nothing is trained). It rewrites only the body; the compliance sentence is appended unchanged, the way banks treat
-disclosures. Guards reject any rewrite that adds a number not in the facts, drops a number from the draft, turns a yearly or
+The LLM is optional and nothing is trained (the only trained models are the FR3 LightGBM propensity models). Two
+roles: in the dashboards, "Rewrite" uses Gemini Flash through the Gemini API (`llm.provider: gemini`, model
+gemini-3.8-flash, falling back to gemini-3.5-flash and gemini-3.1-flash-lite when a model's daily quota is used up; only
+the explanation text and its facts are sent, no identifiers; replies are cached on disk). The 360-item evaluation below
+runs an open model (Qwen2.5-1.5B-Instruct) offline on the laptop GPU (`--llm-provider local`), because a free-tier
+Gemini key allows only about 20 requests a day per model: of 17 Gemini 3.8 Flash replies before the quota ran out, 16
+passed every guard (the one failure wrote 13,033 for 13,003, caught by the number check). Either way the LLM rewrites only the body; the compliance
+sentence is appended unchanged, the way banks treat disclosures. Guards reject any rewrite that adds a number not in the facts, drops a number from the draft, turns a yearly or
 12-month figure into a monthly one, promises savings, approval or returns ("will save", "guaranteed", "perfect for you"),
 or is too long; a rejected rewrite falls back to the template. Why each guard exists: the first run passed 0 of 360
 because the model reformatted the date and paraphrased the caveat; after moving the compliance sentence out of the LLM's
 reach, a run passed 97%, but reading them showed "£1,337 on fuel each month" (really 12 months) and an invented 12-month
 payback slipping through, so the completeness and time-period guards were added. Result on the 360-item evaluation set
-(60 per product): 67.8% pass (EV Finance only 22%); reading ease is lower for LLM text (60 vs 72 Flesch), so templates remain the default and the
+(60 per product, local Qwen2.5-1.5B): 67.8% pass (EV Finance only 22%); reading ease is lower for LLM text (60 vs 72 Flesch), so templates remain the default and the
 LLM is offered in the dashboard as an on-demand rewrite.
 
 ---
@@ -396,11 +415,26 @@ product (eligible, shown, expected take-ups = sum of calibrated propensities, ex
 emissions, typical money impact and payback), the decision funnel (why each customer x product was or was not shown),
 regions (footprint and opportunity per customer), the visible footprint by income band and its distribution, six k-means
 segments on behaviour (named from their strongest traits, e.g. "customers who own their home and bank digitally"), and
-monthly spend by FR2 category, nationally and by region. On the 30,000 build: 5,478 suggestions for 4,824 customers,
-expected 925 take-ups, 1,237 t CO2e a year avoided, and £418k a year of customer savings.
+monthly spend by FR2 category, nationally and by region. On the 30,000 build: 5,437 suggestions for 4,792 customers,
+expected 914 take-ups, 1,242 t CO2e a year avoided, and £419k a year of customer savings.
 
-Customer memory (`src/gcip/memory/replay.py`) is an event log; the latest response per product is applied to the Customer
-360 before recommending. A replay of 300 customers over three monthly rounds re-showed 0 products inside a cool-down.
+Customer memory (`src/gcip/memory/replay.py`) starts from the CRM's campaign history (five waves: May 2025, October
+2025, February 2026, June 2026 and August 2026; the last two fall after the training date, so they only affect the live
+snapshot) and adds every response given in the apps as an event. The latest response per product is applied to the
+Customer 360 before recommending, and each has a defined effect:
+
+| Response (app button) | Meaning | Effect on suggestions |
+|---|---|---|
+| clicked (the call to action, e.g. "Explore EV options") | interest: a lead for the product team, not an application | the product stays and moves up (+0.10 priority) |
+| dismissed ("Remind me later") | not now | paused for 90 days |
+| not_interested ("Not for me") | not this product | paused for 180 days |
+| already_have ("I already have this") | holds it already, possibly with another bank; our data missed it | stopped for good |
+
+None of these is a take-up: a take-up exists only when the product is opened in the bank's product system (which is
+also where the training labels come from). An app response can be undone, which restores the earlier history. The staff
+view shows, per product, the latest response, its source (CRM or app), and its effect today with the end date of any
+pause; the bank's Memory page shows the pauses, stops and interest in force across all customers. A replay of 300
+customers over three monthly rounds checks that a paused product never comes back early (0 cases).
 
 The front end is split by audience, served by `scripts/serve_dashboard.py`:
 - **Bank dashboard** (`dashboard/`, staff only): overview with pipeline status, products, regions and trends, memory,
@@ -408,8 +442,11 @@ The front end is split by audience, served by `scripts/serve_dashboard.py`:
   reason codes; "why not the others" with each product's threshold and the rule that decided it; the Customer 360 and
   features by section; human review; an on-demand local-LLM rewrite.
 - **Customer app** (`dashboard/app/`, what a customer sees in their banking app, FR5): their estimated footprint against
-  similar households in their region, up to three suggestions in plain language with a "for the planet" and a "for your
-  pocket" statement, "Why am I seeing this?" (the evidence, the data date, the disclaimer), the call to action and
+  similar households in their region, and up to three suggestions laid out as in the brief's mock-up: a headline ("An EV
+  could cut your transport emissions"), "Why you're seeing this: high fuel spend, high annual mileage, existing vehicle",
+  "Potential annual impact: X kg CO2e (estimate · method)", "Data as of" with estimate confidence, and the action
+  ("Explore EV options"); then extras: the money statement, the plain-language explanation, more detail (the evidence,
+  how the impact was estimated, the disclaimer), and
   "Remind me later / Not for me / I already have this" buttons that write to customer memory, and where their money went
   over 12 months. It never shows scores, codes, flags, or suggestions still waiting for human review (`/api/me/<id>`
   returns only customer-safe fields).
@@ -427,7 +464,7 @@ The front end is split by audience, served by `scripts/serve_dashboard.py`:
 | Models | Test-set ROC-AUC, PR-AUC, Brier, calibration error, lift@10%; oracle ceiling; fairness slices; ablations |
 | Impact | Truth recovery, sensitivity, a hand-worked golden case (automated test) |
 | Explanations | Guardrail pass rate (templates 100%, local LLM 67.8% on 360 items); reading ease; manual reading of rewrites |
-| End to end | Invariants on all 5,478 suggestions: none for a blocked product or below its threshold, no solar to renters, nothing without consent, vulnerable credit always to human review, at most 3 (0 violations); memory replay (0 re-shown inside a cool-down); [planned] scenario pack |
+| End to end | Invariants on all 5,437 suggestions: none for a blocked product or below its threshold, no solar to renters, nothing without consent, vulnerable credit always to human review, at most 3 (0 violations); memory replay (0 re-shown inside a cool-down); [planned] scenario pack |
 
 ---
 

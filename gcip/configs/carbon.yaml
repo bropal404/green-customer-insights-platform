@@ -57,6 +57,25 @@ assumptions:
 # Data-quality score per product (PCAF Part A ladders for motor vehicle loans and
 # mortgages, mapped onto what the bank can see). 1 is never claimed: volumes
 # derived from spend are estimates, not metered or odometer readings.
+# How each impact estimate was made, in words a customer can read (the method code is in every record).
+method_labels:
+  AVOIDED_EV_WTW_v1: "UK government (DESNZ 2026) emission factors: the fuel you buy vs an electric car for the same distance"
+  AVOIDED_HOME_WTW_v1: "UK government (DESNZ 2026) emission factors: your heating fuel vs a heat pump or insulation"
+  AVOIDED_SOLAR_WTW_v1: "UK government (DESNZ 2026) grid factor and regional solar output (PVGIS)"
+  AVOIDED_PAPER_v1: "UK government (DESNZ 2026) paper factor for the statements you receive"
+  FINANCED_FUND_SWITCH_v1: "PCAF financed emissions: a sustainability-focused fund vs a broad UK equity fund"
+  AVOIDED_GREEN_LOAN_v1: "UK government (DESNZ 2026) emission factors for the switch the loan pays for"
+
+method_short:                    # for the customer view: "estimate · <method>"
+  AVOIDED_EV_WTW_v1: "UK government emission factors"
+  AVOIDED_HOME_WTW_v1: "UK government emission factors"
+  AVOIDED_SOLAR_WTW_v1: "UK government factors and regional solar data"
+  AVOIDED_PAPER_v1: "UK government emission factors"
+  FINANCED_FUND_SWITCH_v1: "PCAF financed-emissions method"
+  AVOIDED_GREEN_LOAN_v1: "UK government emission factors"
+
+# Data quality of an impact estimate (PCAF scale: 1 = verified data ... 5 = averages; 1 is never claimed). Shown to
+# people the other way round, as estimate confidence: score 2 = high, 3 = good, 4 = partial, 5 = low.
 data_quality:
   GP01:
     2: "vehicle record known and fuel bought in 10+ of the last 12 months"
@@ -71,8 +90,12 @@ data_quality:
   GP03:
     3: "property known to be a house with an EPC record"
     4: "house inferred, regional PVGIS yield"
+  GP04:
+    3: "number of accounts on paper known; standard weights per statement"
   GP05:
     5: "sector-average footprint (ONS intensity by industry), no holdings data"
+  GP06:
+    4: "the switch is chosen from your spending; typical savings for that switch"
 
 # GP05: illustrative fund footprints built from ONS 2024 GHG intensity by SIC section.
 # Sector weights are assumptions describing a broad UK equity fund and a fund with

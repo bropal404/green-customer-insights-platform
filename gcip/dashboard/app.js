@@ -10,7 +10,7 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "
 const num = (x, d = 0) => (x === null || x === undefined || Number.isNaN(x)) ? "–" : Number(x).toLocaleString("en-GB", { maximumFractionDigits: d, minimumFractionDigits: d });
 const gbp = (x, d = 0) => (x === null || x === undefined) ? "–" : (x < 0 ? "−£" : "£") + num(Math.abs(x), d);
 const pct = (x, d = 1) => (x === null || x === undefined) ? "–" : num(x * 100, d) + "%";
-const kg = (x) => (x === null || x === undefined) ? "–" : (Math.abs(x) >= 1000 ? num(x / 1000, 1) + " t" : num(x) + " kg");
+const kg = (x) => (x === null || x === undefined) ? "–" : (Math.abs(x) >= 1000 ? num(x / 1000, 1) + " t" : num(x, Math.abs(x) < 10 ? 1 : 0) + " kg");
 const label = (s) => esc(String(s ?? "").replace(/_/g, " "));
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const PRODUCT_COLOURS = { GP01: "#1d4ed8", GP02: "#15803d", GP03: "#b45309", GP04: "#64748b", GP05: "#7c3aed", GP06: "#0f766e" };
@@ -203,11 +203,26 @@ async function renderCustomer(id, tab = "recs", doc = null) {
     t.innerHTML = `<div class="card">${secs.map((x, i) => `<details class="sec" ${i < 2 ? "open" : ""}><summary><span>${label(x.section)}</span><span class="q">${esc(x.question)}<br><i>read by: ${esc(x.used_by)}</i></span></summary>
       <div class="kv">${Object.entries(x.fields).map(([k, v]) => `<div><span>${label(k)}</span><b>${fmtField(v)}</b></div>`).join("")}</div></details>`).join("")}</div>`;
   } else {
-    t.innerHTML = `<div class="card">
+    t.innerHTML = `<div class="card"><div class="card-h"><h3>What we remember, and what it does today</h3><span class="sub">latest response per product · as of ${esc(doc.as_of)}</span></div>
+      <div class="table-wrap"><table><thead><tr><th>Product</th><th>Latest response</th><th>Date</th><th>Source</th><th>Effect today</th><th>Until</th></tr></thead><tbody>
+      ${(doc.memory || []).map((m) => `<tr><td>${esc(m.name)}</td><td>${m.response === "none" ? "–" : pill(m.response.replace(/_/g, " "), "blue")}</td><td class="mono">${esc(m.date || "–")}</td><td>${esc(m.source || "–")}</td><td>${effectPill(m.effect)}</td><td class="mono">${esc(m.until || "")}</td></tr>`).join("")}
+      </tbody></table></div></div>
+      <div class="card"><div class="card-h"><h3>Responses given in the apps</h3></div>
       <div class="table-wrap"><table><thead><tr><th>Date</th><th>Product</th><th>Response</th><th>Source</th></tr></thead><tbody>
-      ${(doc.memory_events || []).map((e) => `<tr><td class="mono">${esc(e.response_date)}</td><td>${esc(names[e.product])}</td><td>${pill(e.response.replace(/_/g, " "), "blue")}</td><td>${esc(e.source)}</td></tr>`).join("") || `<tr><td colspan="4" class="empty">No responses recorded.</td></tr>`}
+      ${(doc.memory_events || []).map((e) => `<tr><td class="mono">${esc(e.response_date)}</td><td>${esc(names[e.product])}</td><td>${pill(e.response.replace(/_/g, " "), "blue")}</td><td>${esc(e.source)}</td></tr>`).join("") || `<tr><td colspan="4" class="empty">None yet.</td></tr>`}
       </tbody></table></div></div>`;
   }
+}
+function confidenceWord(score) {
+  if (score == null) return "–";
+  return score <= 2.5 ? "high" : score <= 3.5 ? "good" : score <= 4.5 ? "partial" : "low";
+}
+function effectPill(e) {
+  if (!e || e === "no effect") return pill("none", "grey");
+  if (e.startsWith("paused")) return pill(e, "amber");
+  if (e.startsWith("stopped")) return pill(e, "red");
+  if (e.startsWith("priority")) return pill(e, "green");
+  return pill(e, "grey");
 }
 function fmtField(v) {
   if (v === null || v === undefined) return "–";
@@ -221,15 +236,21 @@ function recCard(r) {
   const money = r.running_cost_change_gbp_per_year;
   const moneyText = money === null || money === undefined || Math.abs(money) < 5 ? (r.product === "GP05" ? "Not estimated" : "No change") : `${gbp(Math.abs(money))} ${money < 0 ? "less" : "more"}`;
   const moneySmall = r.product === "GP05" ? "Returns are uncertain; information, not advice." : [r.upfront_cost_gbp ? `Upfront about ${gbp(r.upfront_cost_gbp)}` : "", r.payback_years && r.payback_years <= 30 ? `pays back in about ${num(r.payback_years)} years` : (r.upfront_cost_gbp ? "payback over 30 years" : "")].filter(Boolean).join(", ") || "per year at today's prices";
-  const reasons = (r.reason_codes || []).map((c, i) => `<span class="chip" title="${esc(c)}">${esc((r.evidence || [])[i] || c)}</span>`).join("");
+  const reasons = (r.reason_codes || []).map((c, i) => `<div class="reason"><span class="mono code">${esc(c)}</span><span>${esc((r.evidence || [])[i] || "")}</span></div>`).join("");
+  const ce = r.confidence_of_estimate;
+  const record = [["customer_id", r.customer_id], ["opportunity", r.opportunity], ["propensity", num(r.propensity, 2)], ["confidence", num(r.confidence, 2)],
+    ["reason_codes", (r.reason_codes || []).join(", ") || "–"], ["evidence", (r.evidence || []).join("; ") || "–"],
+    ["impact", r.impact_status === "ok" ? `${num(r.co2e_avoided_kg_per_year)} kg CO2e/yr (${r.method})` : "insufficient data"],
+    ["data_timestamp", r.data_timestamp]];
   return `<div class="card rec" style="margin-bottom:0">
-    <div class="rec-top"><div><div class="rank">Suggestion ${r.rank}</div><h4>${esc(r.product_name)}</h4></div>${r.status === "human_review" ? pill("human review", "amber") : pill("recommended", "green")}</div>
-    <div class="meter"><span>Propensity <b>${pct(r.propensity)}</b></span><span>Confidence <b>${num(r.confidence, 2)}</b> ${pill(conf[0], conf[1])}</span><span>Data quality <b>${r.data_quality ?? "–"}</b>/5</span></div>
+    <div class="rec-top"><div><div class="rank">Suggestion ${r.rank} · <span class="mono">${esc(r.opportunity || r.product)}</span></div><h4>${esc(r.product_name)}</h4></div>${r.status === "human_review" ? pill("human review", "amber") : pill("recommended", "green")}</div>
+    <div class="meter"><span>Propensity <b>${pct(r.propensity)}</b></span><span>Confidence <b>${num(r.confidence, 2)}</b> ${pill(conf[0], conf[1])}</span><span title="${esc(ce ? `${ce.based_on || ""} (PCAF data-quality score ${ce.pcaf_score}: 1 best, 5 worst)` : "")}">Estimate confidence <b class="dots">${ce ? "●".repeat(ce.dots) + "○".repeat(ce.of - ce.dots) : "–"}</b> ${ce ? esc(ce.level) : ""}</span></div>
     <div class="statements">
       <div class="statement carbon"><div class="k">Sustainability gain</div><div class="big">${okImpact ? kg(r.co2e_avoided_kg_per_year) + " CO2e/yr" : "Insufficient data"}</div><div class="small">${okImpact ? `${esc(r.measure || "")}${r.horizon_years > 1 ? ` · about ${kg(r.co2e_avoided_kg_horizon)} over ${num(r.horizon_years)} years` : ""}` : "Inputs the method needs are missing; no number is given."}</div></div>
       <div class="statement money"><div class="k">Financial impact</div><div class="big">${moneyText}${moneyText.endsWith("less") || moneyText.endsWith("more") ? "/yr" : ""}</div><div class="small">${esc(moneySmall)}</div></div>
     </div>
-    <div><div class="eyebrow" style="margin-bottom:6px">Why (reason codes)</div>${reasons || '<span class="chip">overall fit</span>'}</div>
+    <div><div class="eyebrow" style="margin-bottom:6px">Why (reason codes and evidence)</div>${reasons || '<span class="chip">overall fit</span>'}</div>
+    <details class="record"><summary>Recommendation record</summary><pre class="mono">${record.map(([k, v]) => `${k}: ${esc(v)}`).join("\n")}</pre>${ce && ce.based_on ? `<div class="note">Estimate confidence ${esc(ce.level)}: ${esc(ce.based_on)} (PCAF data-quality score ${ce.pcaf_score}, where 1 is best and 5 is worst).</div>` : ""}${r.method_label ? `<div class="note">Method: ${esc(r.method_label)}.</div>` : ""}</details>
     <div class="explanation"><span data-text="${r.product}">${esc(r.explanation || "")}</span><div class="src"><span data-src="${r.product}">${r.source === "llm" ? pill("AI rewrite · checked", "blue") : pill("standard wording", "grey")} data as of ${esc(r.data_timestamp)}</span><span>${esc(r.customer_action || "")} <button class="btn small" data-rw="${r.product}">Rewrite</button></span></div></div>
     <div class="feedback"><span>Customer response:</span>${[["clicked", "Interested"], ["dismissed", "Dismiss"], ["not_interested", "Not interested"], ["already_have", "Already have it"]].map(([k, v]) => `<button class="btn small" data-fb="${r.product}|${k}">${v}</button>`).join("")}</div>
   </div>`;
@@ -242,7 +263,7 @@ function renderProducts() {
     ${ins.products.map((p) => `<div class="box"><div class="k" style="color:${PRODUCT_COLOURS[p.product]}">${esc(p.name)}</div><div class="v">${num(p.expected_co2e_tonnes_per_year, 0)} t CO2e/yr expected</div>
       <div class="d">Eligible ${num(p.eligible)} · shown ${num(p.shown)} · review ${num(p.human_review)}<br>Expected take-ups ${num(p.expected_takeups, 0)} (mean propensity ${pct(p.mean_propensity_shown)})<br>
       Per take-up: ${p.co2e_kg_per_year_if_taken_up_median !== null ? kg(p.co2e_kg_per_year_if_taken_up_median) + " CO2e/yr" : "–"}${p.money_gbp_per_year_median !== null ? ` · ${gbp(p.money_gbp_per_year_median)}/yr running cost` : ""}${p.upfront_gbp_median ? ` · upfront ${gbp(p.upfront_gbp_median)}` : ""}${p.payback_years_median ? ` · payback ${num(p.payback_years_median, 0)} yrs` : ""}<br>
-      Impact not computable for ${pct(p.insufficient_data_share, 0)} · mean data quality ${num(p.mean_data_quality_shown, 1)}/5</div></div>`).join("")}
+      Impact not computable for ${pct(p.insufficient_data_share, 0)} · estimate confidence ${confidenceWord(p.mean_data_quality_shown)} (mean PCAF score ${num(p.mean_data_quality_shown, 1)}, 1 best)</div></div>`).join("")}
     </div></div>
     <div class="card"><div class="card-h"><h3>Decision funnel</h3><span class="sub">every customer × product, by the first rule that decided it</span></div><div class="card-b">${funnelBars(ins.funnel)}</div>
     <div class="table-wrap"><table><thead><tr><th>Product</th>${Object.keys(FUNNEL_COLOURS).map((k) => `<th class="num">${esc(k)}</th>`).join("")}</tr></thead><tbody>
@@ -273,16 +294,24 @@ async function renderRegions(region = "") {
 }
 
 /* ---------- memory ---------- */
-function renderMemory() {
-  const m = state.overview.memory_replay, resp = state.overview.insights.memory.responses;
-  view.innerHTML = pageHead("Customer memory", "Responses and cool-downs",
-    `<button class="btn" id="reset">Forget dashboard responses</button>`) + `
-    <div class="card"><div class="card-h"><h3>Replay: ${num(m.customers)} customers, ${m.rounds.length} rounds</h3><span class="sub">responses simulated from each customer's true take-up probability (evaluation only)</span></div>
-    <div class="table-wrap"><table><thead><tr><th>Round</th><th>Date</th><th class="num">Shown</th><th class="num">Customers shown something</th><th class="num">Held back by memory</th><th class="num">Re-shown inside a cool-down</th><th class="num">New products shown</th><th>Responses</th></tr></thead><tbody>
-    ${m.rounds.map((r) => `<tr><td class="mono">${r.round}</td><td class="mono">${esc(r.date)}</td><td class="num mono">${num(r.shown)}</td><td class="num mono">${num(r.customers_shown_something)}</td><td class="num mono">${num(r.suppressed_by_memory)}</td><td class="num">${r.reshown_within_cooldown === undefined ? "–" : pill(num(r.reshown_within_cooldown), r.reshown_within_cooldown === 0 ? "green" : "red")}</td><td class="num mono">${r.new_products_shown === undefined ? "–" : num(r.new_products_shown)}</td><td>${Object.entries(r.responses).map(([k, v]) => `<span class="chip">${label(k)} ${num(v)}</span>`).join("")}</td></tr>`).join("")}
+async function renderMemory() {
+  const mem = await api("/api/memory"), m = mem.replay;
+  view.innerHTML = pageHead("Customer memory", `Responses and their effect on ${esc(mem.as_of)} · dismissed pauses ${mem.cooldown_days.dismissed} days, not interested ${mem.cooldown_days.not_interested} days`,
+    `<button class="btn" id="reset">Forget app responses (${num(mem.app_responses)})</button>`) + `
+    <div class="card"><div class="card-h"><h3>Memory in force today</h3><span class="sub">latest response per customer × product: CRM campaigns and the apps</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Product</th><th class="num">Customers contacted</th><th class="num">Paused · dismissed</th><th class="num">Paused · not interested</th><th class="num">Stopped · already has it</th><th class="num">Priority raised · interested</th></tr></thead><tbody>
+    ${mem.products.map((r) => `<tr><td>${esc(r.name)}</td><td class="num mono">${num(r.responses)}</td><td class="num mono">${num(r.paused_dismissed)}</td><td class="num mono">${num(r.paused_not_interested)}</td><td class="num mono">${num(r.stopped_already_have)}</td><td class="num mono">${num(r.interested)}</td></tr>`).join("")}
     </tbody></table></div></div>
-    <div class="card"><div class="card-h"><h3>Earlier campaign responses in the Customer 360</h3><span class="sub">last response per customer × product</span></div><div class="card-b">${Object.entries(resp).filter(([k]) => k !== "none").map(([k, v]) => `<span class="chip">${label(k)} · ${num(v)}</span>`).join("")}</div></div>`;
-  $("#reset").onclick = async () => { await api("/api/memory/reset", {}); toast("Dashboard responses forgotten; suggestions restored."); };
+    <div class="card"><div class="card-h"><h3>Latest responses in the apps</h3></div>
+    <div class="table-wrap"><table><thead><tr><th>Customer</th><th>Product</th><th>Response</th><th>Source</th></tr></thead><tbody>
+    ${mem.recent.map((e) => `<tr class="click" data-id="${esc(e.customer_id)}"><td class="mono">${esc(e.customer_id)}</td><td>${esc(e.product)}</td><td>${pill(e.response.replace(/_/g, " "), "blue")}</td><td>${esc(e.source)}</td></tr>`).join("") || `<tr><td colspan="4" class="empty">None yet: respond to a suggestion in the customer app or on a customer page.</td></tr>`}
+    </tbody></table></div></div>
+    ${m ? `<div class="card"><div class="card-h"><h3>Check: replay of ${num(m.customers)} customers over ${m.rounds.length} months</h3><span class="sub">simulated responses · a paused product must never come back early</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Round</th><th>Date</th><th class="num">Shown</th><th class="num">Held back by memory</th><th class="num">Re-shown inside a pause</th><th>Responses</th></tr></thead><tbody>
+    ${m.rounds.map((r) => `<tr><td class="mono">${r.round}</td><td class="mono">${esc(r.date)}</td><td class="num mono">${num(r.shown)}</td><td class="num mono">${num(r.suppressed_by_memory)}</td><td class="num">${r.reshown_within_cooldown === undefined ? "–" : pill(num(r.reshown_within_cooldown), r.reshown_within_cooldown === 0 ? "green" : "red")}</td><td>${Object.entries(r.responses).map(([k, v]) => `<span class="chip">${label(k)} ${num(v)}</span>`).join("")}</td></tr>`).join("")}
+    </tbody></table></div></div>` : ""}`;
+  $("#reset").onclick = async () => { await api("/api/memory/reset", {}); toast("App responses forgotten; suggestions restored."); renderMemory(); };
+  view.querySelectorAll("tr.click").forEach((tr) => tr.onclick = () => location.hash = `#/customer/${tr.dataset.id}`);
 }
 
 /* ---------- models & checks ---------- */
@@ -313,9 +342,10 @@ function renderModels(product = "GP01") {
       <div class="card"><div class="card-h"><h3>Fairness · ${esc(names[product])}</h3><span class="sub">test set by income band</span></div><div class="table-wrap"><table><thead><tr><th>Band</th><th class="num">Customers</th><th class="num">Take-up rate</th><th class="num">Mean propensity</th><th class="num">Selected</th></tr></thead><tbody>
         ${Object.entries(fair.income_band || {}).map(([k, v]) => `<tr><td>${label(k)}</td><td class="num mono">${num(v.n)}</td><td class="num mono">${pct(v.take_up_rate)}</td><td class="num mono">${pct(v.mean_propensity)}</td><td class="num mono">${pct(v.selected_rate)}</td></tr>`).join("")}</tbody></table></div></div>
     </div>
-    <div class="card"><div class="card-h"><h3>FR5 explanations</h3><span class="sub">LLM vs standard wording</span></div><div class="card-b grid g-4">
+    <div class="card"><div class="card-h"><h3>FR5 explanations</h3><span class="sub">LLM vs standard wording</span></div><div class="card-b grid g-${o.gemini_sample ? 5 : 4}">
       ${kpi("Template guard pass", `${num(ex.template_guard_pass)}/${num(ex.explanations)}`, "numbers, date, disclaimer, banned claims", "good")}
-      ${kpi("LLM guard pass", llm.guard_pass_rate !== undefined ? pct(llm.guard_pass_rate, 0) : "–", llm.items ? `${num(llm.items)} rewrites · ${esc(llm.model)}` : esc(llm.skipped || "not run yet"))}
+      ${kpi("LLM guard pass", llm.guard_pass_rate !== undefined ? pct(llm.guard_pass_rate, 0) : "–", llm.items ? `${num(llm.items)} rewrites · ${esc(llm.model)} (local)` : esc(llm.skipped || "not run yet"))}
+      ${o.gemini_sample ? kpi("Gemini guard pass", `${num(o.gemini_sample.passed_guards)}/${num(o.gemini_sample.replies)}`, `${esc(o.gemini_sample.model)} · used for Rewrite`, "good") : ""}
       ${kpi("Reading ease", llm.reading_ease_mean ? `${num(llm.reading_ease_mean.llm, 0)} vs ${num(llm.reading_ease_mean.template, 0)}` : num(ex.reading_ease_mean, 0), "Flesch: LLM vs template (higher is easier)")}
       ${kpi("Length", llm.words_mean ? `${num(llm.words_mean.llm, 0)} vs ${num(llm.words_mean.template, 0)}` : num(ex.words_mean, 0) + " words", "words: LLM vs template")}
     </div></div>
