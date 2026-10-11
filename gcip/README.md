@@ -69,3 +69,29 @@ The full generated bank (source-system extracts, warehouse, truth vault; 1.6 GB)
 https://drive.google.com/drive/folders/1fJV1LTqDVxyUE5GCjPFQ1mKiVNwNVs1C (`.venv/bin/python scripts/fetch_release.py
 --all` downloads it). Nothing above needs it: `./run.sh --quick` and `--rebuild` generate the bank locally.
 Keep `runs/` on disk (not a RAM-backed /tmp). Configuration lives in `configs/`.
+
+## Credits and licences
+
+Our code is MIT-licensed (`LICENSE`). Third-party software, models, APIs and data used, with their licences:
+
+| Kind | Name | Licence |
+|---|---|---|
+| Python libraries | pandas, NumPy, SciPy, scikit-learn, joblib, PyTorch, lxml | BSD-3-Clause |
+| | LightGBM, PyYAML, openpyxl, gdown, pytest | MIT |
+| | PyArrow, XGBoost, CatBoost, Hugging Face Transformers, huggingface_hub, sentence-transformers | Apache-2.0 |
+| | odfpy | Apache-2.0 (also GPL-2.0 / LGPL-2.1) |
+| | tqdm | MIT and MPL-2.0 |
+| Front end | Chart.js 4.4.1 (cdnjs) | MIT |
+| | DM Sans, Manrope, Inter, JetBrains Mono (Google Fonts) | SIL Open Font License 1.1 |
+| LLM API | Google Gemini API (gemini-3.8-flash, gemini-3.5-flash, gemini-3.1-flash-lite) | Gemini API Terms of Service |
+| Models (Hugging Face) | Qwen/Qwen2.5-1.5B-Instruct (offline explanation evaluation) | Apache-2.0 |
+| | sentence-transformers/all-MiniLM-L6-v2 (optional categoriser embeddings) | Apache-2.0 |
+| | ProsusAI/finbert (optional categoriser embeddings) | see its model card |
+| Data | ONS Census 2021 (Nomis), DESNZ (NEED, greenhouse-gas conversion factors, energy statistics), DfT, DVSA MOT results, HM Land Registry UK HPI | Open Government Licence v3.0 |
+| | EU JRC PVGIS 5.3 (solar yield) | free use, EU JRC |
+| | Ofgem price cap (public web pages); Bank of England database | publisher terms |
+| | DoDataThings US bank transaction categories (Hugging Face) | MIT |
+| | greggles/mcc-codes | The Unlicense |
+
+Every dataset, with its publisher, licence and download link: `docs/DATA_SOURCES.md`. No real customer or banking data
+is used.
