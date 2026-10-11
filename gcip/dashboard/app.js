@@ -476,7 +476,7 @@ function renderModels(product = "GP01") {
   const models = o.models || {};
   const metricRow = (p) => {
     const t = models[p].test, c = t.lightgbm_calibrated, b = t.rules_baseline, l = t.logistic_regression, or = t.oracle_p_true;
-    return `<tr><td>${esc(names[p])}</td><td class="num mono">${num(models[p].positives.test)}</td><td class="num mono">${num(b.roc_auc, 3)}</td><td class="num mono">${num(l.roc_auc, 3)}</td><td class="num mono"><b>${num(c.roc_auc, 3)}</b></td><td class="num mono">${num(or.roc_auc, 3)}</td><td class="num mono">${num(c.pr_auc, 3)}</td><td class="num mono">${num(c.lift_top10, 2)}×</td><td class="num mono">${num(c.ece, 3)}</td><td class="num mono">${num(models[p].mean_confidence_test, 2)}</td></tr>`;
+    return `<tr><td>${esc(names[p])}</td><td class="num mono">${num(models[p].positives.test)}</td><td class="num mono">${num(b.roc_auc, 3)}</td><td class="num mono">${num(l.roc_auc, 3)}</td><td class="num mono">${num((t.xgboost_raw || {}).roc_auc, 3)}</td><td class="num mono">${num((t.catboost_raw || {}).roc_auc, 3)}</td><td class="num mono"><b>${num(c.roc_auc, 3)}</b></td><td class="num mono">${num(or.roc_auc, 3)}</td><td class="num mono">${num(c.pr_auc, 3)}</td><td class="num mono">${num(c.lift_top10, 2)}×</td><td class="num mono">${num(c.ece, 3)}</td><td class="num mono">${num(models[p].mean_confidence_test, 2)}</td></tr>`;
   };
   const ab = (o.ablations || {})[product] || {};
   const fair = models[product]?.fairness_test || {};
@@ -486,7 +486,7 @@ function renderModels(product = "GP01") {
   view.innerHTML = pageHead("Models & checks", "Held-out test results") + `
     <div class="grid g-2" style="margin-bottom:24px">${chartBox("m-auc", "Test AUC by product", "ranking quality on customers never seen in training")}${chartBox("m-lift", "Lift in the top 10%", "take-up rate of the top 10% vs average")}</div>
     <div class="card"><div class="card-h"><h3>FR3 propensity · test set (customers never seen in training)</h3><span class="sub">AUC: ranking · lift: take-up rate in the top 10% vs average · ECE: calibration error</span></div>
-    <div class="table-wrap"><table><thead><tr><th>Product</th><th class="num">Test take-ups</th><th class="num">Rules AUC</th><th class="num">Logistic AUC</th><th class="num">LightGBM AUC</th><th class="num">Oracle AUC</th><th class="num">PR-AUC</th><th class="num">Lift top 10%</th><th class="num">ECE</th><th class="num">Confidence</th></tr></thead><tbody>
+    <div class="table-wrap"><table><thead><tr><th>Product</th><th class="num">Test take-ups</th><th class="num">Rules AUC</th><th class="num">Logistic AUC</th><th class="num">XGBoost AUC</th><th class="num">CatBoost AUC</th><th class="num">LightGBM AUC</th><th class="num">Oracle AUC</th><th class="num">PR-AUC</th><th class="num">Lift top 10%</th><th class="num">ECE</th><th class="num">Confidence</th></tr></thead><tbody>
     ${Object.keys(models).map(metricRow).join("")}</tbody></table></div></div>
     <div class="card"><div class="card-h"><h3>Suggestion thresholds</h3><span class="sub">propensity ≥ ${num((Object.values(models)[0] || {}).threshold?.min_lift, 1)} × take-up rate · test set</span></div>
     <div class="table-wrap"><table><thead><tr><th>Product</th><th class="num">Take-up rate</th><th class="num">Threshold</th><th class="num">Customers above</th><th class="num">Their take-up rate</th><th class="num">Lift</th><th class="num">Take-ups captured</th></tr></thead><tbody>
@@ -515,7 +515,10 @@ function renderModels(product = "GP01") {
   view.querySelectorAll("[data-p]").forEach((b) => b.onclick = () => { clearCharts(); renderModels(b.dataset.p); });
   const ks = Object.keys(models), mn = ks.map((p) => names[p]);
   const series = (key, metric) => ks.map((p) => (models[p].test[key] || {})[metric]);
-  plot("m-auc", "bar", mn, [["Rules baseline", "rules_baseline", "#cbd5e1"], ["Logistic regression", "logistic_regression", "#94a3b8"], ["LightGBM (ours)", "lightgbm_calibrated", "#1d4ed8"], ["Oracle (ceiling)", "oracle_p_true", "#15803d"]]
+  const hasBench = (k) => ks.some((p) => models[p].test[k]);
+  plot("m-auc", "bar", mn, [["Rules baseline", "rules_baseline", "#cbd5e1"], ["Logistic regression", "logistic_regression", "#94a3b8"],
+    ...(hasBench("xgboost_raw") ? [["XGBoost", "xgboost_raw", "#7c3aed"]] : []), ...(hasBench("catboost_raw") ? [["CatBoost", "catboost_raw", "#db2777"]] : []),
+    ["LightGBM (ours)", "lightgbm_calibrated", "#1d4ed8"], ["Oracle (ceiling)", "oracle_p_true", "#15803d"]]
     .map(([l, k, c]) => ({ label: l, data: series(k, "roc_auc"), color: c })), { fmt: (v) => num(v, 2) });
   plot("m-lift", "bar", mn, [["Rules baseline", "rules_baseline", "#cbd5e1"], ["LightGBM (ours)", "lightgbm_calibrated", "#1d4ed8"], ["Oracle (ceiling)", "oracle_p_true", "#15803d"]]
     .map(([l, k, c]) => ({ label: l, data: series(k, "lift_top10"), color: c })), { fmt: (v) => num(v, 1) + "×" });

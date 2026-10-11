@@ -274,9 +274,16 @@ evaluation, report). The dashboard (`scripts/serve_dashboard.py`) serves the ban
 
 Layers, in order: **rules** (merchant codes and text patterns, each citing a boundary rule; they fire only when
 near-certain), **merchant lookup** (exact normalised text seen in training with at least 95% purity), then an **ensemble of
-text models** (character and word TF-IDF with a linear model; sentence embeddings with logistic regression; optionally a
-fine-tuned DistilBERT). The model predicts a sub-category; its category is the roll-up, so every transaction gets exactly one
-of the 8 categories.
+text models**: character and word TF-IDF with a linear model (default), and optionally sentence embeddings, **FinBERT**
+embeddings (ProsusAI/finbert, mean-pooled, with a logistic-regression head for this taxonomy) or a fine-tuned DistilBERT;
+the ensemble weights are chosen on validation transactions from merchants never seen in training. The model predicts a
+sub-category; its category is the roll-up, so every transaction gets exactly one of the 8 categories.
+
+FinBERT was tested head to head on the 2,000-customer build (model layer alone, no rules or lookup): seen merchants 99.3%
+vs TF-IDF 99.1%; merchants never seen in training 76.4% vs 83.1% (test) and 77.9% vs 85.7% (validation); about 8 minutes
+on a laptop GPU against about 1 for TF-IDF. The validation search gave FinBERT a weight of zero in the ensemble, so TF-IDF
+stays the default and FinBERT is an option (`scripts/build_model_inputs.py --finbert`). A likely reason: FinBERT was trained
+for financial sentiment on news, while merchant strings ("TESCO STORES 3412") are best matched by character n-grams.
 
 Boundary rules (B1-B11, documented in `configs/taxonomy.yaml`), for example: public EV charging is Fuel (B2); forecourt shop
 purchases are Other (B3); dual-fuel bills and delivered heating oil are Utilities (B4); prepayment top-ups follow the meter
@@ -284,9 +291,9 @@ purchases are Other (B3); dual-fuel bills and delivered heating oil are Utilitie
 Improvement (B8); supplier refunds keep the supplier's category (B10); housing payments are Other (B11).
 
 Evaluation splits merchants as well as customers: 20% of merchants never appear in training, so accuracy on them measures
-generalisation. Smoke-test result (earlier build): 98.9% category accuracy on seen merchants, 91.8% on unseen; the weakest
-boundary is Electricity/Gas vs Utilities when a bill names no fuel (rule B4). Out-of-distribution check on US descriptions:
-66.9% coarse agreement.
+generalisation. Result on the 30,000 build (TF-IDF): 99.0% category accuracy on seen merchants, 90.4% on unseen; the
+weakest boundary is Electricity/Gas vs Utilities when a bill names no fuel (rule B4). Out-of-distribution check on 68,000
+US descriptions: 82-85% coarse agreement.
 
 ---
 

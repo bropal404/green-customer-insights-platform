@@ -1,4 +1,5 @@
-# Optional: llm.provider "local" (an open model on the local GPU instead of the Gemini API).
+# Optional: llm.provider "local" (an open model on the local GPU instead of the Gemini API), and FinBERT in the
+# categoriser (scripts/build_model_inputs.py --finbert).
 torch>=2.4
 transformers==5.17.0
 huggingface_hub==1.5.0

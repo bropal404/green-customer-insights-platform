@@ -39,7 +39,36 @@ def make_embedder(model_name: str, log):
     return embed
 
 
-def ood_benchmark(cat: Categoriser, embed_fn, transformer_proba_fn=None) -> dict:
+def make_finbert(model_name: str, batch_size: int, max_length: int, log):
+    """A cached FinBERT text embedder (masked mean pooling of the last hidden layer), or None if torch is unavailable."""
+    try:
+        import torch
+        from transformers import AutoModel, AutoTokenizer
+    except Exception as error:  # optional dependency (requirements-llm.txt)
+        log.warning("FinBERT disabled: %s", error)
+        return None
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModel.from_pretrained(model_name).to(device).eval()
+    cache: dict[str, np.ndarray] = {}
+
+    def embed(texts: list[str]) -> np.ndarray:
+        missing = [t for t in dict.fromkeys(texts) if t not in cache]
+        for start in range(0, len(missing), batch_size):
+            batch = missing[start:start + batch_size]
+            encoded = tokenizer(batch, padding=True, truncation=True, max_length=max_length, return_tensors="pt").to(device)
+            with torch.inference_mode():
+                hidden = model(**encoded).last_hidden_state
+                mask = encoded["attention_mask"].unsqueeze(-1)
+                vectors = (hidden * mask).sum(1) / mask.sum(1).clamp(min=1)
+            cache.update(zip(batch, vectors.float().cpu().numpy()))
+        return np.stack([cache[t] for t in texts]) if texts else np.zeros((0, model.config.hidden_size), dtype=np.float32)
+
+    log.info("FinBERT: %s on %s", model_name, device)
+    return embed
+
+
+def ood_benchmark(cat: Categoriser, embed_fn, transformer_proba_fn=None, finbert_fn=None) -> dict:
     """Coarse accuracy on DoDataThings US transactions (MIT): strings our generator never wrote."""
     path = BENCHMARK_DIR / "dodatathings_us_bank_categories.csv"
     if not path.exists():
@@ -49,7 +78,7 @@ def ood_benchmark(cat: Categoriser, embed_fn, transformer_proba_fn=None) -> dict
     text = data["description"].str.replace(r"^\[(debit|credit)\]\s*", "", regex=True)
     parts = pd.DataFrame({"ptype": np.where(direction == "C", "BGC", "DEB"), "mcc": "", "amount_band": 3, "round_amount": 0,
                           "direction": direction, "norm_text": text.map(normalise_text)})
-    probas = cat.model_proba(parts, embed_fn)
+    probas = cat.model_proba(parts, embed_fn, finbert_fn=finbert_fn)
     pred = cat.predict(parts, cat.combine(probas))
     coarse_ours = {"Fuel": "transport", "Public Transport": "transport", "Automotive": "transport",
                    "Electricity": "home_energy_utilities", "Gas": "home_energy_utilities", "Utilities": "home_energy_utilities",
@@ -83,8 +112,10 @@ def run(ctx) -> dict:
 
     train = table[(table["n_train"] > 0) & ~table["unseen_merchant"]][["signature", "true_sub_category", "n_train"]]
     embed_fn = make_embedder(cfg["embedding_model"], log) if cfg.get("use_embeddings", True) else None
+    fb = cfg.get("finbert", {})
+    finbert_fn = make_finbert(fb["model"], fb.get("batch_size", 128), fb.get("max_length", 48), log) if cfg.get("use_finbert", False) else None
     model = Categoriser(cfg)
-    model.fit(train, embed_fn)
+    model.fit(train, embed_fn, finbert_fn)
 
     # Every unique signature once: shared by evaluation and by the final application.
     signatures = pd.Series(table["signature"].unique())
@@ -97,7 +128,7 @@ def run(ctx) -> dict:
         if (order >= 0).all() and list(saved["classes"]) == list(model.classes):
             transformer_proba = saved["proba"][order]
             log.info("categoriser: using fine-tuned transformer probabilities")
-    probas = model.model_proba(parts, embed_fn, transformer_proba)
+    probas = model.model_proba(parts, embed_fn, transformer_proba, finbert_fn=finbert_fn)
     sig_index = pd.Index(signatures)
 
     def slice_frame(split: str, unseen_flag: bool) -> pd.DataFrame:
@@ -112,6 +143,8 @@ def run(ctx) -> dict:
         candidates += [{"tfidf": a, "embedding": 1 - a, "transformer": 0.0} for a in (0.3, 0.5, 0.7)]
     if "transformer" in probas:
         candidates += [{"tfidf": a, "embedding": b, "transformer": 1 - a - b} for a, b in ((0.2, 0.2), (0.3, 0.2), (0.4, 0.0), (0.0, 0.0))]
+    if "finbert" in probas:
+        candidates += [{"tfidf": a, "embedding": 0.0, "transformer": 0.0, "finbert": 1 - a} for a in (0.0, 0.3, 0.5, 0.7)]
     best, best_acc = candidates[0], -1.0
     sub2cat = model.sub2cat
     for weights in candidates:
@@ -131,6 +164,16 @@ def run(ctx) -> dict:
         "full": dict(use_rules=True, use_lookup=True, use_model=True),
     }
     report: dict = {"ensemble_weights": best, "held_out_merchants": len(unseen), "slices": {}}
+    # Each text model on its own (model layer only, no rules or lookup), for a fair head-to-head.
+    report["text_models"] = {}
+    for name in probas:
+        report["text_models"][name] = {}
+        for split in ("validation", "test"):
+            for unseen_flag, tag in ((False, "seen"), (True, "unseen")):
+                sl = slice_frame(split, unseen_flag)
+                r = sig_index.get_indexer(sl["signature"])
+                pred = model.predict(parts.iloc[r].reset_index(drop=True), probas[name][r], use_rules=False, use_lookup=False)
+                report["text_models"][name][f"{split}_{tag}"] = evaluate(pred, sl["true_sub_category"].values, sl["n"].values, sub2cat).get("category_accuracy")
     for split in ("validation", "test"):
         for unseen_flag in (False, True):
             frame = slice_frame(split, unseen_flag)
@@ -147,7 +190,7 @@ def run(ctx) -> dict:
                     if split == "test":
                         ctx.save_json(confusion(pred["pred_category"].values, true_cat, frame["n"].values).to_dict(),
                                       "categoriser", f"confusion_{name}.json")
-    report["ood_dodatathings"] = ood_benchmark(model, embed_fn)
+    report["ood_dodatathings"] = ood_benchmark(model, embed_fn, finbert_fn=finbert_fn)
 
     # Apply to every transaction (all customers) and write categorised parts.
     all_pred = model.predict(parts, combined)

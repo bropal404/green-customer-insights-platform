@@ -1,13 +1,14 @@
 {
-  "finished_at": "2026-10-11 06:37:57",
+  "finished_at": "2026-10-11 07:06:17",
   "model": "Qwen/Qwen2.5-1.5B-Instruct",
   "provider": "local",
   "items": 360,
-  "seconds": 131.8,
+  "seconds": 131.6,
   "guard_pass_rate": 0.897,
   "failure_reasons": {
     "numbers dropped": 36,
     "banned claim": 5,
+    "currency symbol dropped": 3,
     "numbers not in the facts": 2
   },
   "pass_rate_by_product": {

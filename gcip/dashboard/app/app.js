@@ -44,11 +44,11 @@ function suggestion(s, i) {
   const m = money(s), c = s.confidence_of_estimate;
   const asOf = s.data_as_of ? fmtDate(s.data_as_of) : "";
   return `<div class="sugg" data-card="${s.product}">
-    <div class="sugg-head"><div class="k">Suggestion ${i + 1} · ${esc(s.name)}</div><h3>${esc(s.headline || s.name)}</h3></div>
+    <div class="sugg-head"><div class="suggestion-topline"><span class="k">INSIGHT ${String(i + 1).padStart(2, "0")}</span><span class="product-name">${esc(s.name)}</span></div><h3>${esc(s.headline || s.name)}</h3></div>
     <div class="why-line"><b>Why you're seeing this:</b> ${esc((s.why_labels || []).join(", ") || "how you bank with us overall")}</div>
     <div class="tiles2">
-      <div class="t2 carbon"><div class="k">Potential annual impact</div><div class="v">−${kg(s.co2e_kg_per_year)} CO2e</div><div class="s">estimate${s.method_short ? ` · ${esc(s.method_short)}` : ""}${s.horizon_years > 1 ? ` · about ${kg(s.co2e_kg_horizon)} over ${num(s.horizon_years)} years` : ""}</div></div>
-      <div class="t2 money"><div class="k">For your pocket</div><div class="v">${esc(m.v)}</div><div class="s">${esc(m.s)}</div></div>
+      <div class="t2 carbon"><div class="k">Potential annual impact</div><div class="v">−${kg(s.co2e_kg_per_year)} CO₂e</div><div class="s">estimate${s.method_short ? ` · ${esc(s.method_short)}` : ""}${s.horizon_years > 1 ? ` · about ${kg(s.co2e_kg_horizon)} over ${num(s.horizon_years)} years` : ""}</div></div>
+      <div class="t2 money"><div class="k">Estimated cost change</div><div class="v">${esc(m.v)}</div><div class="s">${esc(m.s)}</div></div>
     </div>
     <div class="meta-line">Data as of ${esc(asOf)}${c ? ` · Estimate confidence ${dots(c)}` : ""}</div>
     <div class="sugg-text">${esc(s.explanation)}</div>
@@ -107,16 +107,18 @@ async function load(id) {
   const spendRows = Object.entries(d.spend_12m).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
   const maxSpend = Math.max(...spendRows.map(([, v]) => v), 1);
   $("#screen").innerHTML = `
-    <div class="hello"><h1>Your green insights</h1><p>Based on your accounts with us up to ${esc(d.as_of)}.</p></div>
-    <div class="panel"><h2>Your estimated footprint</h2>
+    <div class="hello">
+      <p>Personalised insights from your banking activity, up to ${esc(d.as_of)}.</p>
+    </div>
+    <div class="panel footprint-panel"><div class="panel-heading"><span class="panel-icon">↗</span><h2>Your estimated footprint</h2><span class="period-pill">YEARLY</span></div>
       <div class="big">${kg(fp.total_kg)} <small>CO2e a year</small></div>
       ${fp.region_median_kg ? `<div class="compare">Similar households in ${esc(d.region)}: ${kg(fp.region_median_kg)}</div>` : ""}
       <div class="split"><i style="width:${(100 * fp.transport_kg / total).toFixed(1)}%;background:#b91c1c"></i><i style="width:${(100 * fp.home_kg / total).toFixed(1)}%;background:#b45309"></i></div>
       <div class="split-legend"><span>Travel <b>${kg(fp.transport_kg)}</b></span><span>Home energy <b>${kg(fp.home_kg)}</b></span></div>
     </div>
-    <div class="section-label eyebrow" style="margin:16px 2px 8px">Suggestions for you</div>
+    <div class="section-label eyebrow section-heading"><span>Picked for you</span><span class="section-count">${d.suggestions.length} ${d.suggestions.length === 1 ? "insight" : "insights"}</span></div>
     ${d.suggestions.length ? d.suggestions.map(suggestion).join("") : `<div class="panel none">Nothing to suggest right now. We'll let you know if something could help you save energy or money.</div>`}
-    <div class="panel"><h2>Where your money went · last 12 months</h2>
+    <div class="panel spending-panel"><div class="panel-heading"><span class="panel-icon">◷</span><h2>Your spending patterns</h2></div><p class="panel-subtitle">A view of the last 12 months</p>
       ${spendRows.map(([c, v]) => `<div class="spend-row"><span>${NAMES[c] || c}</span><div class="bar"><i style="width:${(100 * v / maxSpend).toFixed(1)}%;background:${COLOURS[c]}"></i></div><span class="mono" style="text-align:right">${gbp(v)}</span></div>`).join("")}
       <div class="chart-sm"><canvas id="monthly"></canvas></div>
     </div>
@@ -131,10 +133,16 @@ async function load(id) {
   if (window.Chart) {
     const keep = ["fuel", "electricity", "gas", "public_transport", "home_improvement", "automotive"].filter((c) => (d.monthly.series[c] || []).some((v) => v > 0));
     Chart.defaults.font.family = "Inter, sans-serif"; Chart.defaults.font.size = 10; Chart.defaults.color = "#64748b";
-    chart = new Chart($("#monthly"), { type: "bar", data: { labels: d.monthly.months.map((m) => new Date(m + "-01").toLocaleString("en-GB", { month: "short" })),
-      datasets: keep.map((c) => ({ label: NAMES[c], data: d.monthly.series[c], backgroundColor: COLOURS[c], stack: "s" })) },
-      options: { maintainAspectRatio: false, plugins: { legend: { position: "bottom", labels: { boxWidth: 8, padding: 8 } }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${gbp(c.parsed.y)}` } } },
-        scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, ticks: { callback: (v) => "£" + num(v) }, grid: { color: "#f1f5f9" } } } } });
+    chart = new Chart($("#monthly"), {
+      type: "bar", data: {
+        labels: d.monthly.months.map((m) => new Date(m + "-01").toLocaleString("en-GB", { month: "short" })),
+        datasets: keep.map((c) => ({ label: NAMES[c], data: d.monthly.series[c], backgroundColor: COLOURS[c], stack: "s" }))
+      },
+      options: {
+        maintainAspectRatio: false, plugins: { legend: { position: "bottom", labels: { boxWidth: 8, padding: 8 } }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${gbp(c.parsed.y)}` } } },
+        scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, ticks: { callback: (v) => "£" + num(v) }, grid: { color: "#f1f5f9" } } }
+      }
+    });
   }
   $("#staff").href = `../#/customer/${id}`;
 }

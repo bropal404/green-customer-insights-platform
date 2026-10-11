@@ -22,7 +22,14 @@ categoriser:
   tfidf_word: {ngram_range: [1, 2], min_df: 2, max_features: 100000}
   logistic_C: 6.0
   embedding_model: sentence-transformers/all-MiniLM-L6-v2
-  use_embeddings: false          # optional: add MiniLM sentence embeddings (scripts/build_model_inputs.py --embeddings)
+  use_embeddings: false          # optional: MiniLM sentence embeddings (scripts/build_model_inputs.py --embeddings)
+  use_finbert: false             # optional: FinBERT embeddings + logistic head (scripts/build_model_inputs.py --finbert)
+  finbert:
+    model: ProsusAI/finbert
+    batch_size: 128
+    max_length: 48               # transaction descriptions are short
+    logistic_C: 6.0
+    max_train_rows: 100000       # embedding is the slow part: the head is fitted on a weighted sample
   transformer:                   # optional DistilBERT layer, off: the TF-IDF model already reaches 99% on seen merchants
     enabled: false
     model: distilbert-base-uncased

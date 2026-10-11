@@ -1,26 +1,62 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your Green Insights</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="app.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
+
 <body>
-<div class="demo-bar">
-  <span class="tag">Customer app · demo</span>
-  <label>Signed in as <select id="who"></select></label>
-  <a id="staff" href="../">Bank dashboard →</a>
-</div>
-<div class="phone" id="phone">
-  <header class="app-top"><b>GreenInsights</b><span id="asof"></span></header>
-  <main id="screen"><div class="empty">Loading…</div></main>
-</div>
-<div class="toast" id="toast"></div>
-<script src="app.js"></script>
+  <div class="demo-shell">
+    <!-- <header class="demo-bar">
+      <div class="demo-brand"><span class="brand-mark">g</span><span><strong>GreenInsights</strong><small>Customer app
+            preview</small></span></div>
+     
+    </header> -->
+    <main class="preview-layout">
+      <section class="preview-copy">
+        <h1>Interactive customer<br>mobile app</h1>
+        <div class="preview-meta">Live interactive preview. Interact with the phone to explore</div>
+        <div class="demo-controls demo-bar">
+          <label for="who">CUSTOMER <select id="who" aria-label="Select demo customer"></select></label>
+          <a id="staff" href="../">Staff dashboard <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+      <section class="device-stage" aria-label="Galaxy S25 customer app preview">
+        <div class="device-shadow"></div>
+        <div class="galaxy-device">
+          <div class="device-button button-right"></div>
+          <div class="device-button button-left-one"></div>
+          <div class="device-button button-left-two"></div>
+          <div class="device-screen">
+            <div class="device-status"><span id="device-time">9:41</span><span class="status-symbols">● ▮ ▰</span></div>
+            <div class="camera-island"></div>
+            <div class="phone" id="phone">
+              <header class="app-top">
+                <div class="app-brand"><span class="mini-brand">g</span><b>GreenInsights</b></div><span
+                  id="asof"></span>
+              </header>
+              <main id="screen">
+                <div class="empty">Loading your insights…</div>
+              </main>
+            </div>
+            <div class="gesture-bar"></div>
+          </div>
+        </div>
+        <div class="device-caption"><span class="caption-dot"></span> Customer mobile app · Interactive demo</div>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
 </body>
+
 </html>

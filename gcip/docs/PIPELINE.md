@@ -41,7 +41,7 @@ runs/pipeline/   --scripts/serve_dashboard.py-->  bank dashboard + customer app
 | FR1 ingestion: control checks, harmonise, crosswalks, de-duplicate, quarantine, audit | `fr1/ingest.py` | `warehouse/`, `quarantine/`, `meta/ingestion_report.json`, `meta/lineage.csv` | 1 min |
 | Validation against public statistics (36 checks) and data card | `simulate/validate.py`, `datacard.py` | `meta/data_validation.json`, `meta/DATA_CARD.md` | 1 min |
 | Customer 360 for both snapshots (69 fields, 9 sections) | `fr1/customer360.py` | `customer_360_<date>.parquet` | 37 s |
-| FR2 categoriser: boundary rules, merchant lookup, TF-IDF model | `categorise/` | `categorised/part-*.parquet` (30 parts of 1,000 customers) | 4 min |
+| FR2 categoriser: boundary rules, merchant lookup, TF-IDF model (FinBERT optional: `--finbert`; tested 76% vs 83% on unseen merchants, 8x slower) | `categorise/` | `categorised/part-*.parquet` (30 parts of 1,000 customers) | 4 min |
 | Features for both snapshots (63 features, 6 sections) | `features/store.py` | `features_<date>.parquet` | 4 min |
 | Take-up labels from the bank's product system | `fr1/labels.py` | `labels.parquet` | 1 s |
 
@@ -51,7 +51,7 @@ Each stage writes `runs/pipeline/_checkpoints/<stage>.done` and is skipped on a 
 
 | Stage | What it does | Output (in `runs/pipeline/`) | Time |
 |---|---|---|---|
-| propensity | Per product on eligible customers: LightGBM (random search), out-of-fold isotonic calibration bounded to 0.1-95%, 5-model bootstrap, confidence, TreeSHAP reason codes; rules baseline, logistic regression and the oracle for comparison; fairness slices; ablations; suggestion thresholds | `models/`, `models/thresholds.json`, `metrics/propensity_report.json`, `predictions/heldout_predictions.csv`, `scores/live_scores.parquet` | 4.7 min |
+| propensity | Per product on eligible customers: LightGBM (random search), out-of-fold isotonic calibration bounded to 0.1-95%, 5-model bootstrap, XGBoost and CatBoost benchmarks, confidence, TreeSHAP reason codes; rules baseline, logistic regression and the oracle for comparison; fairness slices; ablations; suggestion thresholds | `models/`, `models/thresholds.json`, `metrics/propensity_report.json`, `predictions/heldout_predictions.csv`, `scores/live_scores.parquet` | 4.7 min |
 | impact | Carbon and money statement for every customer x product (DESNZ 2026 factors, prices on 30 Sep 2026, PCAF data quality 1-5) | `impact/impact.parquet` | <1 s |
 | recommend | Eligibility, consent, memory, thresholds, routing, top 3, human review; one audited decision per customer x product | `recommendations/recommendations.parquet`, `recommendations/decisions.parquet` | 1 s |
 | explain | Template explanation for every suggestion (body + fixed compliance sentence), checked by the guards | `explanations/explanations.parquet`, `metrics/explanations.json` | 1 s |
@@ -98,6 +98,10 @@ statistics. Bank-side labels equal the simulator's on all 180,000 customer x pro
 | GP04 Paperless | 122 | 0.737 | 0.814 | 0.821 | 0.827 | 4.1x | 0.012 |
 | GP05 Green Investments | 60 | 0.677 | 0.764 | 0.744 | 0.858 | 4.3x | 0.013 |
 | GP06 Green Loans | 106 | 0.625 | 0.734 | 0.709 | 0.792 | 3.7x | 0.005 |
+
+Benchmarks added by the team (uncalibrated, untuned, test AUC): XGBoost 0.629-0.821 and CatBoost 0.640-0.818 across the
+products, within noise of LightGBM (CatBoost slightly ahead on four products; test take-ups are only 31-164 per product).
+LightGBM stays the production model because the calibration, confidence, reason codes and thresholds are built on it.
 
 **Thresholds** (test set): take-up rate among customers above the threshold vs all eligible customers.
 

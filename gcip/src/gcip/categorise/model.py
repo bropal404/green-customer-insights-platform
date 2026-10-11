@@ -1,8 +1,9 @@
 """Train, evaluate and apply the layered transaction categoriser (FR2).
 
 Layers, in order: rules (rules.py) -> merchant lookup (exact normalised text seen
-in training with >=95% purity) -> ensemble of text models (TF-IDF + linear model,
-sentence embeddings + logistic regression, optionally a fine-tuned DistilBERT).
+in training with >=95% purity) -> ensemble of text models: TF-IDF + linear model (default), and optionally sentence
+embeddings + logistic regression, FinBERT embeddings + logistic regression (finance-domain language model), or a
+fine-tuned DistilBERT; the ensemble weights are chosen on validation (unseen merchants).
 The model predicts a sub-category; the category is its roll-up, so every
 transaction gets exactly one of the eight categories.
 
@@ -92,10 +93,11 @@ class Categoriser:
         self.onehot: OneHotEncoder | None = None
         self.emb_lr: LogisticRegression | None = None
         self.embedder = None
-        self.weights = {"tfidf": 1.0, "embedding": 0.0, "transformer": 0.0}
+        self.finbert_lr: LogisticRegression | None = None
+        self.weights = {"tfidf": 1.0, "embedding": 0.0, "transformer": 0.0, "finbert": 0.0}
 
     # ---------------------------------------------------------- training
-    def fit(self, train: pd.DataFrame, embed_fn=None) -> None:
+    def fit(self, train: pd.DataFrame, embed_fn=None, finbert_fn=None) -> None:
         """``train`` has signature, true_sub_category, n_train (one row per unique signature and label)."""
         cfg = self.cfg
         cap = cfg["max_train_signatures"]
@@ -140,6 +142,19 @@ class Categoriser:
             self.emb_lr = LogisticRegression(max_iter=400, C=8.0, n_jobs=-1)
             self.emb_lr.fit(features, y, sample_weight=weight)
 
+        if finbert_fn is not None:
+            # FinBERT gives finance-domain sentence representations; a logistic head maps them to our sub-categories.
+            # Embedding is the slow part, so the head is fitted on a weighted sample of the training signatures.
+            fcfg = cfg.get("finbert", {})
+            rows = np.arange(len(parts))
+            cap = fcfg.get("max_train_rows", 100_000)
+            if len(rows) > cap:
+                w = np.asarray(weight, dtype=float)
+                rows = np.random.default_rng(0).choice(rows, size=cap, replace=False, p=w / w.sum())
+            emb = finbert_fn(np.asarray(text)[rows].tolist())
+            self.finbert_lr = LogisticRegression(max_iter=400, C=fcfg.get("logistic_C", 6.0), n_jobs=-1)
+            self.finbert_lr.fit(emb, np.asarray(y)[rows], sample_weight=np.asarray(weight)[rows])
+
     # ---------------------------------------------------------- prediction
     def _aligned(self, model_classes: np.ndarray, proba: np.ndarray) -> np.ndarray:
         out = np.zeros((proba.shape[0], len(self.classes)), dtype=np.float32)
@@ -148,10 +163,10 @@ class Categoriser:
             out[:, index[c]] = proba[:, j]
         return out
 
-    def model_proba(self, parts: pd.DataFrame, embed_fn=None, transformer_proba: np.ndarray | None = None,
+    def model_proba(self, parts: pd.DataFrame, embed_fn=None, transformer_proba: np.ndarray | None = None, finbert_fn=None,
                     batch: int = 200_000) -> dict[str, np.ndarray]:
         """Class probabilities per text model, scored in batches so memory stays flat however many signatures there are."""
-        tfidf, embedding = [], []
+        tfidf, embedding, finbert = [], [], []
         for start in range(0, len(parts), batch):
             chunk = parts.iloc[start:start + batch]
             x = sparse.hstack([self.char_vec.transform(chunk["norm_text"]), self.word_vec.transform(model_text(chunk))]).tocsr()
@@ -161,9 +176,14 @@ class Categoriser:
                 context = chunk[["ptype", "mcc", "amount_band", "round_amount", "direction"]].astype(str)
                 features = np.hstack([embed_fn(chunk["norm_text"].tolist()), self.onehot.transform(context).toarray().astype(np.float32)])
                 embedding.append(self._aligned(self.emb_lr.classes_, self.emb_lr.predict_proba(features)).astype(np.float32))
+            if self.finbert_lr is not None and finbert_fn is not None:
+                finbert.append(self._aligned(self.finbert_lr.classes_, self.finbert_lr.predict_proba(
+                    finbert_fn(model_text(chunk).tolist()))).astype(np.float32))
         probas = {"tfidf": np.vstack(tfidf) if tfidf else np.zeros((0, len(self.classes)), dtype=np.float32)}
         if embedding:
             probas["embedding"] = np.vstack(embedding)
+        if finbert:
+            probas["finbert"] = np.vstack(finbert)
         if transformer_proba is not None:
             probas["transformer"] = transformer_proba
         return probas

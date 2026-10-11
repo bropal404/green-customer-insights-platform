@@ -13,11 +13,16 @@ BANNED = [r"\bguarantee", r"\bwill save\b", r"\bdefinitely\b", r"\brisk[- ]free\
           r"\bwe('ve| have)? (been )?(invest|investing|hold|buy|spend|spent|drive|use|own|borrow)"]
 MONTHLY = re.compile(r"\b(each|per|a|every) month\b|\bmonthly\b")
 NUMBER = re.compile(r"£?\d[\d,]*(?:\.\d+)?")
+CURRENCY = re.compile(r"£\d[\d,]*(?:\.\d+)?")
 
 
 def _numbers(text: str) -> set[str]:
     text = re.sub(r"CO2e?|CO₂e?", "CO", text, flags=re.IGNORECASE)  # the 2 in CO2e is not a figure
     return {n.replace("£", "").replace(",", "") for n in NUMBER.findall(text)}
+
+
+def _currency_numbers(text: str) -> set[str]:
+    return {n.replace("£", "").replace(",", "") for n in CURRENCY.findall(text)}
 
 
 def check(text: str, facts: dict, max_words: int = 120, draft: str | None = None) -> list[str]:
@@ -29,6 +34,9 @@ def check(text: str, facts: dict, max_words: int = 120, draft: str | None = None
         dropped = _numbers(draft) - _numbers(text)
         if dropped:
             problems.append(f"numbers dropped: {sorted(dropped)[:5]}")
+        dropped_currency = _currency_numbers(draft) - _currency_numbers(text)
+        if dropped_currency:
+            problems.append(f"currency symbol dropped: {sorted(dropped_currency)[:5]}")
         if MONTHLY.search(text.lower()) and not MONTHLY.search(draft.lower()):
             problems.append("changes the time period to monthly")
     allowed = _numbers(" ".join(str(v) for v in facts.values() if not isinstance(v, list)) + " " + " ".join(facts.get("reasons", [])))
