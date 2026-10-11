@@ -41,7 +41,7 @@ runs/pipeline/   --scripts/serve_dashboard.py-->  bank dashboard + customer app
 | FR1 ingestion: control checks, harmonise, crosswalks, de-duplicate, quarantine, audit | `fr1/ingest.py` | `warehouse/`, `quarantine/`, `meta/ingestion_report.json`, `meta/lineage.csv` | 1 min |
 | Validation against public statistics (36 checks) and data card | `simulate/validate.py`, `datacard.py` | `meta/data_validation.json`, `meta/DATA_CARD.md` | 1 min |
 | Customer 360 for both snapshots (69 fields, 9 sections) | `fr1/customer360.py` | `customer_360_<date>.parquet` | 37 s |
-| FR2 categoriser: boundary rules, merchant lookup, TF-IDF model | `categorise/` | `categorised/part-*.parquet` (30 parts of 1,000 customers) | 4 min |
+| FR2 categoriser: boundary rules, merchant lookup, FinBERT model | `categorise/` | `categorised/part-*.parquet` (30 parts of 1,000 customers) | hardware-dependent |
 | Features for both snapshots (63 features, 6 sections) | `features/store.py` | `features_<date>.parquet` | 4 min |
 | Take-up labels from the bank's product system | `fr1/labels.py` | `labels.parquet` | 1 s |
 

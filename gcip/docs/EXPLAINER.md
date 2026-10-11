@@ -273,10 +273,9 @@ evaluation, report). The dashboard (`scripts/serve_dashboard.py`) serves the ban
 ## 10. FR2 categoriser [built]
 
 Layers, in order: **rules** (merchant codes and text patterns, each citing a boundary rule; they fire only when
-near-certain), **merchant lookup** (exact normalised text seen in training with at least 95% purity), then an **ensemble of
-text models** (character and word TF-IDF with a linear model; sentence embeddings with logistic regression; optionally a
-fine-tuned DistilBERT). The model predicts a sub-category; its category is the roll-up, so every transaction gets exactly one
-of the 8 categories.
+near-certain), **merchant lookup** (exact normalised text seen in training with at least 95% purity), then **FinBERT**
+embeddings with a logistic-regression classification head trained for this taxonomy. The model predicts a sub-category; its
+category is the roll-up, so every transaction gets exactly one of the 8 categories.
 
 Boundary rules (B1-B11, documented in `configs/taxonomy.yaml`), for example: public EV charging is Fuel (B2); forecourt shop
 purchases are Other (B3); dual-fuel bills and delivered heating oil are Utilities (B4); prepayment top-ups follow the meter
@@ -284,9 +283,8 @@ purchases are Other (B3); dual-fuel bills and delivered heating oil are Utilitie
 Improvement (B8); supplier refunds keep the supplier's category (B10); housing payments are Other (B11).
 
 Evaluation splits merchants as well as customers: 20% of merchants never appear in training, so accuracy on them measures
-generalisation. Smoke-test result (earlier build): 98.9% category accuracy on seen merchants, 91.8% on unseen; the weakest
-boundary is Electricity/Gas vs Utilities when a bill names no fuel (rule B4). Out-of-distribution check on US descriptions:
-66.9% coarse agreement.
+generalisation. Re-run the held-out-merchant and out-of-distribution checks after changing the model; prior TF-IDF results
+are not comparable evidence for the FinBERT implementation.
 
 ---
 

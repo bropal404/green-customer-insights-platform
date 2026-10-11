@@ -15,22 +15,14 @@ as_of:
 
 categoriser:
   unseen_merchant_share: 0.20     # merchants held out entirely to test generalisation
-  max_train_signatures: 400000
+  max_train_signatures: 100000     # FinBERT is slower than sparse TF-IDF; representative weighted sample
   lookup_min_count: 3
   lookup_min_purity: 0.95
-  tfidf_char: {ngram_range: [2, 5], min_df: 2, max_features: 300000}
-  tfidf_word: {ngram_range: [1, 2], min_df: 2, max_features: 100000}
-  logistic_C: 6.0
-  embedding_model: sentence-transformers/all-MiniLM-L6-v2
-  use_embeddings: false          # optional: add MiniLM sentence embeddings (scripts/build_model_inputs.py --embeddings)
-  transformer:                   # optional DistilBERT layer, off: the TF-IDF model already reaches 99% on seen merchants
-    enabled: false
-    model: distilbert-base-uncased
-    epochs: 2
+  finbert:
+    model: ProsusAI/finbert
     batch_size: 128
-    learning_rate: 5.0e-5
-    max_length: 48
-    max_train_rows: 300000
+    max_length: 96
+    logistic_C: 6.0
 
 propensity:
   products: [GP01, GP02, GP03, GP04, GP05, GP06]

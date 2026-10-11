@@ -1,8 +1,8 @@
 """Train, evaluate and apply the layered transaction categoriser (FR2).
 
 Layers, in order: rules (rules.py) -> merchant lookup (exact normalised text seen
-in training with >=95% purity) -> ensemble of text models (TF-IDF + linear model,
-sentence embeddings + logistic regression, optionally a fine-tuned DistilBERT).
+in training with >=95% purity) -> FinBERT embeddings with a supervised logistic
+regression classification head.
 The model predicts a sub-category; the category is its roll-up, so every
 transaction gets exactly one of the eight categories.
 
@@ -20,11 +20,8 @@ import joblib
 import numpy as np
 import pandas as pd
 import yaml
-from scipy import sparse
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression, SGDClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score
-from sklearn.preprocessing import OneHotEncoder
 
 from gcip.config import CONFIG_DIR
 from gcip.categorise.normalise import add_signature, model_text, split_signature
@@ -86,16 +83,10 @@ class Categoriser:
         self.sub2cat = sub_to_category()
         self.classes: np.ndarray | None = None
         self.lookup: dict[str, tuple[str, float]] = {}
-        self.char_vec: TfidfVectorizer | None = None
-        self.word_vec: TfidfVectorizer | None = None
-        self.linear: SGDClassifier | None = None
-        self.onehot: OneHotEncoder | None = None
-        self.emb_lr: LogisticRegression | None = None
-        self.embedder = None
-        self.weights = {"tfidf": 1.0, "embedding": 0.0, "transformer": 0.0}
+        self.finbert_lr: LogisticRegression | None = None
 
     # ---------------------------------------------------------- training
-    def fit(self, train: pd.DataFrame, embed_fn=None) -> None:
+    def fit(self, train: pd.DataFrame, finbert_fn) -> None:
         """``train`` has signature, true_sub_category, n_train (one row per unique signature and label)."""
         cfg = self.cfg
         cap = cfg["max_train_signatures"]
@@ -122,23 +113,11 @@ class Categoriser:
         self.lookup = dict(zip(good.index, zip(good["sub"], good["purity"].astype(float))))
 
         log.info("categoriser: %s training signatures, %s classes, %s lookup keys", len(train), len(self.classes), len(self.lookup))
-        self.char_vec = TfidfVectorizer(analyzer="char_wb", ngram_range=tuple(cfg["tfidf_char"]["ngram_range"]),
-                                        min_df=cfg["tfidf_char"]["min_df"], max_features=cfg["tfidf_char"]["max_features"],
-                                        sublinear_tf=True, dtype=np.float32)
-        self.word_vec = TfidfVectorizer(analyzer="word", ngram_range=tuple(cfg["tfidf_word"]["ngram_range"]),
-                                        min_df=cfg["tfidf_word"]["min_df"], max_features=cfg["tfidf_word"]["max_features"],
-                                        token_pattern=r"[^ ]+", sublinear_tf=True, dtype=np.float32)
-        x = sparse.hstack([self.char_vec.fit_transform(parts["norm_text"]), self.word_vec.fit_transform(text)]).tocsr()
-        self.linear = SGDClassifier(loss="log_loss", alpha=2e-6, max_iter=25, tol=1e-4, n_jobs=-1, random_state=0)
-        self.linear.fit(x, y, sample_weight=weight)
-
-        if embed_fn is not None:
-            self.onehot = OneHotEncoder(handle_unknown="ignore")
-            context = parts[["ptype", "mcc", "amount_band", "round_amount", "direction"]].astype(str)
-            emb = embed_fn(parts["norm_text"].tolist())
-            features = np.hstack([emb, self.onehot.fit_transform(context).toarray().astype(np.float32)])
-            self.emb_lr = LogisticRegression(max_iter=400, C=8.0, n_jobs=-1)
-            self.emb_lr.fit(features, y, sample_weight=weight)
+        # FinBERT supplies finance-domain language representations; the fitted
+        # head maps them to this project's transaction sub-category taxonomy.
+        embeddings = finbert_fn(text.tolist())
+        self.finbert_lr = LogisticRegression(max_iter=400, C=cfg["finbert"]["logistic_C"], n_jobs=-1)
+        self.finbert_lr.fit(embeddings, y, sample_weight=weight)
 
     # ---------------------------------------------------------- prediction
     def _aligned(self, model_classes: np.ndarray, proba: np.ndarray) -> np.ndarray:
@@ -148,31 +127,15 @@ class Categoriser:
             out[:, index[c]] = proba[:, j]
         return out
 
-    def model_proba(self, parts: pd.DataFrame, embed_fn=None, transformer_proba: np.ndarray | None = None,
+    def model_proba(self, parts: pd.DataFrame, finbert_fn,
                     batch: int = 200_000) -> dict[str, np.ndarray]:
         """Class probabilities per text model, scored in batches so memory stays flat however many signatures there are."""
-        tfidf, embedding = [], []
+        finbert = []
         for start in range(0, len(parts), batch):
             chunk = parts.iloc[start:start + batch]
-            x = sparse.hstack([self.char_vec.transform(chunk["norm_text"]), self.word_vec.transform(model_text(chunk))]).tocsr()
-            tfidf.append(self._aligned(self.linear.classes_, self.linear.predict_proba(x)).astype(np.float32))
-            del x
-            if self.emb_lr is not None and embed_fn is not None:
-                context = chunk[["ptype", "mcc", "amount_band", "round_amount", "direction"]].astype(str)
-                features = np.hstack([embed_fn(chunk["norm_text"].tolist()), self.onehot.transform(context).toarray().astype(np.float32)])
-                embedding.append(self._aligned(self.emb_lr.classes_, self.emb_lr.predict_proba(features)).astype(np.float32))
-        probas = {"tfidf": np.vstack(tfidf) if tfidf else np.zeros((0, len(self.classes)), dtype=np.float32)}
-        if embedding:
-            probas["embedding"] = np.vstack(embedding)
-        if transformer_proba is not None:
-            probas["transformer"] = transformer_proba
-        return probas
-
-    def combine(self, probas: dict[str, np.ndarray], weights: dict[str, float] | None = None) -> np.ndarray:
-        weights = weights or self.weights
-        total = sum(w for k, w in weights.items() if k in probas and w > 0)
-        out = sum(probas[k] * w for k, w in weights.items() if k in probas and w > 0)
-        return out / max(total, 1e-9)
+            finbert.append(self._aligned(self.finbert_lr.classes_, self.finbert_lr.predict_proba(
+                finbert_fn(model_text(chunk).tolist()))).astype(np.float32))
+        return {"finbert": np.vstack(finbert) if finbert else np.zeros((0, len(self.classes)), dtype=np.float32)}
 
     def predict(self, parts: pd.DataFrame, proba: np.ndarray, use_rules: bool = True, use_lookup: bool = True,
                 use_model: bool = True) -> pd.DataFrame:
@@ -215,14 +178,12 @@ class Categoriser:
                              "layer": layer}, index=parts.index)
 
     def save(self, path: Path) -> None:
-        state = {k: v for k, v in self.__dict__.items() if k != "embedder"}
-        joblib.dump(state, path, compress=3)
+        joblib.dump(self.__dict__, path, compress=3)
 
     @classmethod
     def load(cls, path: Path) -> "Categoriser":
         obj = cls.__new__(cls)
         obj.__dict__.update(joblib.load(path))
-        obj.embedder = None
         return obj
 
 

@@ -6,7 +6,7 @@
     features_<as_of>.parquet       point-in-time features (keys + features)
     labels.parquet                 take-up labels from the bank's product system, with each customer's split
 
-    python scripts/build_model_inputs.py --data runs/full [--embeddings]
+    python scripts/build_model_inputs.py --data runs/full
 Each step writes <data>/_done/<step>.done and is skipped on a rerun.
 """
 
@@ -48,7 +48,6 @@ def mark(data: Path, step: str, seconds: float) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--data", required=True)
-    parser.add_argument("--embeddings", action="store_true", help="add sentence embeddings to the categoriser (slower)")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     data = Path(args.data).resolve()
@@ -69,8 +68,7 @@ def main() -> None:
         if link.is_symlink() or link.exists():
             link.unlink()
         link.symlink_to(data)
-        overrides = {"categoriser": {"use_embeddings": bool(args.embeddings), "transformer": {"enabled": False}}}
-        run_categoriser(make_context(run_dir, overrides))
+        run_categoriser(make_context(run_dir))
         mark(data, "categorised", time.time() - t0)
 
     if not done(data, "features"):
