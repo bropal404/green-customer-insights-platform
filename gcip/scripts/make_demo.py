@@ -18,10 +18,10 @@ RUN_FILES = ["scores/live_scores.parquet", "impact/impact.parquet", "recommendat
              "insights/bank_insights.json", "insights/monthly_trends.parquet", "insights/customer_monthly_spend.parquet",
              "metrics/propensity_report.json", "metrics/explanations.json", "metrics/impact_truth_recovery.json",
              "metrics/impact_sensitivity.csv", "metrics/memory_replay.json", "models/thresholds.json",
-             "metrics/explanations_gemini_sample.json", "memory/replay_events.parquet", "logs/stage_timings.json",
+             "metrics/explanations_gemini_sample.json", "metrics/business_value.json", "recommendations/value.parquet", "memory/replay_events.parquet", "logs/stage_timings.json",
              "summary.json"]
 DATA_FILES = [f"customer_360_{LIVE}.parquet", f"features_{LIVE}.parquet", "meta/data_validation.json",
-              "meta/ingestion_report.json", "meta/generation_manifest.json"]
+              "meta/ingestion_report.json", "meta/generation_manifest.json", "warehouse/campaign_responses.parquet"]
 
 
 def main() -> None:

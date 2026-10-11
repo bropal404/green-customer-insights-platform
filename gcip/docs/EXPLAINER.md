@@ -403,7 +403,9 @@ or is too long; a rejected rewrite falls back to the template. Why each guard ex
 because the model reformatted the date and paraphrased the caveat; after moving the compliance sentence out of the LLM's
 reach, a run passed 97%, but reading them showed "£1,337 on fuel each month" (really 12 months) and an invented 12-month
 payback slipping through, so the completeness and time-period guards were added. Result on the 360-item evaluation set
-(60 per product, local Qwen2.5-1.5B): 67.8% pass (EV Finance only 22%); reading ease is lower for LLM text (60 vs 72 Flesch), so templates remain the default and the
+(60 per product, local Qwen2.5-1.5B): 89.7% pass (EV Finance 92%; it was 22% while the prompt's only worked example
+was a solar one, and Green Investments rewrites spoke as the bank, "our investments", until the evidence sentences were
+written in the second person with a verb, "you told us sustainability matters to how you invest"); reading ease is lower for LLM text (60 vs 72 Flesch), so templates remain the default and the
 LLM is offered in the dashboard as an on-demand rewrite.
 
 ---
@@ -415,26 +417,42 @@ product (eligible, shown, expected take-ups = sum of calibrated propensities, ex
 emissions, typical money impact and payback), the decision funnel (why each customer x product was or was not shown),
 regions (footprint and opportunity per customer), the visible footprint by income band and its distribution, six k-means
 segments on behaviour (named from their strongest traits, e.g. "customers who own their home and bank digitally"), and
-monthly spend by FR2 category, nationally and by region. On the 30,000 build: 5,437 suggestions for 4,792 customers,
+monthly spend by FR2 category, nationally and by region, and trend views built from sub-categories: customers using public EV charging each month (it doubles over the period), spend at energy installers (it jumps when take-ups start paying installers), bike hire, rail and bus, heating oil; road fuel spend against litres at that month's pump price (price normalisation made visible); home energy bills; and green product take-ups per month in the observed window. On the 30,000 build: 5,437 suggestions for 4,792 customers,
 expected 914 take-ups, 1,242 t CO2e a year avoided, and £419k a year of customer savings.
 
-Customer memory (`src/gcip/memory/replay.py`) starts from the CRM's campaign history (five waves: May 2025, October
-2025, February 2026, June 2026 and August 2026; the last two fall after the training date, so they only affect the live
-snapshot) and adds every response given in the apps as an event. The latest response per product is applied to the
-Customer 360 before recommending, and each has a defined effect:
+Customer memory (`src/gcip/memory/signals.py`) is a dynamic signal, not just the last answer. The memory store is one
+event log: the CRM's campaign history (five waves: May 2025, October 2025, February 2026, June 2026 and August 2026; the
+last two fall after the training date, so they only affect the live snapshot) plus every response given in the apps.
+From every contact and response in the last 12 months it derives, per customer and product:
 
-| Response (app button) | Meaning | Effect on suggestions |
+- a **memory weight**: the product of a factor per event (interested ×1.5, seen without acting ×0.85, no response ×0.7,
+  dismissed ×0.5, not interested ×0.2; bounded to ×0.05-×2.0). The suggestion's priority is propensity × confidence ×
+  memory weight, so memory reorders suggestions without ever changing the model's propensity, the eligibility rules or
+  the carbon estimate (the brief's guardrail for memory);
+- **contacts in a row with no engagement**: after 3, the product is paused for 180 days however strong its propensity
+  ("no interest after 3 contacts"); any engagement resets the count;
+- **explicit answers** with fixed effects:
+
+| Response (app button) | Meaning | Effect |
 |---|---|---|
-| clicked (the call to action, e.g. "Explore EV options") | interest: a lead for the product team, not an application | the product stays and moves up (+0.10 priority) |
-| dismissed ("Remind me later") | not now | paused for 90 days |
-| not_interested ("Not for me") | not this product | paused for 180 days |
+| clicked (the call to action, e.g. "Explore EV options") | interest: a lead for the product team, not an application | weight ×1.5, resets the no-interest count |
+| no response / seen without acting | the customer did nothing | weight ×0.7 / ×0.85; 3 in a row pause the product 180 days |
+| dismissed ("Remind me later") | not now | weight ×0.5; paused 90 days |
+| not_interested ("Not for me") | not this product | weight ×0.2; paused 180 days |
 | already_have ("I already have this") | holds it already, possibly with another bank; our data missed it | stopped for good |
 
 None of these is a take-up: a take-up exists only when the product is opened in the bank's product system (which is
-also where the training labels come from). An app response can be undone, which restores the earlier history. The staff
-view shows, per product, the latest response, its source (CRM or app), and its effect today with the end date of any
-pause; the bank's Memory page shows the pauses, stops and interest in force across all customers. A replay of 300
-customers over three monthly rounds checks that a paused product never comes back early (0 cases).
+also where the training labels come from). On 30 September the CRM history pauses 2,574 customer × product pairs after
+"dismissed" or "not interested", stops 564 (already has it), pauses 31 for no interest after 3 contacts, raises the
+weight of 3,167 and lowers 29,744. Against the same engine with an empty memory, memory hides 57 suggestions, brings 1
+into a customer's top 3 and reorders 43. Earlier interest is also a reason code, EARLIER_INTEREST, with its date as
+evidence ("showed interest in this on 2025-10-22"; 375 suggestions), in line with FR7's evidence and timestamps; every
+reason section and record also states the evidence window (1 October 2025 to 30 September 2026). An app response can be undone. The
+staff view shows per product the contacts, the no-interest count, the weight, the latest response with its source and
+what memory does today (and until when); its "No response" button demonstrates the adaptation live. The bank's Memory
+page shows these counts across all customers, and a replay of 300 customers over three monthly rounds (every response,
+including ignoring, is stored) checks that a paused product never comes back early (0 cases) and shows pauses for no
+interest appearing as contacts build up.
 
 The front end is split by audience, served by `scripts/serve_dashboard.py`:
 - **Bank dashboard** (`dashboard/`, staff only): overview with pipeline status, products, regions and trends, memory,
@@ -452,6 +470,29 @@ The front end is split by audience, served by `scripts/serve_dashboard.py`:
   returns only customer-safe fields).
 
 ---
+
+### Business value: financial and carbon return for the customer and the bank [built]
+
+`src/gcip/insights/value.py` with assumptions in `configs/business.yaml` (illustrative, plausible for a UK retail bank
+in 2026: product APRs, 4% cost of funds, probability of default and loss given default per product, origination,
+contact cost by channel, £25 per human review, 3.5% Green Book discount rate). Per suggestion: for the customer, the
+running-cost saving, upfront cost, lifetime net saving and net present value over the product's life, payback, CO2e
+avoided, the cost of carbon abatement (£ per tonne; negative means the customer saves money while cutting carbon) and kg
+CO2e per £ spent upfront; for the bank, new lending, net interest income (average balance × margin × term), fund fees,
+paperless cost savings, expected credit loss, origination, the cost of the suggestion, and expected value = propensity ×
+value if taken up − cost, plus financed emissions avoided (PCAF). Portfolio: customers save an expected £419k a year
+(NPV £1.38m; 61% of suggestions pay back; −£219 per tonne); for the bank, £7.28m of new green lending and £481k of value
+are at stake on £7.7k of campaign cost, with 815 t CO2e at stake per £1,000 spent and 905 t a year of financed emissions
+avoided. "At stake" matters: propensity is the chance of opening the product anyway, so these are not profits caused by
+the suggestion. The grounded claim is the break-even uplift: the suggestions pay for themselves if they cause 1.6% of
+those take-ups. Attribution links a take-up to a suggestion (a suggestion id carried by the call to action into the
+application, or the same product opened within 90 days of being shown), and a random 10% held-back group measures what
+the suggestions cause (treated take-up rate minus held-back rate). On the backtest this measured +0.7 points (95%
+interval −5.7 to +7.1), consistent with zero, which is correct: the simulator gives contacts no causal effect.
+A backtest on the held-out test customers checks the value against what really happened: contacting the same 1,343
+customers chosen by our model, the rules baseline or at random gives 221, 159 and 80 take-ups, 1,682, 1,174 and 580 t
+CO2e, and £117k, £79k and £46k of bank value. The figures move with the assumptions; the ranking of strategies does not
+depend on them.
 
 ## 14. Validation and testing summary
 

@@ -14,3 +14,7 @@ build/
 data/synthetic/*.csv
 *.csv
 
+
+# local tooling, not part of the project
+.agents/
+.python-version

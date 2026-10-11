@@ -7,12 +7,16 @@ import re
 BANNED = [r"\bguarantee", r"\bwill save\b", r"\bdefinitely\b", r"\brisk[- ]free\b", r"\bfree money\b", r"\bpre-?approved\b",
           r"\byou qualify\b", r"\bapproved\b", r"\bbest investment\b", r"\brecommend(ed)? (that )?you invest\b",
           r"\bperfect\b", r"\bideal\b", r"\bamazing\b", r"\bexcit", r"\bgreat news\b", r"\bhi there\b",
-          r"\bwill (reduce|decrease|cut|lower|pay|save)\b", r"\byou'?ll (save|reduce|cut)\b", r"\bshould see you\b"]
+          r"\bwill\b", r"\byou'?ll\b", r"\bshould see you\b",
+          # the bank talking about the customer's things as its own ("our investments", "we've been investing")
+          r"\bour (investments?|home|house|car|energy|accounts?|money|savings)\b",
+          r"\bwe('ve| have)? (been )?(invest|investing|hold|buy|spend|spent|drive|use|own|borrow)"]
 MONTHLY = re.compile(r"\b(each|per|a|every) month\b|\bmonthly\b")
 NUMBER = re.compile(r"£?\d[\d,]*(?:\.\d+)?")
 
 
 def _numbers(text: str) -> set[str]:
+    text = re.sub(r"CO2e?|CO₂e?", "CO", text, flags=re.IGNORECASE)  # the 2 in CO2e is not a figure
     return {n.replace("£", "").replace(",", "") for n in NUMBER.findall(text)}
 
 

@@ -8,11 +8,12 @@
       "shown": 327,
       "customers_shown_something": 287,
       "suppressed_by_memory": 8,
+      "paused_no_interest": 0,
       "responses": {
         "clicked": 110,
-        "none": 93,
-        "dismissed": 72,
-        "not_interested": 52
+        "no_response": 93,
+        "dismissed": 73,
+        "not_interested": 51
       }
     },
     {
@@ -22,14 +23,13 @@
       "shown": 205,
       "customers_shown_something": 193,
       "suppressed_by_memory": 132,
+      "paused_no_interest": 0,
       "reshown_within_cooldown": 0,
-      "clicked_reshown": 110,
-      "clicked_previous_round": 110,
       "new_products_shown": 2,
       "responses": {
-        "clicked": 85,
-        "dismissed": 53,
-        "none": 41,
+        "clicked": 86,
+        "dismissed": 52,
+        "no_response": 41,
         "not_interested": 26
       }
     },
@@ -40,20 +40,20 @@
       "shown": 126,
       "customers_shown_something": 119,
       "suppressed_by_memory": 208,
+      "paused_no_interest": 1,
       "reshown_within_cooldown": 0,
-      "clicked_reshown": 85,
-      "clicked_previous_round": 85,
       "new_products_shown": 0,
       "responses": {
         "clicked": 59,
-        "none": 32,
+        "no_response": 33,
         "dismissed": 24,
-        "not_interested": 11
+        "not_interested": 10
       }
     }
   ],
   "cooldown_days": {
     "dismissed": 90,
     "not_interested": 180
-  }
+  },
+  "fatigue_contacts": 3
 }

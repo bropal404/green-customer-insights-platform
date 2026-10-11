@@ -1,11 +1,12 @@
 {
   "impact": 0.2,
-  "recommend": 0.9,
-  "explain": 1.0,
+  "recommend": 1.1,
+  "explain": 1.2,
   "impact_checks": 0.5,
-  "memory": 1.0,
-  "insights": 30.1,
-  "propensity": 311.8,
-  "explain_llm": 129.8,
-  "report": 0.0
+  "memory": 1.1,
+  "insights": 35.3,
+  "propensity": 287.9,
+  "explain_llm": 133.0,
+  "report": 0.0,
+  "value": 0.4
 }

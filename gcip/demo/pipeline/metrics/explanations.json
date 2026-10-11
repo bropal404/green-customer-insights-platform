@@ -1,39 +1,38 @@
 {
   "explanations": 5437,
   "template_guard_pass": 5437,
-  "reading_ease_mean": 73.7,
-  "words_mean": 74.3,
+  "reading_ease_mean": 74.6,
+  "words_mean": 78.7,
   "llm_eval": {
     "model": "Qwen/Qwen2.5-1.5B-Instruct",
     "provider": "local",
     "items": 360,
-    "seconds": 128.7,
-    "guard_pass_rate": 0.711,
+    "seconds": 131.8,
+    "guard_pass_rate": 0.897,
     "failure_reasons": {
-      "numbers dropped": 103,
-      "changes the time period to monthly": 25,
-      "banned claim": 4,
-      "numbers not in the facts": 3
+      "numbers dropped": 36,
+      "banned claim": 5,
+      "numbers not in the facts": 2
     },
     "pass_rate_by_product": {
-      "GP01": 0.217,
-      "GP02": 0.867,
-      "GP03": 1.0,
-      "GP04": 0.917,
-      "GP05": 0.833,
-      "GP06": 0.433
+      "GP01": 0.917,
+      "GP02": 0.883,
+      "GP03": 0.967,
+      "GP04": 0.933,
+      "GP05": 0.933,
+      "GP06": 0.75
     },
     "words_mean": {
-      "llm": 70.0,
-      "template": 71.3
+      "llm": 71.9,
+      "template": 75.6
     },
     "reading_ease_mean": {
-      "llm": 59.5,
-      "template": 72.3
+      "llm": 67.3,
+      "template": 73.1
     }
   },
   "source": {
-    "template": 5181,
-    "llm": 256
+    "template": 5114,
+    "llm": 323
   }
 }

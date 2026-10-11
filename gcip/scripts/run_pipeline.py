@@ -12,6 +12,8 @@ Stages (each writes <run-dir>/_checkpoints/<stage>.done and is skipped on a reru
   impact_checks  FR4: inputs vs truth (litres, kWh), sensitivity of the main assumptions
   memory         customer memory replay over three rounds
   insights       FR6: bank insights (opportunity, funnel, regions, footprint, segments, monthly trends)
+  value          business value: customer and bank financial and carbon return per suggestion, portfolio totals, and a
+                 backtest of targeting (model vs rules vs random) on the held-out test customers
   explain_llm    FR5: local-LLM rephrasing of a 360-item evaluation set (60 per product), guarded; passes replace templates
   report         every metric in one file: <run-dir>/summary.json
 """
@@ -33,9 +35,22 @@ import pandas as pd  # noqa: E402
 
 from gcip.pipeline.context import make_context  # noqa: E402
 
-STAGES = ["propensity", "impact", "recommend", "explain", "impact_checks", "memory", "insights", "explain_llm", "report"]
+STAGES = ["propensity", "impact", "recommend", "explain", "impact_checks", "memory", "insights", "value", "explain_llm", "report"]
 PRODUCTS = ["GP01", "GP02", "GP03", "GP04", "GP05", "GP06"]
 TRAIN, LIVE = "2026-03-31", "2026-09-30"
+
+
+def memory_events(data: Path):
+    """The CRM's campaign history up to the live date as memory events (None when the log is not available)."""
+    from gcip.memory.signals import events_from_crm
+    path = data / "warehouse" / "campaign_responses.parquet"
+    return events_from_crm(pd.read_parquet(path), pd.Timestamp(LIVE)) if path.exists() else None
+
+
+def memory_signals(ctx, data: Path):
+    from gcip.memory.signals import signals
+    events = memory_events(data)
+    return None if events is None else signals(events, pd.Timestamp(LIVE), ctx.cfg["memory"], ctx.cfg["recommend"]["cooldown_days"])
 
 
 def thresholds(ctx) -> dict:
@@ -63,7 +78,7 @@ def stage_recommend(ctx, data: Path) -> dict:
     scores = ctx.read_parquet("scores", "live_scores.parquet")
     impact = ctx.read_parquet("impact", "impact.parquet")
     c360 = pd.read_parquet(data / f"customer_360_{LIVE}.parquet")
-    recs, decisions = recommend(scores, impact, c360, ctx.cfg["recommend"], thresholds(ctx))
+    recs, decisions = recommend(scores, impact, c360, ctx.cfg["recommend"], thresholds(ctx), memory=memory_signals(ctx, data))
     ctx.save_parquet(recs, "recommendations", "recommendations.parquet")
     ctx.save_parquet(decisions, "recommendations", "decisions.parquet")
     return {"recommendations": len(recs), "customers": int(recs["customer_id"].nunique()),
@@ -147,7 +162,7 @@ def stage_memory(ctx, data: Path) -> dict:
     truth = pd.read_parquet(data / "truth_vault" / "labels.parquet", columns=["customer_id", "product", "p_true"])
     mcfg = ctx.cfg["memory"]
     metrics, events = replay(scores, impact, c360, ctx.cfg["recommend"], truth, mcfg["replay_customers"], mcfg["rounds"],
-                             thresholds=thresholds(ctx))
+                             thresholds=thresholds(ctx), events=memory_events(data), memory_cfg=mcfg)
     ctx.save_parquet(events, "memory", "replay_events.parquet")
     ctx.save_json(metrics, "metrics", "memory_replay.json")
     return metrics
@@ -159,18 +174,43 @@ def stage_insights(ctx, data: Path) -> dict:
     recs = ctx.read_parquet("recommendations", "recommendations.parquet")
     decisions = ctx.read_parquet("recommendations", "decisions.parquet")
     impact = ctx.read_parquet("impact", "impact.parquet")
-    insights, trends = build(model_table(data, LIVE), recs, decisions, impact, data / "categorised", ctx.cfg["insights"]["segments_k"])
+    holdings = data / "warehouse" / "product_holdings.parquet"
+    insights, trends = build(model_table(data, LIVE), recs, decisions, impact, data / "categorised", ctx.cfg["insights"]["segments_k"],
+                             pd.read_parquet(holdings) if holdings.exists() else None)
     ctx.save_json(insights, "insights", "bank_insights.json")
     ctx.save_parquet(trends, "insights", "monthly_trends.parquet")
     ctx.save_parquet(customer_monthly(data / "categorised", pd.Timestamp(LIVE)), "insights", "customer_monthly_spend.parquet")
     return insights["overview"]
 
 
+def stage_value(ctx, data: Path) -> dict:
+    from gcip.config import load_config
+    from gcip.impact.engine import assess
+    from gcip.insights.value import backtest, measure_uplift, suggestion_value, summary
+    from gcip.models.propensity import model_table
+    names = {k: v["name"] for k, v in load_config("products")["products"].items()}
+    recs = ctx.read_parquet("recommendations", "recommendations.parquet")
+    values = suggestion_value(recs, pd.read_parquet(data / f"customer_360_{LIVE}.parquet"))
+    ctx.save_parquet(values, "recommendations", "value.parquet")
+    out = summary(values, names)
+    # Backtest on what really happened: the training snapshot's test customers and their take-up in the six months after.
+    held = pd.read_csv(ctx.run_dir / "predictions" / "heldout_predictions.csv")
+    test = held[held["split"] == "test"][["customer_id", "product", "propensity"]]
+    impact = assess(model_table(data, TRAIN), PRODUCTS, TRAIN).rename(columns={"status": "impact_status"})
+    rows = test.merge(impact, on=["customer_id", "product"], how="left").assign(status="recommended")
+    test_values = suggestion_value(rows, pd.read_parquet(data / f"customer_360_{TRAIN}.parquet"))
+    out["backtest"] = backtest(held, test_values, thresholds(ctx))
+    labels = pd.read_parquet(data / "labels.parquet")
+    out["measured_uplift"] = measure_uplift(held, test_values, labels, thresholds(ctx))
+    ctx.save_json(out, "metrics", "business_value.json")
+    return {"portfolio": out["portfolio"], "backtest_total": out["backtest"]["total"]}
+
+
 def stage_report(ctx, data: Path) -> dict:
     metrics = ctx.run_dir / "metrics"
     summary = {"data": json.loads((data / "meta" / "data_validation.json").read_text()).get("summary")
                if (data / "meta" / "data_validation.json").exists() else None}
-    for name in ("propensity_report", "explanations", "impact_truth_recovery", "memory_replay"):
+    for name in ("propensity_report", "explanations", "impact_truth_recovery", "memory_replay", "business_value"):
         path = metrics / f"{name}.json"
         if path.exists():
             summary[name] = json.loads(path.read_text())

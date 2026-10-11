@@ -50,7 +50,6 @@ recommend:
   min_co2e_kg_per_year: 100      # a green suggestion must avoid at least this much a year...
   co2e_exempt: [GP04]            # ...except Paperless, whose saving per customer is small by nature (required product)
   cooldown_days: {dismissed: 90, not_interested: 180}
-  clicked_priority_boost: 0.10
 
 llm:
   # Explanations are written by templates for every suggestion. An LLM only rewrites their body (the compliance sentence
@@ -67,6 +66,12 @@ llm:
   eval_set_size: 360             # 60 per product, rewritten and checked by the explain_llm stage
 
 memory:
+  # Customer memory as a dynamic signal (gcip.memory.signals): every contact and response in the last year.
+  lookback_days: 365
+  weights: {clicked: 1.5, viewed: 0.85, no_response: 0.7, dismissed: 0.5, not_interested: 0.2}  # priority x product
+  weight_bounds: [0.05, 2.0]
+  fatigue_contacts: 3            # contacts in a row with no engagement pause the product...
+  fatigue_pause_days: 180        # ...for this long, however strong its propensity
   replay_customers: 300
   rounds: 3
 

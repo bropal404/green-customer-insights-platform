@@ -2035,45 +2035,44 @@
       "optuna_trials": 40,
       "bootstrap_models": 5
     },
-    "elapsed_seconds": 311.1
+    "elapsed_seconds": 287.2
   },
   "explanations": {
     "explanations": 5437,
     "template_guard_pass": 5437,
-    "reading_ease_mean": 73.7,
-    "words_mean": 74.3,
+    "reading_ease_mean": 74.6,
+    "words_mean": 78.7,
     "llm_eval": {
       "model": "Qwen/Qwen2.5-1.5B-Instruct",
       "provider": "local",
       "items": 360,
-      "seconds": 128.7,
-      "guard_pass_rate": 0.711,
+      "seconds": 131.8,
+      "guard_pass_rate": 0.897,
       "failure_reasons": {
-        "numbers dropped": 103,
-        "changes the time period to monthly": 25,
-        "banned claim": 4,
-        "numbers not in the facts": 3
+        "numbers dropped": 36,
+        "banned claim": 5,
+        "numbers not in the facts": 2
       },
       "pass_rate_by_product": {
-        "GP01": 0.217,
-        "GP02": 0.867,
-        "GP03": 1.0,
-        "GP04": 0.917,
-        "GP05": 0.833,
-        "GP06": 0.433
+        "GP01": 0.917,
+        "GP02": 0.883,
+        "GP03": 0.967,
+        "GP04": 0.933,
+        "GP05": 0.933,
+        "GP06": 0.75
       },
       "words_mean": {
-        "llm": 70.0,
-        "template": 71.3
+        "llm": 71.9,
+        "template": 75.6
       },
       "reading_ease_mean": {
-        "llm": 59.5,
-        "template": 72.3
+        "llm": 67.3,
+        "template": 73.1
       }
     },
     "source": {
-      "template": 5181,
-      "llm": 256
+      "template": 5114,
+      "llm": 323
     }
   },
   "impact_truth_recovery": {
@@ -2130,11 +2129,12 @@
         "shown": 327,
         "customers_shown_something": 287,
         "suppressed_by_memory": 8,
+        "paused_no_interest": 0,
         "responses": {
           "clicked": 110,
-          "none": 93,
-          "dismissed": 72,
-          "not_interested": 52
+          "no_response": 93,
+          "dismissed": 73,
+          "not_interested": 51
         }
       },
       {
@@ -2144,14 +2144,13 @@
         "shown": 205,
         "customers_shown_something": 193,
         "suppressed_by_memory": 132,
+        "paused_no_interest": 0,
         "reshown_within_cooldown": 0,
-        "clicked_reshown": 110,
-        "clicked_previous_round": 110,
         "new_products_shown": 2,
         "responses": {
-          "clicked": 85,
-          "dismissed": 53,
-          "none": 41,
+          "clicked": 86,
+          "dismissed": 52,
+          "no_response": 41,
           "not_interested": 26
         }
       },
@@ -2162,21 +2161,510 @@
         "shown": 126,
         "customers_shown_something": 119,
         "suppressed_by_memory": 208,
+        "paused_no_interest": 1,
         "reshown_within_cooldown": 0,
-        "clicked_reshown": 85,
-        "clicked_previous_round": 85,
         "new_products_shown": 0,
         "responses": {
           "clicked": 59,
-          "none": 32,
+          "no_response": 33,
           "dismissed": 24,
-          "not_interested": 11
+          "not_interested": 10
         }
       }
     ],
     "cooldown_days": {
       "dismissed": 90,
       "not_interested": 180
+    },
+    "fatigue_contacts": 3
+  },
+  "business_value": {
+    "portfolio": {
+      "suggestions": 5437,
+      "expected_takeups": 914.3,
+      "customer": {
+        "expected_saving_gbp_per_year": 418614.0,
+        "expected_lifetime_net_gbp": 1977603.0,
+        "expected_npv_gbp": 1379510.0,
+        "median_npv_per_takeup_gbp": 2215.0,
+        "share_with_positive_npv": 0.614,
+        "median_payback_years": 10.3,
+        "abatement_cost_gbp_per_t": -219.0,
+        "expected_co2e_t_per_year": 1241.6,
+        "expected_co2e_t_lifetime": 6306.0
+      },
+      "bank": {
+        "expected_new_lending_gbp": 7284222.0,
+        "expected_nii_gbp": 609991.0,
+        "expected_fees_gbp": 3466.0,
+        "expected_cost_savings_gbp": 28983.0,
+        "expected_credit_loss_gbp": 91150.0,
+        "expected_origination_gbp": 70157.0,
+        "campaign_cost_gbp": 7738.0,
+        "expected_net_value_gbp": 473389.0,
+        "roi": 61.2,
+        "t_co2e_lifetime_per_1k_campaign": 815.0,
+        "expected_financed_co2e_t_per_year": 904.5,
+        "financed_t_per_year_per_m_lending": 124.2
+      }
+    },
+    "grounded": {
+      "value_at_stake_gbp": 481134.0,
+      "takeups_at_stake": 914.3,
+      "co2e_t_lifetime_at_stake": 6306.0,
+      "campaign_cost_gbp": 7738.0,
+      "break_even_share_caused": 0.0161,
+      "scenarios": [
+        {
+          "share_caused": 0.05,
+          "incremental_takeups": 45.7,
+          "incremental_net_value_gbp": 16319.0,
+          "roi": 2.1,
+          "incremental_co2e_t_lifetime": 315.0
+        },
+        {
+          "share_caused": 0.1,
+          "incremental_takeups": 91.4,
+          "incremental_net_value_gbp": 40376.0,
+          "roi": 5.2,
+          "incremental_co2e_t_lifetime": 631.0
+        },
+        {
+          "share_caused": 0.2,
+          "incremental_takeups": 182.9,
+          "incremental_net_value_gbp": 88489.0,
+          "roi": 11.4,
+          "incremental_co2e_t_lifetime": 1261.0
+        },
+        {
+          "share_caused": 0.3,
+          "incremental_takeups": 274.3,
+          "incremental_net_value_gbp": 136603.0,
+          "roi": 17.7,
+          "incremental_co2e_t_lifetime": 1892.0
+        }
+      ]
+    },
+    "products": [
+      {
+        "product": "GP01",
+        "name": "EV Finance",
+        "median_abatement_cost_gbp_per_t": -369.0,
+        "suggestions": 2089,
+        "expected_takeups": 265.9,
+        "customer": {
+          "expected_saving_gbp_per_year": 327399.0,
+          "expected_lifetime_net_gbp": 1309597.0,
+          "expected_npv_gbp": 1202564.0,
+          "median_npv_per_takeup_gbp": 3879.0,
+          "share_with_positive_npv": 1.0,
+          "median_payback_years": null,
+          "abatement_cost_gbp_per_t": -299.0,
+          "expected_co2e_t_per_year": 1006.2,
+          "expected_co2e_t_lifetime": 4025.0
+        },
+        "bank": {
+          "expected_new_lending_gbp": 6382051.0,
+          "expected_nii_gbp": 497800.0,
+          "expected_fees_gbp": 0.0,
+          "expected_cost_savings_gbp": 0.0,
+          "expected_credit_loss_gbp": 76585.0,
+          "expected_origination_gbp": 39888.0,
+          "campaign_cost_gbp": 3509.0,
+          "expected_net_value_gbp": 377814.0,
+          "roi": 107.7,
+          "t_co2e_lifetime_per_1k_campaign": 1147.1,
+          "expected_financed_co2e_t_per_year": 805.0,
+          "financed_t_per_year_per_m_lending": 126.1
+        }
+      },
+      {
+        "product": "GP02",
+        "name": "Green Home Loan",
+        "median_abatement_cost_gbp_per_t": 104.0,
+        "suggestions": 104,
+        "expected_takeups": 11.1,
+        "customer": {
+          "expected_saving_gbp_per_year": 731.0,
+          "expected_lifetime_net_gbp": -37271.0,
+          "expected_npv_gbp": -39817.0,
+          "median_npv_per_takeup_gbp": -3533.0,
+          "share_with_positive_npv": 0.01,
+          "median_payback_years": 53.0,
+          "abatement_cost_gbp_per_t": 77.0,
+          "expected_co2e_t_per_year": 34.3,
+          "expected_co2e_t_lifetime": 514.0
+        },
+        "bank": {
+          "expected_new_lending_gbp": 48233.0,
+          "expected_nii_gbp": 3622.0,
+          "expected_fees_gbp": 0.0,
+          "expected_cost_savings_gbp": 0.0,
+          "expected_credit_loss_gbp": 74.0,
+          "expected_origination_gbp": 2787.0,
+          "campaign_cost_gbp": 85.0,
+          "expected_net_value_gbp": 673.0,
+          "roi": 7.9,
+          "t_co2e_lifetime_per_1k_campaign": 6057.2,
+          "expected_financed_co2e_t_per_year": 9.1,
+          "financed_t_per_year_per_m_lending": 188.5
+        }
+      },
+      {
+        "product": "GP03",
+        "name": "Solar Finance",
+        "median_abatement_cost_gbp_per_t": -244.0,
+        "suggestions": 1251,
+        "expected_takeups": 84.1,
+        "customer": {
+          "expected_saving_gbp_per_year": 55340.0,
+          "expected_lifetime_net_gbp": 794796.0,
+          "expected_npv_gbp": 323389.0,
+          "median_npv_per_takeup_gbp": 4142.0,
+          "share_with_positive_npv": 1.0,
+          "median_payback_years": 10.4,
+          "abatement_cost_gbp_per_t": -230.0,
+          "expected_co2e_t_per_year": 56.2,
+          "expected_co2e_t_lifetime": 1405.0
+        },
+        "bank": {
+          "expected_new_lending_gbp": 588699.0,
+          "expected_nii_gbp": 85361.0,
+          "expected_fees_gbp": 0.0,
+          "expected_cost_savings_gbp": 0.0,
+          "expected_credit_loss_gbp": 7064.0,
+          "expected_origination_gbp": 12615.0,
+          "campaign_cost_gbp": 1904.0,
+          "expected_net_value_gbp": 63777.0,
+          "roi": 33.5,
+          "t_co2e_lifetime_per_1k_campaign": 737.7,
+          "expected_financed_co2e_t_per_year": 0.0,
+          "financed_t_per_year_per_m_lending": 0.0
+        }
+      },
+      {
+        "product": "GP04",
+        "name": "Paperless Banking",
+        "median_abatement_cost_gbp_per_t": 0.0,
+        "suggestions": 791,
+        "expected_takeups": 340.2,
+        "customer": {
+          "expected_saving_gbp_per_year": 0.0,
+          "expected_lifetime_net_gbp": 0.0,
+          "expected_npv_gbp": 0.0,
+          "median_npv_per_takeup_gbp": 0.0,
+          "share_with_positive_npv": 0.0,
+          "median_payback_years": null,
+          "abatement_cost_gbp_per_t": -0.0,
+          "expected_co2e_t_per_year": 0.2,
+          "expected_co2e_t_lifetime": 0.0
+        },
+        "bank": {
+          "expected_new_lending_gbp": 0.0,
+          "expected_nii_gbp": 0.0,
+          "expected_fees_gbp": 0.0,
+          "expected_cost_savings_gbp": 28983.0,
+          "expected_credit_loss_gbp": 0.0,
+          "expected_origination_gbp": 0.0,
+          "campaign_cost_gbp": 45.0,
+          "expected_net_value_gbp": 28939.0,
+          "roi": 643.8,
+          "t_co2e_lifetime_per_1k_campaign": 2.1,
+          "expected_financed_co2e_t_per_year": 0.0,
+          "financed_t_per_year_per_m_lending": null
+        }
+      },
+      {
+        "product": "GP05",
+        "name": "Green Investments",
+        "median_abatement_cost_gbp_per_t": 0.0,
+        "suggestions": 284,
+        "expected_takeups": 80.3,
+        "customer": {
+          "expected_saving_gbp_per_year": 0.0,
+          "expected_lifetime_net_gbp": 0.0,
+          "expected_npv_gbp": 0.0,
+          "median_npv_per_takeup_gbp": 0.0,
+          "share_with_positive_npv": 0.0,
+          "median_payback_years": null,
+          "abatement_cost_gbp_per_t": -0.0,
+          "expected_co2e_t_per_year": 90.4,
+          "expected_co2e_t_lifetime": 90.0
+        },
+        "bank": {
+          "expected_new_lending_gbp": 0.0,
+          "expected_nii_gbp": 0.0,
+          "expected_fees_gbp": 3466.0,
+          "expected_cost_savings_gbp": 0.0,
+          "expected_credit_loss_gbp": 0.0,
+          "expected_origination_gbp": 1605.0,
+          "campaign_cost_gbp": 21.0,
+          "expected_net_value_gbp": 1841.0,
+          "roi": 86.2,
+          "t_co2e_lifetime_per_1k_campaign": 4234.5,
+          "expected_financed_co2e_t_per_year": 90.4,
+          "financed_t_per_year_per_m_lending": null
+        }
+      },
+      {
+        "product": "GP06",
+        "name": "Green Loans",
+        "median_abatement_cost_gbp_per_t": 392.0,
+        "suggestions": 918,
+        "expected_takeups": 132.6,
+        "customer": {
+          "expected_saving_gbp_per_year": 35144.0,
+          "expected_lifetime_net_gbp": -89518.0,
+          "expected_npv_gbp": -106626.0,
+          "median_npv_per_takeup_gbp": -804.0,
+          "share_with_positive_npv": 0.0,
+          "median_payback_years": 7.6,
+          "abatement_cost_gbp_per_t": 392.0,
+          "expected_co2e_t_per_year": 54.4,
+          "expected_co2e_t_lifetime": 272.0
+        },
+        "bank": {
+          "expected_new_lending_gbp": 265239.0,
+          "expected_nii_gbp": 23208.0,
+          "expected_fees_gbp": 0.0,
+          "expected_cost_savings_gbp": 0.0,
+          "expected_credit_loss_gbp": 7427.0,
+          "expected_origination_gbp": 13262.0,
+          "campaign_cost_gbp": 2173.0,
+          "expected_net_value_gbp": 345.0,
+          "roi": 0.2,
+          "t_co2e_lifetime_per_1k_campaign": 125.1,
+          "expected_financed_co2e_t_per_year": 0.0,
+          "financed_t_per_year_per_m_lending": 0.0
+        }
+      }
+    ],
+    "backtest": {
+      "note": "held-out test customers, training snapshot (31 Mar 2026), take-up observed 1 Apr - 30 Sep 2026; same number contacted per product by each strategy",
+      "total": {
+        "model": {
+          "contacted": 1343.0,
+          "takeups": 221.0,
+          "co2e_t_lifetime": 1682.2,
+          "bank_value_gbp": 117149.0,
+          "customer_npv_gbp": 295469.0
+        },
+        "random": {
+          "contacted": 1343.0,
+          "takeups": 80.0,
+          "co2e_t_lifetime": 579.8,
+          "bank_value_gbp": 46433.0,
+          "customer_npv_gbp": 86475.0
+        },
+        "rules": {
+          "contacted": 1343.0,
+          "takeups": 159.0,
+          "co2e_t_lifetime": 1174.4,
+          "bank_value_gbp": 78894.0,
+          "customer_npv_gbp": 163010.0
+        }
+      },
+      "products": [
+        {
+          "product": "GP01",
+          "strategy": "model",
+          "contacted": 505,
+          "takeups": 65,
+          "co2e_t_lifetime": 1110.2,
+          "bank_value_gbp": 92705.0,
+          "customer_npv_gbp": 253530.0
+        },
+        {
+          "product": "GP01",
+          "strategy": "rules",
+          "contacted": 505,
+          "takeups": 43,
+          "co2e_t_lifetime": 753.3,
+          "bank_value_gbp": 61157.0,
+          "customer_npv_gbp": 126081.0
+        },
+        {
+          "product": "GP01",
+          "strategy": "random",
+          "contacted": 505,
+          "takeups": 26,
+          "co2e_t_lifetime": 308.0,
+          "bank_value_gbp": 36779.0,
+          "customer_npv_gbp": 67486.0
+        },
+        {
+          "product": "GP02",
+          "strategy": "model",
+          "contacted": 31,
+          "takeups": 2,
+          "co2e_t_lifetime": 120.9,
+          "bank_value_gbp": 131.0,
+          "customer_npv_gbp": -17719.0
+        },
+        {
+          "product": "GP02",
+          "strategy": "rules",
+          "contacted": 31,
+          "takeups": 1,
+          "co2e_t_lifetime": 65.6,
+          "bank_value_gbp": 50.0,
+          "customer_npv_gbp": -9360.0
+        },
+        {
+          "product": "GP02",
+          "strategy": "random",
+          "contacted": 31,
+          "takeups": 2,
+          "co2e_t_lifetime": 85.4,
+          "bank_value_gbp": 131.0,
+          "customer_npv_gbp": -14298.0
+        },
+        {
+          "product": "GP03",
+          "strategy": "model",
+          "contacted": 279,
+          "takeups": 21,
+          "co2e_t_lifetime": 350.6,
+          "bank_value_gbp": 16122.0,
+          "customer_npv_gbp": 91998.0
+        },
+        {
+          "product": "GP03",
+          "strategy": "rules",
+          "contacted": 279,
+          "takeups": 16,
+          "co2e_t_lifetime": 269.5,
+          "bank_value_gbp": 12217.0,
+          "customer_npv_gbp": 71769.0
+        },
+        {
+          "product": "GP03",
+          "strategy": "random",
+          "contacted": 279,
+          "takeups": 10,
+          "co2e_t_lifetime": 164.4,
+          "bank_value_gbp": 7531.0,
+          "customer_npv_gbp": 42107.0
+        },
+        {
+          "product": "GP04",
+          "strategy": "model",
+          "contacted": 168,
+          "takeups": 74,
+          "co2e_t_lifetime": 0.0,
+          "bank_value_gbp": 7182.0,
+          "customer_npv_gbp": 0.0
+        },
+        {
+          "product": "GP04",
+          "strategy": "rules",
+          "contacted": 168,
+          "takeups": 47,
+          "co2e_t_lifetime": 0.0,
+          "bank_value_gbp": 4578.0,
+          "customer_npv_gbp": 0.0
+        },
+        {
+          "product": "GP04",
+          "strategy": "random",
+          "contacted": 168,
+          "takeups": 24,
+          "co2e_t_lifetime": 0.0,
+          "bank_value_gbp": 2268.0,
+          "customer_npv_gbp": 0.0
+        },
+        {
+          "product": "GP05",
+          "strategy": "model",
+          "contacted": 91,
+          "takeups": 26,
+          "co2e_t_lifetime": 32.8,
+          "bank_value_gbp": 651.0,
+          "customer_npv_gbp": 0.0
+        },
+        {
+          "product": "GP05",
+          "strategy": "rules",
+          "contacted": 91,
+          "takeups": 26,
+          "co2e_t_lifetime": 32.7,
+          "bank_value_gbp": 667.0,
+          "customer_npv_gbp": 0.0
+        },
+        {
+          "product": "GP05",
+          "strategy": "random",
+          "contacted": 91,
+          "takeups": 9,
+          "co2e_t_lifetime": 3.6,
+          "bank_value_gbp": -178.0,
+          "customer_npv_gbp": 0.0
+        },
+        {
+          "product": "GP06",
+          "strategy": "model",
+          "contacted": 269,
+          "takeups": 33,
+          "co2e_t_lifetime": 67.7,
+          "bank_value_gbp": 358.0,
+          "customer_npv_gbp": -32340.0
+        },
+        {
+          "product": "GP06",
+          "strategy": "rules",
+          "contacted": 269,
+          "takeups": 26,
+          "co2e_t_lifetime": 53.3,
+          "bank_value_gbp": 225.0,
+          "customer_npv_gbp": -25480.0
+        },
+        {
+          "product": "GP06",
+          "strategy": "random",
+          "contacted": 269,
+          "takeups": 9,
+          "co2e_t_lifetime": 18.4,
+          "bank_value_gbp": -98.0,
+          "customer_npv_gbp": -8820.0
+        }
+      ],
+      "uplift_vs_random": {
+        "takeups": 2.76,
+        "co2e_t_lifetime": 2.9,
+        "bank_value_gbp": 2.52
+      },
+      "uplift_vs_rules": {
+        "takeups": 1.39,
+        "co2e_t_lifetime": 1.43,
+        "bank_value_gbp": 1.48
+      }
+    },
+    "measured_uplift": {
+      "note": "held-out test customers selected by the model on 31 Mar 2026, 10% held back at random, openings from the product system 1 Apr - 30 Sep 2026; the simulator gives contacts no causal effect, so the true uplift is zero",
+      "treated": {
+        "customers": 1204,
+        "takeups": 199,
+        "rate": 0.1653
+      },
+      "control": {
+        "customers": 139,
+        "takeups": 22,
+        "rate": 0.1583
+      },
+      "uplift": {
+        "points": 0.7,
+        "ci95_points": [
+          -5.72,
+          7.12
+        ],
+        "incremental_takeups": 8.4,
+        "incremental_value_gbp": 6142.0
+      },
+      "linked_takeups_by": {
+        "none": 3754,
+        "window": 199,
+        "control": 22
+      }
     }
   },
   "insights_overview": {
@@ -2194,13 +2682,14 @@
   },
   "stage_seconds": {
     "impact": 0.2,
-    "recommend": 0.9,
-    "explain": 1.0,
+    "recommend": 1.1,
+    "explain": 1.2,
     "impact_checks": 0.5,
-    "memory": 1.0,
-    "insights": 30.1,
-    "propensity": 311.8,
-    "explain_llm": 129.8,
-    "report": 0.0
+    "memory": 1.1,
+    "insights": 35.3,
+    "propensity": 287.9,
+    "explain_llm": 133.0,
+    "report": 0.0,
+    "value": 0.4
   }
 }

@@ -2033,5 +2033,5 @@
     "optuna_trials": 40,
     "bootstrap_models": 5
   },
-  "elapsed_seconds": 311.1
+  "elapsed_seconds": 287.2
 }

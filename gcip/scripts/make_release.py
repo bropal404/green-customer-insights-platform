@@ -23,7 +23,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CORE = ["customer_360_2026-03-31.parquet", "customer_360_2026-09-30.parquet", "features_2026-03-31.parquet",
         "features_2026-09-30.parquet", "labels.parquet", "categorised", "meta", "_done",
-        "warehouse/product_holdings.parquet", "truth_vault/labels.parquet", "truth_vault/state.parquet"]
+        "warehouse/product_holdings.parquet", "warehouse/campaign_responses.parquet", "truth_vault/labels.parquet",
+        "truth_vault/state.parquet"]
 FULL = ["sources", "warehouse", "truth_vault", "quarantine", "_checkpoints"]
 SKIP_SUFFIXES = (".zip",)
 

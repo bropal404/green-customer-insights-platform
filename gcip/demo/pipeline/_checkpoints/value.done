@@ -1,0 +1,55 @@
+{
+  "finished_at": "2026-10-11 06:32:55",
+  "portfolio": {
+    "suggestions": 5437,
+    "expected_takeups": 914.3,
+    "customer": {
+      "expected_saving_gbp_per_year": 418614.0,
+      "expected_lifetime_net_gbp": 1977603.0,
+      "expected_npv_gbp": 1379510.0,
+      "median_npv_per_takeup_gbp": 2215.0,
+      "share_with_positive_npv": 0.614,
+      "median_payback_years": 10.3,
+      "abatement_cost_gbp_per_t": -219.0,
+      "expected_co2e_t_per_year": 1241.6,
+      "expected_co2e_t_lifetime": 6306.0
+    },
+    "bank": {
+      "expected_new_lending_gbp": 7284222.0,
+      "expected_nii_gbp": 609991.0,
+      "expected_fees_gbp": 3466.0,
+      "expected_cost_savings_gbp": 28983.0,
+      "expected_credit_loss_gbp": 91150.0,
+      "expected_origination_gbp": 70157.0,
+      "campaign_cost_gbp": 7738.0,
+      "expected_net_value_gbp": 473389.0,
+      "roi": 61.2,
+      "t_co2e_lifetime_per_1k_campaign": 815.0,
+      "expected_financed_co2e_t_per_year": 904.5,
+      "financed_t_per_year_per_m_lending": 124.2
+    }
+  },
+  "backtest_total": {
+    "model": {
+      "contacted": 1343.0,
+      "takeups": 221.0,
+      "co2e_t_lifetime": 1682.2,
+      "bank_value_gbp": 117149.0,
+      "customer_npv_gbp": 295469.0
+    },
+    "random": {
+      "contacted": 1343.0,
+      "takeups": 80.0,
+      "co2e_t_lifetime": 579.8,
+      "bank_value_gbp": 46433.0,
+      "customer_npv_gbp": 86475.0
+    },
+    "rules": {
+      "contacted": 1343.0,
+      "takeups": 159.0,
+      "co2e_t_lifetime": 1174.4,
+      "bank_value_gbp": 78894.0,
+      "customer_npv_gbp": 163010.0
+    }
+  }
+}

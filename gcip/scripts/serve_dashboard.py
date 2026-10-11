@@ -40,12 +40,12 @@ from gcip.config import load_config  # noqa: E402
 from gcip.explain.run import build_items, compose, explain  # noqa: E402
 from gcip.insights.bank import footprint  # noqa: E402
 from gcip.models.reasons import LABELS as REASON_LABELS  # noqa: E402
-from gcip.memory.replay import RESPONSES, apply_events, empty_events  # noqa: E402
+from gcip.memory.signals import empty_events, events_from_crm, signals  # noqa: E402
 from gcip.recommend.engine import recommend  # noqa: E402
 from gcip.serve.documents import clean, document  # noqa: E402
 
 LIVE = "2026-09-30"
-FEEDBACK = set(RESPONSES) | {"already_have", "viewed"}
+FEEDBACK = {"clicked", "dismissed", "not_interested", "already_have", "no_response", "viewed"}
 SPEND_CATEGORIES = ["fuel", "electricity", "gas", "public_transport", "home_improvement", "automotive", "utilities", "other"]
 
 
@@ -67,6 +67,8 @@ class State:
         self.trends = pd.read_parquet(run_dir / "insights" / "monthly_trends.parquet")
         self.thresholds = json.loads((run_dir / "models" / "thresholds.json").read_text())
         self.products_cfg = load_config("products")["products"]
+        value = run_dir / "recommendations" / "value.parquet"
+        self.values = pd.read_parquet(value).set_index(["customer_id", "product"]) if value.exists() else None
         self.carbon_cfg = load_config("carbon")
         spend = run_dir / "insights" / "customer_monthly_spend.parquet"
         self.customer_spend = pd.read_parquet(spend).set_index("customer_id") if spend.exists() else None
@@ -78,6 +80,8 @@ class State:
             self.parts.append((min(st.min for st in stats), max(st.max for st in stats), path))
         self.events_path = run_dir / "memory" / "dashboard_events.parquet"
         self.events = pd.read_parquet(self.events_path) if self.events_path.exists() else empty_events()
+        crm = data / "warehouse" / "campaign_responses.parquet"  # the CRM's campaign history: where memory starts
+        self.crm_events = events_from_crm(pd.read_parquet(crm), pd.Timestamp(LIVE)) if crm.exists() else empty_events()
         self.overview = self._overview()
         self.index = self._index()
         from gcip.explain.llm import make_explainer
@@ -98,6 +102,8 @@ class State:
             "models": report.get("products"), "ablations": report.get("ablations"),
             "explanations": self._json("metrics", "explanations.json"),
             "gemini_sample": self._json("metrics", "explanations_gemini_sample.json"),
+            "business": self._json("metrics", "business_value.json"),
+            "business_assumptions": load_config("business"),
             "impact_truth_recovery": self._json("metrics", "impact_truth_recovery.json"),
             "impact_sensitivity": pd.read_csv(sens).to_dict("records") if sens.exists() else [],
             "memory_replay": self._json("metrics", "memory_replay.json"),
@@ -137,10 +143,9 @@ class State:
     def _recompute(self, customer_id: str) -> None:
         """Make this customer's recommendations again from the memory store (after feedback)."""
         c = self.c360[self.c360["customer_id"] == customer_id]
-        ev = self.events[self.events["customer_id"] == customer_id]
         recs, decisions = recommend(self.scores[self.scores["customer_id"] == customer_id],
-                                    self.impact[self.impact["customer_id"] == customer_id], apply_events(c, ev), self.cfg["recommend"],
-                                    self.thresholds)
+                                    self.impact[self.impact["customer_id"] == customer_id], c, self.cfg["recommend"],
+                                    self.thresholds, memory=self.signals([customer_id]))
         old = self.explanations[self.explanations["customer_id"] == customer_id]
         expl = explain(build_items(recs)) if len(recs) else old.iloc[0:0]
         if len(expl) and len(old):  # keep LLM rephrasings already made for products still shown
@@ -171,60 +176,104 @@ class State:
                     "level": level, "dots": 6 - score, "of": 4, "pcaf_score": score,
                     "based_on": self.carbon_cfg.get("data_quality", {}).get(product, {}).get(score)}}
 
-    def _effect(self, response: str, date) -> tuple[str, str | None]:
-        """What a stored response does to suggestions on the as-of date: (effect, until)."""
-        as_of = pd.Timestamp(LIVE)
-        cool = self.cfg["recommend"]["cooldown_days"]
-        if response in cool and pd.notna(date):
-            until = pd.Timestamp(date) + pd.Timedelta(days=cool[response])
-            if until > as_of:
-                return f"paused ({response.replace('_', ' ')})", until.strftime("%Y-%m-%d")
-            return f"pause ended ({response.replace('_', ' ')})", until.strftime("%Y-%m-%d")
-        if response == "already_have":
-            return "stopped (already has it)", None
-        if response == "clicked":
-            return "priority raised (interested)", None
-        return "no effect", None
+    def signals(self, customer_ids=None) -> pd.DataFrame:
+        """Memory signals from the CRM history plus the responses given in the apps."""
+        events = pd.concat([self.crm_events, self.events], ignore_index=True)
+        if customer_ids is not None:
+            events = events[events["customer_id"].isin(customer_ids)]
+        return signals(events, pd.Timestamp(LIVE), self.cfg["memory"], self.cfg["recommend"]["cooldown_days"])
+
+    @staticmethod
+    def _effect(row) -> str:
+        if row is None:
+            return "no history"
+        if row["state"]:
+            return row["state"]
+        if row["weight"] > 1.0:
+            return "priority raised"
+        if row["weight"] < 1.0:
+            return "priority lowered"
+        return "no effect"
 
     def memory_of(self, customer_id: str) -> list[dict]:
-        """Per product: the latest response (CRM history or the apps), its date and source, and its effect now."""
-        names = self.overview["products"]
-        c = apply_events(self.c360[self.c360["customer_id"] == customer_id], self.events[self.events["customer_id"] == customer_id])
-        if c.empty:
-            return []
-        row = c.iloc[0]
+        """Per product: contacts in the last year, contacts in a row with no engagement, the memory weight, the latest
+        response with its date and source, and what memory does today (paused or stopped until when, or priority)."""
+        sig = self.signals([customer_id])
         ev = self.events[self.events["customer_id"] == customer_id]
         out = []
-        for product, name in names.items():
-            response = row.get(f"last_response_{product}") or "none"
-            date = row.get(f"last_response_date_{product}")
-            mine = ev[ev["product"] == product]
-            source = "app" if len(mine) and pd.Timestamp(mine["response_date"].max()) == pd.Timestamp(date) else "CRM campaign"
-            effect, until = self._effect(response, date)
-            out.append(clean({"product": product, "name": name, "response": response,
-                              "date": None if pd.isna(date) else pd.Timestamp(date), "source": None if response == "none" else source,
-                              "effect": effect, "until": until}))
+        for product, name in self.overview["products"].items():
+            row = sig.loc[(customer_id, product)] if (customer_id, product) in sig.index else None
+            source = None if row is None else ("app" if len(ev[ev["product"] == product]) and row["last_source"] != "CRM campaign"
+                                               else row["last_source"])
+            out.append(clean({"product": product, "name": name,
+                              "contacts": 0 if row is None else int(row["contacts"]),
+                              "streak": 0 if row is None else int(row["streak"]),
+                              "weight": 1.0 if row is None else round(float(row["weight"]), 2),
+                              "response": "none" if row is None else row["last_response"],
+                              "date": None if row is None else row["last_date"], "source": source,
+                              "effect": self._effect(row), "until": None if row is None else row["until"]}))
         return out
 
-    def memory_summary(self) -> dict:
-        """Bank view of customer memory on the as-of date: active pauses, stops and interest per product, recent responses."""
-        names = self.overview["products"]
-        c = apply_events(self.c360, self.events)
+    def _without_memory(self, customer_ids=None) -> tuple[pd.DataFrame, pd.DataFrame]:
+        """The same engine with an empty memory: what would be suggested if we remembered nothing."""
+        scores, impact, c360 = self.scores, self.impact, self.c360
+        if customer_ids is not None:
+            scores, impact = scores[scores["customer_id"].isin(customer_ids)], impact[impact["customer_id"].isin(customer_ids)]
+            c360 = c360[c360["customer_id"].isin(customer_ids)]
+        nothing = signals(empty_events(), pd.Timestamp(LIVE), self.cfg["memory"], self.cfg["recommend"]["cooldown_days"])
+        return recommend(scores, impact, c360, self.cfg["recommend"], self.thresholds, memory=nothing)
+
+    def memory_effect(self, customer_id: str) -> dict:
+        """Per product: decision and rank without memory vs with it, and the customer's timeline of contacts."""
+        recs0, dec0 = self._without_memory([customer_id])
+        dec1 = self.decisions[self.decisions["customer_id"] == customer_id].set_index("product")
+        rank0 = recs0.set_index("product")["rank"] if len(recs0) else pd.Series(dtype=float)
+        mine = self.recs[self.recs["customer_id"] == customer_id]
+        rank1 = mine.set_index("product")["rank"] if len(mine) else pd.Series(dtype=float)
+        dec0 = dec0.set_index("product")
         rows = []
-        for product, name in names.items():
-            resp, date = c[f"last_response_{product}"].fillna("none"), pd.to_datetime(c[f"last_response_date_{product}"])
-            counts = {"responses": int((~resp.isin(["none"])).sum())}
-            for kind in ("dismissed", "not_interested"):
-                days = (pd.Timestamp(LIVE) - date).dt.days
-                counts[f"paused_{kind}"] = int(((resp == kind) & (days < self.cfg["recommend"]["cooldown_days"][kind])).sum())
-            counts["stopped_already_have"] = int((resp == "already_have").sum())
-            counts["interested"] = int((resp == "clicked").sum())
-            rows.append({"product": product, "name": name} | counts)
+        for product, name in self.overview["products"].items():
+            before, after = dec0["decision"].get(product, ""), dec1["decision"].get(product, "") if len(dec1) else ""
+            r0, r1 = rank0.get(product), rank1.get(product)
+            change = ("hidden by memory" if pd.notna(r0) and pd.isna(r1) else "shown because of memory" if pd.isna(r0) and pd.notna(r1)
+                      else "moved up" if pd.notna(r0) and pd.notna(r1) and r1 < r0 else "moved down" if pd.notna(r0) and pd.notna(r1) and r1 > r0
+                      else "no change")
+            rows.append({"product": product, "name": name, "without": before, "rank_without": r0, "with": after, "rank_with": r1,
+                         "weight": float(dec1["memory_weight"].get(product, 1.0)) if len(dec1) else 1.0, "change": change})
+        events = pd.concat([self.crm_events, self.events], ignore_index=True)
+        events = events[events["customer_id"] == customer_id].sort_values("response_date", ascending=False)
+        return clean({"products": rows, "timeline": [{"date": e.response_date, "product": self.overview["products"].get(e.product, e.product),
+                                                       "response": e.response, "source": e.source} for e in events.itertuples()]})
+
+    def memory_summary(self) -> dict:
+        """Bank view of customer memory on the as-of date, per product, plus the latest app responses."""
+        sig = self.signals().reset_index()
+        rows = []
+        for product, name in self.overview["products"].items():
+            g = sig[sig["product"] == product]
+            rows.append({"product": product, "name": name, "customers_with_history": int(len(g)),
+                         "paused_cooldown": int(g["state"].str.contains("cool-down").sum()),
+                         "paused_no_interest": int(g["state"].str.startswith("no interest").sum()),
+                         "stopped_already_have": int((g["state"] == "already has it").sum()),
+                         "priority_raised": int(((g["state"] == "") & (g["weight"] > 1)).sum()),
+                         "priority_lowered": int(((g["state"] == "") & (g["weight"] < 1)).sum())})
         recent = self.events.sort_index(ascending=False).head(25)
-        return clean({"as_of": LIVE, "cooldown_days": self.cfg["recommend"]["cooldown_days"], "products": rows,
-                      "app_responses": len(self.events),
-                      "recent": [{"customer_id": r.customer_id, "product": names.get(r.product, r.product), "response": r.response,
-                                  "source": r.source} for r in recent.itertuples()],
+        if getattr(self, "_effect_cache", (None,))[0] != len(self.events):  # bank-wide: what memory changed today
+            recs0, _ = self._without_memory()
+            a = set(zip(recs0["customer_id"], recs0["product"]))
+            b = set(zip(self.recs["customer_id"], self.recs["product"]))
+            r0 = recs0.set_index(["customer_id", "product"])["rank"]
+            r1 = self.recs.set_index(["customer_id", "product"])["rank"]
+            both = list(a & b)
+            moved = int((r0.reindex(both).to_numpy() != r1.reindex(both).to_numpy()).sum())
+            self._effect_cache = (len(self.events), {"suggestions_without_memory": len(a), "suggestions_with_memory": len(b),
+                                                     "hidden_by_memory": len(a - b), "shown_because_of_memory": len(b - a),
+                                                     "reordered": moved})
+        return clean({"as_of": LIVE, "cooldown_days": self.cfg["recommend"]["cooldown_days"], "effect": self._effect_cache[1],
+                      "fatigue_contacts": self.cfg["memory"]["fatigue_contacts"], "weights": self.cfg["memory"]["weights"],
+                      "products": rows, "app_responses": len(self.events),
+                      "recent": [{"customer_id": r.customer_id, "product": self.overview["products"].get(r.product, r.product),
+                                  "response": r.response, "source": r.source} for r in recent.itertuples()],
                       "replay": self.overview.get("memory_replay")})
 
     def customer(self, customer_id: str) -> dict | None:
@@ -234,8 +283,13 @@ class State:
             for rec in doc["recommendations"]:
                 rec["facts"] = clean(items.get(rec["product"]))
                 rec.update(clean(self.describe(rec)))
+                if self.values is not None and (customer_id, rec["product"]) in self.values.index:
+                    v = self.values.loc[(customer_id, rec["product"])]
+                    rec["value"] = clean({k: v[k] for k in ("customer_npv_gbp", "customer_lifetime_net_gbp", "abatement_cost_gbp_per_t",
+                                                            "bank_new_lending_gbp", "bank_value_if_taken_gbp", "bank_expected_value_gbp")})
             doc["llm_available"] = self.explainer is not None
             doc["memory"] = self.memory_of(customer_id)
+            doc["memory_effect"] = self.memory_effect(customer_id)
         return doc
 
     def me(self, customer_id: str) -> dict | None:
@@ -291,8 +345,10 @@ class State:
 
     def feedback(self, customer_id: str, product: str, response: str) -> dict | None:
         with self.lock:
+            shown = self.recs[(self.recs["customer_id"] == customer_id) & (self.recs["product"] == product)]
+            sid = shown["suggestion_id"].iloc[0] if len(shown) and "suggestion_id" in shown else None
             row = pd.DataFrame([{"customer_id": customer_id, "product": product, "response": response,
-                                 "response_date": pd.Timestamp(LIVE), "source": "dashboard"}])
+                                 "response_date": pd.Timestamp(LIVE), "source": "dashboard", "suggestion_id": sid}])
             self.events = pd.concat([self.events, row], ignore_index=True)
             self.events_path.parent.mkdir(parents=True, exist_ok=True)
             self.events.to_parquet(self.events_path, index=False)
@@ -372,6 +428,10 @@ def make_handler(state: State, static: Path):
 
         def log_message(self, fmt, *args):  # quiet
             pass
+
+        def end_headers(self):  # always the current page and data after a pipeline rerun
+            self.send_header("Cache-Control", "no-store")
+            super().end_headers()
 
         def _send(self, payload, status=HTTPStatus.OK):
             body = json.dumps(payload).encode()

@@ -71,7 +71,7 @@ def test_memory_cooldowns():
     # "Not interested" 30 days ago: EV Finance pauses for 180 days and solar moves up.
     shown, decisions = recommend(*_inputs({"GP01": ("not_interested", "2026-08-31")}), cfg)
     assert list(shown["product"]) == ["GP03"]
-    assert decisions.set_index("product").loc["GP01", "decision"] == "memory: not interested 180-day cool-down"
+    assert decisions.set_index("product").loc["GP01", "decision"].startswith("memory: not interested 180-day cool-down")
 
     # After the cool-down it can be shown again.
     shown, _ = recommend(*_inputs({"GP01": ("not_interested", "2026-03-01")}), cfg)
@@ -97,4 +97,44 @@ def test_reason_needs_supporting_data():
     reasons = pd.DataFrame([[0.9, 0.5, 0.3]], columns=["HIGH_GAS_USE", "GREEN_PURCHASE_INTENT", "EXISTING_BORROWING"])
     codes, evidence = top_reasons(reasons, rows)
     assert codes == [["GREEN_PURCHASE_INTENT", "EXISTING_BORROWING"]]
-    assert evidence[0][0] == "£1,680 at bike or appliance shops in 12 months"
+    assert evidence[0][0] == "you spent £1,680 at bike or appliance shops in the last 12 months"
+
+
+def test_memory_stops_after_repeated_contacts_without_interest():
+    """Three contacts in a row with no engagement pause a product however strong its propensity; interest lifts it."""
+    from gcip.memory.signals import signals
+
+    cfg = load_config("pipeline")
+    scores, impact, c360 = _inputs({})
+    contacts = pd.DataFrame({"customer_id": "C1", "product": "GP01", "response": "no_response", "source": "CRM campaign",
+                             "response_date": pd.to_datetime(["2026-06-15", "2026-07-15", "2026-08-17"])})
+    sig = signals(contacts, pd.Timestamp(AS_OF), cfg["memory"], cfg["recommend"]["cooldown_days"])
+    assert sig.loc[("C1", "GP01"), "streak"] == 3
+    assert sig.loc[("C1", "GP01"), "weight"] < 0.5
+    shown, decisions = recommend(scores, impact, c360, cfg["recommend"], memory=sig)
+    assert list(shown["product"]) == ["GP03"]
+    assert "no interest after 3 contacts" in decisions.set_index("product").loc["GP01", "decision"]
+
+    clicked = pd.concat([contacts, contacts.iloc[:1].assign(response="clicked", response_date=pd.Timestamp("2026-09-01"))])
+    sig = signals(clicked, pd.Timestamp(AS_OF), cfg["memory"], cfg["recommend"]["cooldown_days"])
+    assert sig.loc[("C1", "GP01"), "streak"] == 0 and sig.loc[("C1", "GP01"), "state"] == ""
+
+
+def test_business_value_worked_by_hand():
+    """EV Finance at the default assumptions: GBP 24,000 loan, 7.9% APR vs 4.0% funding over 4 years."""
+    from gcip.insights.value import suggestion_value
+
+    rows = pd.DataFrame([{"customer_id": "C1", "product": "GP01", "propensity": 0.10, "status": "recommended", "impact_status": "ok",
+                          "running_cost_change_gbp_per_year": -800.0, "upfront_cost_gbp": None, "horizon_years": 4,
+                          "co2e_avoided_kg_per_year": 2000.0, "co2e_avoided_kg_horizon": 8000.0, "payback_years": None,
+                          "financed_co2e_avoided_kg_per_year": 1600.0}])
+    c360 = pd.DataFrame([{"customer_id": "C1", "paper_accounts": 0, "balance_investment": 0.0, "preferred_contact_channel": "app"}])
+    v = suggestion_value(rows, c360).iloc[0]
+    assert v["bank_new_lending_gbp"] == 24000                     # 30,000 x 0.80
+    assert v["bank_nii_gbp"] == 1872                              # 24,000 x (0.079 - 0.040) x 4 / 2
+    assert v["bank_expected_credit_loss_gbp"] == 288              # 24,000 x 0.03 x 0.40
+    assert v["bank_value_if_taken_gbp"] == 1872 - 288 - 150       # less origination
+    assert v["bank_expected_value_gbp"] == pytest.approx(0.10 * 1434 - 0.05)
+    assert v["customer_lifetime_net_gbp"] == 3200                 # 800 a year x 4, no upfront in this product
+    assert v["customer_npv_gbp"] == pytest.approx(800 * (1 - 1.035 ** -4) / 0.035, abs=1)
+    assert v["abatement_cost_gbp_per_t"] < 0                      # saves money per tonne cut

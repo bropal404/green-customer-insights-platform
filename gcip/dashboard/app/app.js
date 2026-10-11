@@ -28,6 +28,13 @@ function money(s) {
   return { v: `${gbp(m)} ${m < 0 ? "less" : "more"} a year`, s: extra || "at today's prices" };
 }
 
+function window12(asOf) {
+  if (!asOf) return "the last 12 months";
+  const end = new Date(asOf), start = new Date(end);
+  start.setFullYear(end.getFullYear() - 1); start.setDate(start.getDate() + 1);
+  return `${fmtDate(start)} to ${fmtDate(end)}`;
+}
+
 function dots(c) {
   if (!c) return "";
   return `<span class="dots" title="${esc(c.based_on || "")}">${"●".repeat(c.dots)}${"○".repeat(c.of - c.dots)}</span> ${esc(c.level)}`;
@@ -46,6 +53,7 @@ function suggestion(s, i) {
     <div class="meta-line">Data as of ${esc(asOf)}${c ? ` · Estimate confidence ${dots(c)}` : ""}</div>
     <div class="sugg-text">${esc(s.explanation)}</div>
     <details><summary>More detail</summary>
+      <div class="meta" style="margin-top:6px">From your accounts with us, ${esc(window12(s.data_as_of))}:</div>
       <ul>${(s.why || []).map((w) => `<li>${esc(w.charAt(0).toUpperCase() + w.slice(1))}</li>`).join("") || "<li>How you bank with us overall</li>"}</ul>
       <div class="meta">${s.method_label ? `How the impact was estimated: ${esc(s.method_label)}. ` : ""}${c && c.based_on ? `Estimate confidence is ${esc(c.level.toLowerCase())} because it uses: ${esc(c.based_on)}. ` : ""}Figures are estimates, not offers.${s.disclaimer ? " " + esc(s.disclaimer) : ""}</div>
     </details>

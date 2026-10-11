@@ -4,7 +4,9 @@
 Order of decisions, each recorded so a recommendation can be explained or audited:
   1. eligibility blocks rule a product out (never recommended, FR7);
   2. no marketing consent: nothing is sent;
-  3. memory: 'already_have' suppresses; 'not_interested' and 'dismissed' start cool-downs; 'clicked' raises priority;
+  3. memory (gcip.memory.signals, all contacts and responses in the last year): already has it stops the product;
+     "dismissed" and "not interested" start cool-downs; repeated contacts with no engagement pause it; every response
+     moves a memory weight that multiplies the priority (interest up, being ignored or turned down down);
   4. thresholds (configs/pipeline.yaml `recommend`): the impact can be estimated; calibrated propensity is at least
      `min_lift` x the product's take-up rate (models/thresholds.json); confidence is not low; the avoided CO2e is worth a
      green suggestion;
@@ -26,34 +28,30 @@ ROUTED_BY = {"GP06": {"GP01", "GP02", "GP03"}}
 
 
 def recommend(live_scores: pd.DataFrame, impact: pd.DataFrame, c360: pd.DataFrame, cfg: dict,
-              thresholds: dict | None = None) -> tuple[pd.DataFrame, pd.DataFrame]:
+              thresholds: dict | None = None, memory: pd.DataFrame | None = None) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Returns (recommendations, decisions): the shown recommendations and one audited decision row per customer x product.
-    `thresholds` is models/thresholds.json ({product: {"base_rate", "min_propensity"}}) from training."""
+    `thresholds` is models/thresholds.json ({product: {"base_rate", "min_propensity"}}) from training. `memory` is
+    gcip.memory.signals output for these customers; without it, the Customer 360's last responses are used."""
+    from gcip.memory.signals import events_from_c360, signals
+
     products = load_config("products")["products"]
     as_of = pd.Timestamp(c360["as_of"].iloc[0])
+    if memory is None:
+        memory = signals(events_from_c360(c360), as_of, load_config("pipeline")["memory"], cfg["cooldown_days"])
     d = live_scores.merge(impact.rename(columns={"status": "impact_status"}), on=["customer_id", "product"], how="left")
-    d = d.merge(c360[["customer_id", "marketing_consent", "vulnerability_flag", "preferred_contact_channel"]
-                     + [f"last_response_{p}" for p in products] + [f"last_response_date_{p}" for p in products]],
+    d = d.merge(c360[["customer_id", "marketing_consent", "vulnerability_flag", "preferred_contact_channel"]],
                 on="customer_id", how="left")
-    response = np.full(len(d), "none", dtype=object)
-    response_date = pd.Series(pd.NaT, index=d.index, dtype="datetime64[ns]")
-    for product in products:
-        mask = (d["product"] == product).to_numpy()
-        response[mask] = d.loc[mask, f"last_response_{product}"].fillna("none").to_numpy()
-        response_date[mask] = pd.to_datetime(d.loc[mask, f"last_response_date_{product}"])
-    days = (as_of - response_date).dt.days.to_numpy()
-    cool = cfg["cooldown_days"]
+    d = d.join(memory[["weight", "state", "until", "streak", "last_clicked"]], on=["customer_id", "product"])
+    d["memory_weight"] = pd.to_numeric(d["weight"], errors="coerce").fillna(1.0).astype(float).round(3)
+    state = d["state"].fillna("").to_numpy()
     decision = np.full(len(d), "", dtype=object)
     decision[~d["eligible"].fillna(False).to_numpy()] = "blocked: " + d["blocks"].fillna("").astype(str).to_numpy()[~d["eligible"].fillna(False).to_numpy()]
     open_ = decision == ""
     no_consent = open_ & ~d["marketing_consent"].fillna(False).to_numpy()
     decision[no_consent] = "no marketing consent"
-    open_ = decision == ""
-    already = open_ & (response == "already_have")
-    decision[already] = "memory: already has it"
-    for kind, limit in cool.items():
-        mask = (decision == "") & (response == kind) & (np.nan_to_num(days, nan=1e9) < limit)
-        decision[mask] = f"memory: {kind.replace('_', ' ')} {int(limit)}-day cool-down"
+    held = (decision == "") & (state != "")
+    until = pd.to_datetime(d["until"]).dt.strftime("%Y-%m-%d").fillna("").to_numpy()
+    decision[held] = "memory: " + state[held] + np.where(until[held] != "", " (until " + until[held] + ")", "")
     if cfg.get("require_impact", False):
         no_impact = (decision == "") & (d["impact_status"] != "ok").to_numpy()
         decision[no_impact] = "impact cannot be estimated"
@@ -69,8 +67,7 @@ def recommend(live_scores: pd.DataFrame, impact: pd.DataFrame, c360: pd.DataFram
     small = ((decision == "") & ~d["product"].isin(cfg.get("co2e_exempt", [])).to_numpy()
              & (d["co2e_avoided_kg_per_year"].fillna(0).to_numpy() < cfg.get("min_co2e_kg_per_year", 0.0)))
     decision[small] = "impact too small"
-    priority = d["propensity"].fillna(0).to_numpy() * d["confidence"].fillna(0).to_numpy()
-    priority = priority + np.where(response == "clicked", cfg["clicked_priority_boost"], 0.0)
+    priority = d["propensity"].fillna(0).to_numpy() * d["confidence"].fillna(0).to_numpy() * d["memory_weight"].to_numpy()
     d["priority"] = priority.round(5)
     d["expected_co2e_kg_per_year"] = (d["propensity"].fillna(0) * d["co2e_avoided_kg_per_year"].fillna(0)).round(1)
     d["decision"] = decision
@@ -90,16 +87,24 @@ def recommend(live_scores: pd.DataFrame, impact: pd.DataFrame, c360: pd.DataFram
     review = shown["product"].isin(CREDIT) & shown["vulnerability_flag"].fillna(False)
     shown["status"] = np.where(review, "human_review", "recommended")
     d.loc[shown.index, "decision"] = np.where(review, "human review (vulnerability flag)", "recommended")
+    # Memory as a reason: earlier interest in the product (it raised the priority) is stated with its date.
+    clicked = pd.to_datetime(shown["last_clicked"])
+    shown["reason_codes"] = [(list(rc) if rc is not None else []) + (["EARLIER_INTEREST"] if pd.notna(c) else [])
+                             for rc, c in zip(shown["reason_codes"], clicked)]
+    shown["evidence"] = [(list(ev) if ev is not None else []) + ([f"you showed interest in this on {c:%Y-%m-%d}"] if pd.notna(c) else [])
+                         for ev, c in zip(shown["evidence"], clicked)]
     shown["product_name"] = shown["product"].map({k: v["name"] for k, v in products.items()})
+    # Every suggestion has an id: the call to action carries it into the application, so a take-up can be linked back.
+    shown["suggestion_id"] = "S" + as_of.strftime("%Y%m%d") + "-" + shown["customer_id"] + "-" + shown["product"]
     shown["opportunity"] = shown["product"].map({k: v.get("opportunity", k) for k, v in products.items()})
     shown["customer_action"] = shown["product"].map({k: v["customer_action"] for k, v in products.items()})
     shown["data_timestamp"] = as_of.strftime("%Y-%m-%d")
-    keep = ["customer_id", "rank", "opportunity", "product", "product_name", "status", "propensity", "propensity_threshold", "confidence",
-            "priority", "reason_codes",
+    keep = ["suggestion_id", "customer_id", "rank", "opportunity", "product", "product_name", "status", "propensity", "propensity_threshold", "confidence",
+            "memory_weight", "priority", "reason_codes",
             "evidence", "measure", "co2e_avoided_kg_per_year", "co2e_avoided_kg_horizon", "horizon_years", "data_quality",
             "financed_co2e_avoided_kg_per_year", "running_cost_change_gbp_per_year", "upfront_cost_gbp", "payback_years",
             "impact_status", "method", "note", "expected_co2e_kg_per_year", "customer_action", "preferred_contact_channel",
             "data_timestamp"]
-    decisions = d[["customer_id", "product", "eligible", "propensity", "propensity_threshold", "confidence", "priority",
+    decisions = d[["customer_id", "product", "eligible", "propensity", "propensity_threshold", "confidence", "memory_weight", "priority",
                    "co2e_avoided_kg_per_year", "expected_co2e_kg_per_year", "decision"]]
     return shown[[c for c in keep if c in shown]].reset_index(drop=True), decisions.reset_index(drop=True)

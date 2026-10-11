@@ -21,23 +21,63 @@ SYSTEM = ("You rewrite the opening of a bank's explanation of a green product su
           "say 'could' or 'about', never 'will' or 'you'll'; no greeting, no exclamation marks, no dates, no disclaimers, no new "
           "claims; speak to the customer as 'you'; plain British English; two to four sentences, at most 70 words. "
           "Reply with the rewritten text only.")
-EXAMPLE_DRAFT = ("Why Solar Finance could suit you: you own your home and about 4,200 kWh of electricity a year. 4 kWp rooftop "
-                 "solar could cut about 640 kg of CO2e a year (about 16.0 tonnes over 25 years). Running costs would be about "
-                 "£640 a year less at today's prices. The upfront cost is about £7,000, paying back in about 11 years.")
-EXAMPLE_REPLY = ("You own your home and use about 4,200 kWh of electricity a year, so Solar Finance could be a good fit. "
-                 "A 4 kWp rooftop system could cut about 640 kg of CO2e a year, about 16.0 tonnes over 25 years, and lower "
-                 "your running costs by about £640 a year at today's prices. It costs about £7,000 upfront and could pay "
-                 "back in about 11 years.")
+# One worked example per product (draft -> rewrite), so the model sees how its own kind of draft keeps every number and
+# its period ("in the last 12 months", "a year"); a single solar example left EV rewrites turning 12-month fuel spend
+# into "each month" and dropping figures.
+EXAMPLES = {
+    "GP01": ("Why EV Finance could suit you: you spent £1,850 on road fuel in the last 12 months, you drive about 9,800 miles a "
+             "year, estimated from the fuel you bought and you pay for a car (fuel, insurance, tax, servicing or finance). Battery-electric car "
+             "for the same distance could cut about 2.6 tonnes of CO2e a year (about 10.4 tonnes over 4 years). Running costs "
+             "would be about £1,050 a year less at today's prices.",
+             "You spent £1,850 on road fuel in the last 12 months and drive about 9,800 miles a year, so EV Finance could suit "
+             "you. A battery-electric car for the same distance could cut about 2.6 tonnes of CO2e a year, about 10.4 tonnes "
+             "over 4 years, and your running costs could be about £1,050 a year less at today's prices."),
+    "GP02": ("Why Green Home Loan could suit you: you spent £2,400 on DIY and tradespeople in the last 12 months and you use about "
+             "15,200 kWh of gas a year (local average 11,000). Air-source heat pump replacing a fossil boiler could cut about 2.4 tonnes of CO2e a year "
+             "(about 36.0 tonnes over 15 years). Running costs would be about £90 a year less at today's prices. The upfront "
+             "cost is about £4,500.",
+             "You spent £2,400 on DIY and tradespeople in the last 12 months and use about 15,200 kWh of gas a year, above the local "
+             "average of 11,000, so a Green Home Loan could suit you. Replacing your fossil boiler with an air-source heat pump "
+             "could cut about 2.4 tonnes of CO2e a year, about 36.0 tonnes over 15 years. Running costs could be about £90 a "
+             "year less at today's prices, with an upfront cost of about £4,500."),
+    "GP03": ("Why Solar Finance could suit you: you own your home and you use about 4,200 kWh of electricity a year. 4 kWp rooftop "
+             "solar could cut about 640 kg of CO2e a year (about 16.0 tonnes over 25 years). Running costs would be about "
+             "£640 a year less at today's prices. The upfront cost is about £7,000, paying back in about 11 years.",
+             "You own your home and use about 4,200 kWh of electricity a year, so Solar Finance could be a good fit. A 4 kWp "
+             "rooftop system could cut about 640 kg of CO2e a year, about 16.0 tonnes over 25 years, and lower your running "
+             "costs by about £640 a year at today's prices. It costs about £7,000 upfront and could pay back in about 11 years."),
+    "GP04": ("Why Paperless Banking could suit you: you have 2 account(s) still on paper statements and you log in about 9 times a month. "
+             "Online statements for every account could cut about 0.4 kg of CO2e a year.",
+             "You still get paper statements for 2 accounts and log in about 9 times a month, so Paperless Banking could suit "
+             "you. Switching every account to online statements could cut about 0.4 kg of CO2e a year."),
+    "GP05": ("Why Green Investments could suit you: you invested in 12 of the last 12 months and you told us sustainability "
+             "matters to how you invest. A quarter of investments moved to a sustainability-focused fund could cut about 850 kg of CO2e "
+             "a year.",
+             "You invested in 12 of the last 12 months and have told us sustainability matters to how you invest, so Green "
+             "Investments could suit you. Moving a quarter of your investments to a sustainability-focused fund could cut "
+             "about 850 kg of CO2e a year."),
+    "GP06": ("Why Green Loans could suit you: you spent £640 at bike or appliance shops in the last 12 months and you already "
+             "borrow with a loan or card. E-bike replacing short car trips could cut about 410 kg of CO2e a year (about 2.0 tonnes over 5 years). "
+             "Running costs would be about £265 a year less at today's prices. The upfront cost is about £2,000, paying back "
+             "in about 8 years.",
+             "You spent £640 at bike or appliance shops in the last 12 months and already borrow with a loan or card, so Green Loans "
+             "could suit you. An e-bike replacing short car trips could cut about 410 kg of CO2e a year, about 2.0 tonnes over "
+             "5 years, and lower your running costs by about £265 a year at today's prices. It costs about £2,000 upfront and "
+             "could pay back in about 8 years."),
+}
+EXAMPLE_DRAFT, EXAMPLE_REPLY = EXAMPLES["GP03"]
 TYPOGRAPHY = str.maketrans({"‐": "-", "‑": "-", "‒": "-", "–": "-", "—": "-", "−": "-",
                             "‘": "'", "’": "'", "“": '"', "”": '"', "₂": "2", " ": " ",
                             " ": " ", " ": " "})
 
 
-def messages(facts: dict, draft: str) -> list[dict]:
-    """`draft` is the template body (without the fixed compliance sentence, which is appended after)."""
+def messages(facts: dict, draft: str, product: str | None = None) -> list[dict]:
+    """`draft` is the template body (without the fixed compliance sentence, which is appended after); the worked example
+    is the one for the same product."""
+    example_draft, example_reply = EXAMPLES.get(product, (EXAMPLE_DRAFT, EXAMPLE_REPLY))
     return [{"role": "system", "content": SYSTEM},
-            {"role": "user", "content": "Draft:\n" + EXAMPLE_DRAFT},
-            {"role": "assistant", "content": EXAMPLE_REPLY},
+            {"role": "user", "content": "Draft:\n" + example_draft},
+            {"role": "assistant", "content": example_reply},
             {"role": "user", "content": "Draft:\n" + draft}]
 
 
@@ -77,7 +117,7 @@ class LocalExplainer:
             out: list[str] = []
             for start in range(0, len(items), batch_size):
                 batch = items[start:start + batch_size]
-                prompts = [self.tokenizer.apply_chat_template(messages(i["facts"], i.get("body", i["draft"])), tokenize=False,
+                prompts = [self.tokenizer.apply_chat_template(messages(i["facts"], i.get("body", i["draft"]), i.get("product")), tokenize=False,
                                                               add_generation_prompt=True) for i in batch]
                 encoded = self.tokenizer(prompts, return_tensors="pt", padding=True).to(self.device)
                 with torch.no_grad():
@@ -131,7 +171,7 @@ class GeminiExplainer:
         self.last_model: str | None = None
 
     def _body(self, item: dict) -> dict:
-        msgs = messages(item["facts"], item.get("body", item["draft"]))
+        msgs = messages(item["facts"], item.get("body", item["draft"]), item.get("product"))
         role = {"user": "user", "assistant": "model"}
         return {"systemInstruction": {"parts": [{"text": msgs[0]["content"]}]},
                 "contents": [{"role": role[m["role"]], "parts": [{"text": m["content"]}]} for m in msgs[1:]],

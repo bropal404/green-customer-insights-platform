@@ -57,7 +57,8 @@ Each stage writes `runs/pipeline/_checkpoints/<stage>.done` and is skipped on a 
 | explain | Template explanation for every suggestion (body + fixed compliance sentence), checked by the guards | `explanations/explanations.parquet`, `metrics/explanations.json` | 1 s |
 | impact_checks | Engine inputs against true usage in the truth vault; one-at-a-time sensitivity | `metrics/impact_truth_recovery.json`, `metrics/impact_sensitivity.csv` | <1 s |
 | memory | Replay of 300 customers over 3 monthly rounds with responses drawn from the true take-up probability | `memory/replay_events.parquet`, `metrics/memory_replay.json` | 1 s |
-| insights | FR6: opportunity by product and region, decision funnel, footprint, 6 segments, monthly trends | `insights/bank_insights.json`, `insights/monthly_trends.parquet` | 19 s |
+| insights | FR6: opportunity by product and region, decision funnel, footprint, 6 segments, estimate-confidence mix; trends by month: spend by category and region, green signals (customers using public EV charging, spend at energy installers, bike hire, rail, bus, heating oil), road fuel spend vs litres at that month's pump price, home energy bills, green take-ups; each customer's last 12 months of spend | `insights/bank_insights.json`, `insights/monthly_trends.parquet` | 19 s |
+| value | Business value per suggestion and for the portfolio (`configs/business.yaml`): customer savings, net present value, payback, cost of carbon abatement; bank new lending, net interest income, fees, credit losses, campaign cost, ROI, carbon per £1,000 spent, financed emissions avoided; backtest of who to contact (model vs rules vs random) on the held-out test customers | `recommendations/value.parquet`, `metrics/business_value.json` | 6 s |
 | explain_llm | The configured LLM rewrites the body of 360 explanations (60 per product); guarded; passes replace templates. Reported with the local Qwen2.5-1.5B (`--llm-provider local`); a free-tier Gemini key covers only about 20 requests a day per model (sample: 16 of 17 Gemini 3.8 Flash replies passed) | `explanations/eval_set.parquet`, `metrics/explanations_gemini_sample.json` | 2.2 min |
 | report | Every metric in one file | `summary.json` | <1 s |
 
@@ -67,13 +68,15 @@ In order; the first rule that applies is recorded as the decision:
 
 1. Eligibility blocks (`configs/products.yaml`, e.g. no car evidence, renter, EPC A/B, solar fitted, arrears, debt over 25% of income).
 2. No marketing consent: nothing is sent.
-3. Customer memory: already has it; "not interested" 180-day and "dismissed" 90-day cool-downs.
+3. Customer memory (every contact and response in the last 12 months, CRM and apps): already has it stops the product;
+   "not interested" 180-day and "dismissed" 90-day cool-downs; 3 contacts in a row with no engagement pause it for 180
+   days; a memory weight (interest up, ignoring or turning down down) multiplies the priority in step 9.
 4. The carbon and money impact can be estimated.
 5. Calibrated propensity at least 2x the product's take-up rate among eligible training customers (threshold per product in `models/thresholds.json`).
 6. Confidence at least 0.45 (not "low").
 7. At least 100 kg CO2e avoided a year (Paperless exempt).
 8. Green Loans steps aside when EV Finance, Green Home Loan or Solar Finance is shown.
-9. Top 3 by propensity x confidence ("interested" earlier adds priority).
+9. Top 3 by propensity x confidence x memory weight.
 10. Credit products for a customer with a vulnerability flag go to human review instead of being sent.
 
 ## 6. Results (30,000 customers)
@@ -114,16 +117,45 @@ estimates; 48,344 marked "insufficient data" rather than guessed.
 
 **FR5-FR7.** 5,437 suggestions for 4,792 customers; 291 credit offers routed to human review; 657 customer x product
 decisions held back by customer memory. All 5,437 template
-explanations pass the guards; the local Qwen2.5-1.5B passes 67.8% of 360 rewrites (EV Finance 22%), and every rejection
-falls back to the template. In the dashboards, "Rewrite" uses Gemini Flash behind the same guards. On every suggestion: none for a blocked product or below its threshold, no solar to renters, nothing
+explanations pass the guards; the local Qwen2.5-1.5B passes 89.7% of 360 rewrites (EV Finance 92%, up from 22%, once
+each product got its own worked example and the evidence sentences were written in the second person with a verb), and
+every rejection falls back to the template. In the dashboards, "Rewrite" uses Gemini Flash behind the same guards. On every suggestion: none for a blocked product or below its threshold, no solar to renters, nothing
 without consent, vulnerable credit always to human review, at most 3 per customer (0 violations).
 
-**Memory.** On 30 September, CRM responses from the June and August 2026 campaigns pause 106-154 customers per product
+**Memory.** Compared with the same engine and an empty memory, memory hides 57 suggestions, brings 1 into a customer's
+top 3 and reorders 43; 375 suggestions carry the memory reason EARLIER_INTEREST with its date. On 30 September, CRM responses from the June and August 2026 campaigns pause 106-154 customers per product
 (dismissed) and 218-346 (not interested), stop 57-153 (already has it) and raise 442-866 (interested). Replay of 300
 customers over 3 rounds: 0 products re-shown inside a pause.
 
 **FR6.** Expected 914 take-ups, 1,242 t CO2e avoided a year and GBP 419k a year of customer savings; median visible
 footprint 4.3 t CO2e a year (transport 43%).
+
+**Business value** (`configs/business.yaml`, illustrative assumptions; expected = propensity × value if taken up).
+Propensity is the chance a customer opens the product in the next six months, and in this data take-ups happen whether
+or not we suggest anything, so the bank figures are value *at stake* among the customers suggested to, not profit caused
+by the suggestion. What the bank can stand behind: £481k at stake for £7.7k of campaign cost, so the suggestions pay
+for themselves if they cause 1.6% of those take-ups (break-even uplift); at 10% caused, £40k net (5.2×). How a take-up
+is linked to a suggestion: every suggestion has an id, shown date and channel; the call to action carries the id into
+the application (direct); otherwise the same product opened within 90 days is linked (window); 10% of selected
+customers are held back at random, and take-ups caused = treated rate − held-back rate. Run on the backtest this
+measured +0.7 points (95% interval −5.7 to +7.1): consistent with zero, as it must be, because the simulator gives
+contacts no causal effect; in production this measurement replaces the scenarios.
+
+
+| For customers | | For the bank | |
+|---|---|---|---|
+| Expected savings | £419k a year | Expected new green lending | £7.28m |
+| Expected net present value (3.5%) | £1.38m | Expected net interest income | £610k |
+| Suggestions with a positive NPV | 61% | Expected credit losses | £91k |
+| Cost of carbon abatement | −£219 per tonne (saves money) | Campaign cost | £7.7k |
+| Expected CO2e avoided | 1,242 t a year, 6,306 t over product lives | Value at stake / campaign cost | £481k / £7.7k (break-even uplift 1.6%) |
+| Median payback | 10.3 years | Carbon per £1,000 spent | 815 t CO2e |
+| | | Financed emissions avoided | 905 t a year (124 t per £1m lent) |
+
+Backtest on the held-out test customers (what really happened, same 1,343 contacts): our model 221 take-ups, 1,682 t
+CO2e and £117k bank value; rules baseline 159, 1,174 t, £79k; random 80, 580 t, £46k (2.8× random and 1.4× the rules
+baseline on take-ups). Heat pumps (+£77/t) and green loans (+£392/t) cost the customer money per tonne at 2026 prices;
+EV finance (−£299/t) and solar (−£230/t) save it.
 
 ## 7. Tests
 

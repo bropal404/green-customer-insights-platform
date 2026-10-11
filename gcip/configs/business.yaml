@@ -1,0 +1,38 @@
+# Business value of a suggestion, for the customer and for the bank (gcip.insights.value).
+# Every number is an assumption unless a source is named; all are illustrative, chosen to be plausible for a UK retail
+# bank in 2026, and every result built on them is reported with these assumptions next to it.
+
+discount_rate: 0.035             # HM Treasury Green Book social discount rate, for the customer's net present value
+
+# Customer: what the product costs them, on top of the carbon engine's upfront cost (configs/carbon.yaml money:)
+ev_price_gbp: 30000              # assumption: typical price of a new or nearly new battery-electric car
+
+# Bank: lending products. rate = customer APR; term in years; pd = probability of default over the loan's life;
+# lgd = share of the balance lost on default (collateral lowers it); origination = cost of opening the loan.
+cost_of_funds: 0.040             # assumption: close to Bank Rate in 2026
+lending:
+  GP01: {rate: 0.079, term_years: 4, loan_to_value: 0.80, pd: 0.030, lgd: 0.40, origination_gbp: 150}
+  GP02: {rate: 0.055, term_years: 10, pd: 0.010, lgd: 0.15, origination_gbp: 250}   # secured further advance
+  GP03: {rate: 0.069, term_years: 10, pd: 0.020, lgd: 0.60, origination_gbp: 150}
+  GP06: {rate: 0.075, term_years: 5, pd: 0.040, lgd: 0.70, origination_gbp: 100}
+
+# Bank: non-lending products
+investments:                     # GP05: a quarter of holdings moved to a sustainability-focused fund
+  switch_share: 0.25             # as in configs/carbon.yaml
+  fee_margin: 0.0010             # assumption: extra annual fee margin of the focused fund over the one replaced
+  years: 5
+  origination_gbp: 20
+paperless:                       # GP04: what the bank stops spending per account on paper statements
+  statements_per_account_year: 12
+  cost_per_statement_gbp: 0.70   # assumption: print and second-class postage
+  years: 5
+
+# Cost of making a suggestion, by the customer's preferred channel, and of a human review (vulnerability flag)
+contact_cost_gbp: {app: 0.05, email: 0.10, post: 0.85, branch: 2.50, phone: 1.50}
+human_review_cost_gbp: 25.0
+
+# Linking a take-up to a suggestion, and measuring what the suggestion caused (gcip.insights.value)
+attribution:
+  window_days: 90                # a product opened within this many days after a suggestion is attributed to it
+  control_share: 0.10            # share of selected customers randomly held back (not shown) to measure the uplift
+  incremental_share_scenarios: [0.05, 0.10, 0.20, 0.30]   # share of take-ups caused by the suggestion, until measured

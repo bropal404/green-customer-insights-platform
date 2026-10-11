@@ -30,39 +30,39 @@ def _gbp(value: float) -> str:
     return f"£{value:,.0f}"
 
 
-EVIDENCE = {
-    "HIGH_FUEL_SPEND": lambda r: f"{_gbp(_num(r, 'fuel_spend_12m'))} spent on road fuel in the last 12 months",
-    "HIGH_ANNUAL_MILEAGE": lambda r: f"about {_num(r, 'est_annual_km') / KM_PER_MILE:,.0f} miles a year, estimated from fuel bought",
-    "EXISTING_VEHICLE": lambda r: "pays for a car (fuel, insurance, tax, servicing or finance)",
-    "VEHICLE_LOAN_ENDING": lambda r: (f"car finance with us ends in {_num(r, 'motor_loan_months_to_end'):.0f} months"
-                                      if not math.isnan(_num(r, "motor_loan_months_to_end")) else "car finance payments seen"),
-    "OLDER_VEHICLE": lambda r: f"car on our books is {_num(r, 'asset_vehicle_age_years'):.0f} years old",
-    "OFFSTREET_PARKING": lambda r: "lives in a house, so home charging is likely possible",
-    "CLEAN_AIR_ZONE_CHARGES": lambda r: f"{_num(r, 'clean_air_charges_12m'):.0f} clean-air or congestion charges in 12 months",
-    "HOMEOWNER_MORTGAGE": lambda r: "pays a mortgage",
-    "HIGH_GAS_USE": lambda r: f"about {_num(r, 'gas_kwh_12m'):,.0f} kWh of gas a year (local average {_num(r, 'area_gas_dom_mean_kwh'):,.0f})",
-    "LOW_EPC_RATING": lambda r: f"home has EPC rating {r.get('asset_epc_band')}",
-    "RECENT_HOME_MOVE": lambda r: "moved home recently",
-    "HOME_IMPROVEMENT_SPEND": lambda r: (f"{_gbp(_num(r, 'diy_spend_12m') + _num(r, 'trades_spend_12m'))} on DIY and tradespeople "
-                                         "in 12 months"),
-    "HOMEOWNER": lambda r: "owns their home",
-    "HIGH_ELECTRICITY_USE": lambda r: f"about {_num(r, 'elec_kwh_12m'):,.0f} kWh of electricity a year",
-    "HOUSE_SUITABLE_FOR_SOLAR": lambda r: "lives in a house with its own roof",
-    "HIGH_SOLAR_YIELD_REGION": lambda r: f"panels in their region produce about {_num(r, 'area_pv_kwh_per_kwp_year'):,.0f} kWh per kW a year",
-    "EV_AT_HOME": lambda r: "charges an electric car",
-    "DAYTIME_OCCUPANCY": lambda r: "often at home in the day, so more solar power is used directly",
-    "PAPER_STATEMENTS": lambda r: f"{_num(r, 'paper_accounts'):.0f} account(s) still on paper statements",
-    "HIGH_DIGITAL_ACTIVITY": lambda r: f"logs in about {_num(r, 'logins_per_month_6m'):.0f} times a month",
-    "MOBILE_APP_USER": lambda r: "uses the mobile app",
-    "EXISTING_INVESTMENTS": lambda r: "already holds investments",
-    "REGULAR_INVESTING": lambda r: f"invested in {_num(r, 'investment_transfer_months_12m'):.0f} of the last 12 months",
-    "SUSTAINABILITY_PREFERENCE": lambda r: "told us sustainability matters to how they invest",
-    "GREEN_ENERGY_TARIFF": lambda r: "buys energy from a green-leaning supplier",
-    "EXISTING_BORROWING": lambda r: "already borrows with a loan or card",
-    "GREEN_PURCHASE_INTENT": lambda r: (f"{_gbp(_num(r, 'bike_shop_spend_12m') + _num(r, 'appliance_spend_12m'))} at bike or appliance "
-                                        "shops in 12 months"),
-    "CYCLING_ACTIVITY": lambda r: f"{_num(r, 'pt_micromobility_trips_12m'):.0f} bike-hire trips in 12 months",
-    "OWNER_NO_MORTGAGE": lambda r: "owns their home without a mortgage",
+EVIDENCE = {  # second person with a verb: the sentence goes straight into the customer's explanation
+    "HIGH_FUEL_SPEND": lambda r: f"you spent {_gbp(_num(r, 'fuel_spend_12m'))} on road fuel in the last 12 months",
+    "HIGH_ANNUAL_MILEAGE": lambda r: f"you drive about {_num(r, 'est_annual_km') / KM_PER_MILE:,.0f} miles a year, estimated from the fuel you bought",
+    "EXISTING_VEHICLE": lambda r: "you pay for a car (fuel, insurance, tax, servicing or finance)",
+    "VEHICLE_LOAN_ENDING": lambda r: (f"your car finance with us ends in {_num(r, 'motor_loan_months_to_end'):.0f} months"
+                                      if not math.isnan(_num(r, "motor_loan_months_to_end")) else "you make car finance payments"),
+    "OLDER_VEHICLE": lambda r: f"your car on our books is {_num(r, 'asset_vehicle_age_years'):.0f} years old",
+    "OFFSTREET_PARKING": lambda r: "you live in a house, so charging at home is likely possible",
+    "CLEAN_AIR_ZONE_CHARGES": lambda r: f"you paid {_num(r, 'clean_air_charges_12m'):.0f} clean-air or congestion charges in the last 12 months",
+    "HOMEOWNER_MORTGAGE": lambda r: "you pay a mortgage",
+    "HIGH_GAS_USE": lambda r: f"you use about {_num(r, 'gas_kwh_12m'):,.0f} kWh of gas a year (local average {_num(r, 'area_gas_dom_mean_kwh'):,.0f})",
+    "LOW_EPC_RATING": lambda r: f"your home has energy rating (EPC) {r.get('asset_epc_band')}",
+    "RECENT_HOME_MOVE": lambda r: "you moved home recently",
+    "HOME_IMPROVEMENT_SPEND": lambda r: (f"you spent {_gbp(_num(r, 'diy_spend_12m') + _num(r, 'trades_spend_12m'))} on DIY and "
+                                         "tradespeople in the last 12 months"),
+    "HOMEOWNER": lambda r: "you own your home",
+    "HIGH_ELECTRICITY_USE": lambda r: f"you use about {_num(r, 'elec_kwh_12m'):,.0f} kWh of electricity a year",
+    "HOUSE_SUITABLE_FOR_SOLAR": lambda r: "you live in a house with its own roof",
+    "HIGH_SOLAR_YIELD_REGION": lambda r: f"panels in your region produce about {_num(r, 'area_pv_kwh_per_kwp_year'):,.0f} kWh per kW a year",
+    "EV_AT_HOME": lambda r: "you charge an electric car",
+    "DAYTIME_OCCUPANCY": lambda r: "you are often at home in the day, so more of the solar power would be used directly",
+    "PAPER_STATEMENTS": lambda r: f"you have {_num(r, 'paper_accounts'):.0f} account(s) still on paper statements",
+    "HIGH_DIGITAL_ACTIVITY": lambda r: f"you log in about {_num(r, 'logins_per_month_6m'):.0f} times a month",
+    "MOBILE_APP_USER": lambda r: "you use the mobile app",
+    "EXISTING_INVESTMENTS": lambda r: "you already hold investments",
+    "REGULAR_INVESTING": lambda r: f"you invested in {_num(r, 'investment_transfer_months_12m'):.0f} of the last 12 months",
+    "SUSTAINABILITY_PREFERENCE": lambda r: "you told us sustainability matters to how you invest",
+    "GREEN_ENERGY_TARIFF": lambda r: "you buy energy from a green-leaning supplier",
+    "EXISTING_BORROWING": lambda r: "you already borrow with a loan or card",
+    "GREEN_PURCHASE_INTENT": lambda r: (f"you spent {_gbp(_num(r, 'bike_shop_spend_12m') + _num(r, 'appliance_spend_12m'))} at bike or "
+                                        "appliance shops in the last 12 months"),
+    "CYCLING_ACTIVITY": lambda r: f"you made {_num(r, 'pt_micromobility_trips_12m'):.0f} bike-hire trips in the last 12 months",
+    "OWNER_NO_MORTGAGE": lambda r: "you own your home without a mortgage",
 }
 
 
@@ -79,6 +79,7 @@ LABELS = {
     "SUSTAINABILITY_PREFERENCE": "sustainability preference", "GREEN_ENERGY_TARIFF": "green energy tariff",
     "EXISTING_BORROWING": "existing borrowing", "GREEN_PURCHASE_INTENT": "bike or appliance shopping",
     "CYCLING_ACTIVITY": "cycling", "OWNER_NO_MORTGAGE": "owns home outright",
+    "EARLIER_INTEREST": "you showed interest before",  # from customer memory, not the model
 }
 
 

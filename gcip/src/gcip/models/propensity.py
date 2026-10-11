@@ -280,6 +280,7 @@ def run(data_dir: Path, out_dir: Path, cfg: dict, truth_dir: Path | None = None,
         held_out = split != "train"
         test_rows.append(pd.DataFrame({"customer_id": frame["customer_id"][held_out].values, "product": product,
                                        "propensity": p_cal[held_out].round(5), "confidence": confidence[held_out].round(4),
+                                       "rules_score": np.asarray(p_rules)[held_out].round(5),
                                        "took_up": y[held_out], "split": split[held_out]}))
         live_rows.append(score_live(bundle, live_table, live_eligibility, product))
         if ablations:

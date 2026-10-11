@@ -68,13 +68,15 @@ def _products(recs: pd.DataFrame, decisions: pd.DataFrame, impact: pd.DataFrame,
             "payback_years_median": round(float(r["payback_years"].median()), 1) if r["payback_years"].notna().any() else None,
             "insufficient_data_share": round(1 - len(imp) / max(1, int((impact["product"] == product).sum())), 3),
             "mean_data_quality_shown": round(float(r["data_quality"].mean()), 2) if len(r) else None,
+            "confidence_mix": {lvl: int((r["data_quality"] == score).sum())
+                               for score, lvl in ((2, "High"), (3, "Good"), (4, "Partial"), (5, "Low"))},
         })
     return out
 
 
 def _funnel(decisions: pd.DataFrame) -> list[dict]:
     kind = decisions["decision"].str.split(":").str[0].str.replace(r" \(.*\)$", "", regex=True)
-    kind = kind.replace({"memory": "memory cool-down or already has it", "routed": "routed to a more specific product"})
+    kind = kind.replace({"memory": "customer memory (paused or stopped)", "routed": "routed to a more specific product"})
     table = pd.crosstab(decisions["product"], kind)
     return [{"product": p, **{k: int(v) for k, v in row.items()}} for p, row in table.iterrows()]
 
@@ -128,19 +130,59 @@ def _segments(table: pd.DataFrame, recs: pd.DataFrame, fp: pd.DataFrame, k: int,
     return sorted(out, key=lambda x: -x["customers"]), seg
 
 
-def monthly_trends(categorised: Path, regions: pd.Series) -> pd.DataFrame:
-    """Debit spend per month by FR2 category and region, streamed part by part."""
-    parts = []
+def monthly_trends(categorised: Path, regions: pd.Series) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Debit spend per month by FR2 category and region, and per month by sub-category (with the number of customers
+    spending in it), streamed part by part (each part holds whole customers, so counts add up across parts)."""
+    by_cat, by_sub = [], []
     for path in sorted(categorised.glob("part-*.parquet")):
-        t = pd.read_parquet(path, columns=["customer_id", "booking_datetime", "amount", "credit_debit_indicator", "pred_category"])
+        t = pd.read_parquet(path, columns=["customer_id", "booking_datetime", "amount", "credit_debit_indicator", "pred_category",
+                                           "pred_sub_category"])
         t = t[t["credit_debit_indicator"] == "Debit"]
         t["month"] = t["booking_datetime"].dt.to_period("M").astype(str)
         t["region"] = t["customer_id"].map(regions)
         t["pred_category"] = t["pred_category"].str.lower().str.replace(" ", "_")  # "Public Transport" -> public_transport
-        parts.append(t.groupby(["month", "region", "pred_category"], observed=True).agg(
+        by_cat.append(t.groupby(["month", "region", "pred_category"], observed=True).agg(
             spend=("amount", "sum"), customers=("customer_id", "nunique")).reset_index())
-    out = pd.concat(parts).groupby(["month", "region", "pred_category"], as_index=False).sum()
-    return out.rename(columns={"pred_category": "category"})
+        by_sub.append(t.groupby(["month", "pred_sub_category"], observed=True).agg(
+            spend=("amount", "sum"), transactions=("amount", "size"), customers=("customer_id", "nunique")).reset_index())
+    cat = pd.concat(by_cat).groupby(["month", "region", "pred_category"], as_index=False).sum().rename(columns={"pred_category": "category"})
+    sub = pd.concat(by_sub).groupby(["month", "pred_sub_category"], as_index=False).sum().rename(columns={"pred_sub_category": "sub_category"})
+    return cat, sub
+
+
+GREEN_SIGNALS = {"ev_public_charging": "EV public charging", "energy_installers": "Energy installers",
+                 "micromobility": "Bike and scooter hire", "rail": "Rail", "bus_coach": "Bus and coach",
+                 "heating_oil_lpg": "Heating oil and LPG"}
+
+
+def trend_details(sub: pd.DataFrame, months: list[str], holdings: pd.DataFrame | None, names: dict) -> dict:
+    """Trend views for the bank: green spending signals, fuel spend vs litres, home energy bills, green take-ups."""
+    from gcip.config import REFERENCE_DIR
+
+    def series(code, column):
+        g = sub[sub["sub_category"] == code].set_index("month")[column]
+        return [round(float(g.get(m, 0.0)), 0) for m in months]
+
+    fuel = pd.read_csv(REFERENCE_DIR / "fuel_prices_weekly.csv", parse_dates=["week_start"])
+    fuel["month"] = fuel["week_start"].dt.to_period("M").astype(str)
+    ppl = fuel.groupby("month")[["petrol_ppl", "diesel_ppl"]].mean()
+    road = series("road_fuel", "spend")
+    blended = [float(ppl.loc[m].mean()) / 100 if m in ppl.index else float("nan") for m in months]
+    out = {
+        "green_signals": {label: {"customers": series(code, "customers"), "spend": series(code, "spend")}
+                          for code, label in GREEN_SIGNALS.items()},
+        "fuel": {"spend": road, "pump_price_ppl": [round(b * 100, 1) for b in blended],
+                 "litres": [round(sp / b, 0) if b == b and b > 0 else None for sp, b in zip(road, blended)]},
+        "energy_bills": {"Electricity": [a + b for a, b in zip(series("electricity_bill", "spend"), series("electricity_prepayment", "spend"))],
+                         "Gas": [a + b for a, b in zip(series("gas_bill", "spend"), series("gas_prepayment", "spend"))],
+                         "Dual fuel": series("dual_fuel_energy", "spend")},
+    }
+    if holdings is not None:
+        h = holdings[holdings["green_product"].fillna("") != ""].copy()
+        h["month"] = pd.to_datetime(h["start_date"]).dt.to_period("M").astype(str)
+        g = h[h["month"].isin(months)].groupby(["month", "green_product"]).size()
+        out["takeups"] = {names.get(p, p): [int(g.get((m, p), 0)) for m in months] for p in names}
+    return out
 
 
 def customer_monthly(categorised: Path, as_of: pd.Timestamp, months: int = 12) -> pd.DataFrame:
@@ -160,12 +202,12 @@ def customer_monthly(categorised: Path, as_of: pd.Timestamp, months: int = 12) -
 
 
 def build(table: pd.DataFrame, recs: pd.DataFrame, decisions: pd.DataFrame, impact: pd.DataFrame, categorised: Path,
-          k: int = 6) -> tuple[dict, pd.DataFrame]:
+          k: int = 6, holdings: pd.DataFrame | None = None) -> tuple[dict, pd.DataFrame]:
     """Bank-level insights as one JSON-ready dict, plus the monthly trend table."""
     names = {p: v["name"] for p, v in load_config("products")["products"].items()}
     fp = footprint(table)
     segments, seg = _segments(table, recs, fp, k)
-    trends = monthly_trends(categorised, table.set_index("customer_id")["region"])
+    trends, by_sub = monthly_trends(categorised, table.set_index("customer_id")["region"])
     national = trends.groupby(["month", "category"], as_index=False)["spend"].sum()
     months = sorted(national["month"].unique())
     shown = recs[recs["status"] == "recommended"]
@@ -203,7 +245,7 @@ def build(table: pd.DataFrame, recs: pd.DataFrame, decisions: pd.DataFrame, impa
             "categories": [c for c in CATEGORY_ORDER if c in set(national["category"])],
             "national_spend": {c: [round(float(national[(national["month"] == m) & (national["category"] == c)]["spend"].sum()), 0)
                                    for m in months] for c in CATEGORY_ORDER if c in set(national["category"])},
-        },
+        } | trend_details(by_sub, months, holdings, names),
         "memory": {"responses": {str(k2): int(v) for k2, v in responses.items()}},
     }
     return insights, trends
