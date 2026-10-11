@@ -163,9 +163,23 @@ class Categoriser:
             out[:, index[c]] = proba[:, j]
         return out
 
+    @staticmethod
+    def clean(parts: pd.DataFrame) -> pd.DataFrame:
+        """Missing fields from a feed (null payment type, merchant code or description) become empty values, so no
+        model ever reads 'nan'; amount bands default to 0."""
+        if not parts[["ptype", "mcc", "direction", "norm_text", "amount_band", "round_amount"]].isna().any().any():
+            return parts
+        parts = parts.copy()
+        for c in ("ptype", "mcc", "direction", "norm_text"):
+            parts[c] = parts[c].fillna("").astype(str)
+        for c in ("amount_band", "round_amount"):
+            parts[c] = parts[c].fillna(0).astype(int)
+        return parts
+
     def model_proba(self, parts: pd.DataFrame, embed_fn=None, transformer_proba: np.ndarray | None = None, finbert_fn=None,
                     batch: int = 200_000) -> dict[str, np.ndarray]:
         """Class probabilities per text model, scored in batches so memory stays flat however many signatures there are."""
+        parts = self.clean(parts)
         tfidf, embedding, finbert = [], [], []
         for start in range(0, len(parts), batch):
             chunk = parts.iloc[start:start + batch]
@@ -196,6 +210,7 @@ class Categoriser:
 
     def predict(self, parts: pd.DataFrame, proba: np.ndarray, use_rules: bool = True, use_lookup: bool = True,
                 use_model: bool = True) -> pd.DataFrame:
+        parts = self.clean(parts)
         n = len(parts)
         sub = np.full(n, "", dtype=object)
         conf = np.zeros(n)
@@ -215,6 +230,10 @@ class Categoriser:
             sub[rows] = [h[0] for h in hits[found]]
             conf[rows] = [h[1] for h in hits[found]]
             layer[rows] = "lookup"
+        # No description and no merchant code: nothing to read, so the payment is Other with low confidence. It is
+        # never guessed into Fuel, Electricity or Gas, so it cannot inflate a fuel or energy estimate.
+        blank = (layer == "") & (parts["norm_text"].values == "") & (parts["mcc"].values == "")
+        sub[blank], conf[blank], layer[blank] = "retail", 0.3, "no_description"
         rest = layer == ""
         if use_model and rest.any():
             pr = proba[rest]

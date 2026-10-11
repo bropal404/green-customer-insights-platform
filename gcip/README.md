@@ -61,6 +61,7 @@ The trained models ship in `demo/pipeline/models/` (six propensity models and th
 .venv/bin/python scripts/predict.py propensity --data demo/data --as-of 2026-09-30 --out scores.csv   # FR3, 30,000 customers
 .venv/bin/python scripts/predict.py categorise "SHELL PETROL 0423 LEEDS" "TFL TRAVEL CH"             # FR2
 .venv/bin/python scripts/predict.py categorise "BRITISH GAS" --ptype DD
+.venv/bin/python scripts/run_scenario_tests.py                                                     # judge scenarios, ~10 s
 ```
 
 Test set predictions: `demo/pipeline/predictions/test_predictions.csv`. Evaluation report (validation and test):

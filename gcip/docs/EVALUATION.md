@@ -40,6 +40,8 @@ tuned to one split.
 | Insufficient impact data | No estimate is made without the inputs; 644 suggestions withheld as "impact cannot be estimated", 15 as "impact too small"; every estimate carries a PCAF data-quality score | `tests/test_impact_memory.py::test_no_number_without_the_inputs`; FR4 truth recovery below |
 | Changed customer circumstances | Suggestions are rebuilt from the live snapshot (30 Sep 2026), not the training one; newer responses override older ones; "already have it" stops the product | `tests/test_impact_memory.py::test_memory_events_override_older_responses`; memory replay (`metrics/memory_replay.json`) |
 
+`scripts/run_scenario_tests.py` runs these scenarios end to end on the saved models in about 10 seconds. Each one changes one thing about real customers (vehicle record lost, no vehicle at all, a recent EV, no energy data, a vulnerability flag, financial difficulty, consent withdrawn, product now held) or injects 5% nulls into the transaction feed, reruns eligibility, scoring, impact and suggestions, and checks the decision.
+
 Rerun everything, including this report, on 2,000 customers with `./run.sh --quick` (about 3-5 minutes), or on 30,000
 with `./run.sh --rebuild`.
 

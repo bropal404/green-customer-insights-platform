@@ -94,6 +94,11 @@ def part_features(part: pd.DataFrame, as_of: pd.Timestamp, ref: Reference, carbo
     six_start = end - pd.DateOffset(months=6)
     history_months = ((as_of - part.groupby("customer_id")["booking_datetime"].min()).dt.days / 30.44).clip(upper=36)
     p = part[(part["booking_datetime"] < end) & (part["booking_datetime"] >= start)].copy()
+    # Missing data is explicit: a row with no date (excluded above) or no amount carries no evidence, and a row with no
+    # category counts as Other, so it never adds to fuel litres or energy kWh.
+    p = p[p["amount"].notna()]
+    p["pred_sub_category"] = p["pred_sub_category"].fillna("")
+    p["pred_category"] = p["pred_category"].fillna("Other")
     p["month"] = p["booking_datetime"].dt.to_period("M")
     debit = p["credit_debit_indicator"] == "Debit"
     credit = ~debit
@@ -171,9 +176,14 @@ def part_features(part: pd.DataFrame, as_of: pd.Timestamp, ref: Reference, carbo
     de_kwh, d_months = monthly_kwh(dual_mask, "e_unit", "e_sc", elec_share)
     dg_kwh, _ = monthly_kwh(dual_mask, "g_unit", "g_sc", 1 - elec_share)
     energy_months = pd.concat([e_months, g_months, d_months], axis=1).max(axis=1)
-    scale = np.where((energy_months >= 3) & (energy_months < 12), 12.0 / energy_months.clip(lower=1), 1.0)
-    out["elec_kwh_12m"] = ((e_kwh + de_kwh) * scale).round(0)
-    out["gas_kwh_12m"] = ((g_kwh + dg_kwh) * scale).round(0)
+
+    def annual(months):
+        """Each supply is scaled to a year from its own months seen (3-11), so a gap in one fuel's bills is not hidden
+        by the other fuel's complete months."""
+        return np.where((months >= 3) & (months < 12), 12.0 / months.clip(lower=1), 1.0)
+
+    out["elec_kwh_12m"] = (e_kwh * annual(e_months) + de_kwh * annual(d_months)).round(0)
+    out["gas_kwh_12m"] = (g_kwh * annual(g_months) + dg_kwh * annual(d_months)).round(0)
     out["energy_months_12m"] = energy_months
     out["energy_bills_visible"] = (energy_months >= 10).astype(int)
     out["dual_fuel_billing"] = (d_months > 0).astype(int)

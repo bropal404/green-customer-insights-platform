@@ -191,6 +191,7 @@ What the load did on the 30,000 build:
     and 30%.
   - Fuel is much better: 83% within 20%, median error
     7.4%.
+- **Fixed after the shipped run: energy scaled per fuel.** Gas and electricity were scaled to a year using one shared month count (the larger of the two), so a gap in one fuel's bills was not scaled up. That affected about 10% of gas and 4% of electricity estimates (customers whose two fuels show different months; measured on four parts of the 30,000 build). The code now scales each supply by its own months (`scripts/run_scenario_tests.py` checks it). The shipped 30,000-customer results in `demo/` predate the fix; `./run.sh --quick` and `--rebuild` use it.
 - **National average prices.** Real pump and tariff prices vary by place and supplier.
 - **Prepayment, other-bank bills and cash spending** leave little or no evidence. The confidence score and the PCAF
   data-quality score say so.

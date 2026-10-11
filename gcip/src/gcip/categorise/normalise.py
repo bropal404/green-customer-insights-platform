@@ -26,6 +26,8 @@ def _mask_token(token: str) -> str:
 
 
 def normalise_text(text: str) -> str:
+    if text is None or (isinstance(text, float) and np.isnan(text)):
+        return ""  # a missing description stays missing (not the word "NONE" or "NAN")
     t = _CARD_SUFFIX.sub("", str(text).upper())
     tokens = [_mask_token(tok) for tok in _TOKEN.findall(t.replace("*", " * "))]
     out = " ".join(tokens)
