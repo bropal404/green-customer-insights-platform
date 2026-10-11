@@ -31,6 +31,10 @@ if [ "$MODE" != serve ]; then
     python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 11) else "Python 3.11 or newer is needed")'
     python3 -m venv .venv
   fi
+  if ! "$PY" -m pip --version >/dev/null 2>&1; then
+    say "Repairing pip in .venv"
+    "$PY" -m ensurepip --upgrade
+  fi
   if [ "$MODE" = demo ]; then "$PY" -m pip install -q -r requirements-app.txt
   else "$PY" -m pip install -q -r requirements.txt; fi
 fi
