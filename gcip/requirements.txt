@@ -13,3 +13,5 @@ openpyxl==3.1.5          # reference build: published .xlsx statistics
 odfpy==1.4.1             # reference build: published .ods statistics
 gdown==5.2.0             # fetches the prebuilt data from the shared Drive folder
 pytest==9.1.1
+xgboost==2.0.3
+catboost==1.2.10

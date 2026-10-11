@@ -243,7 +243,22 @@ def run(data_dir: Path, out_dir: Path, cfg: dict, truth_dir: Path | None = None,
         logistic.fit(X[split == "train"].fillna(0.0), y[split == "train"])
         p_logit = logistic.predict_proba(X.fillna(0.0))[:, 1]
         p_rules = rules_baseline(frame, product, split == "train")
-        scores = {"rules_baseline": p_rules, "logistic_regression": p_logit, "lightgbm_raw": p_raw, "lightgbm_calibrated": p_cal}
+
+        import xgboost as xgb
+        from catboost import CatBoostClassifier
+
+        # XGBoost benchmark
+        xgb_model = xgb.XGBClassifier(n_estimators=200, learning_rate=0.03, max_depth=6, random_state=seed, eval_metric='logloss')
+        xgb_model.fit(X[split == "train"], y[split == "train"])
+        p_xgb = xgb_model.predict_proba(X)[:, 1]
+
+        # CatBoost benchmark
+        cb_model = CatBoostClassifier(iterations=200, learning_rate=0.03, depth=6, random_seed=seed, verbose=False)
+        cb_model.fit(X[split == "train"].fillna(0.0), y[split == "train"])
+        p_cb = cb_model.predict_proba(X.fillna(0.0))[:, 1]
+
+        scores = {"rules_baseline": p_rules, "logistic_regression": p_logit, "lightgbm_raw": p_raw, "lightgbm_calibrated": p_cal, "xgboost_raw": p_xgb, "catboost_raw": p_cb}
+
         metrics = {name: score_metrics(y[test], s[test]) for name, s in scores.items()}
         if oracle is not None:
             o = frame[["customer_id"]].merge(oracle[oracle["product"] == product], on="customer_id", how="left")["p_true"].fillna(0).to_numpy()
