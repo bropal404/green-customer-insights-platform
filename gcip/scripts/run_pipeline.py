@@ -37,7 +37,8 @@ from gcip.pipeline.context import make_context  # noqa: E402
 
 STAGES = ["propensity", "impact", "recommend", "explain", "impact_checks", "memory", "insights", "value", "explain_llm", "report"]
 PRODUCTS = ["GP01", "GP02", "GP03", "GP04", "GP05", "GP06"]
-TRAIN, LIVE = "2026-03-31", "2026-09-30"
+_DATES = __import__("gcip.config", fromlist=["load_config"]).load_config("pipeline")["as_of"]
+TRAIN, LIVE = str(_DATES["training_cutoff"]), str(_DATES["live"])
 
 
 def memory_events(data: Path):
@@ -199,9 +200,9 @@ def stage_value(ctx, data: Path) -> dict:
     impact = assess(model_table(data, TRAIN), PRODUCTS, TRAIN).rename(columns={"status": "impact_status"})
     rows = test.merge(impact, on=["customer_id", "product"], how="left").assign(status="recommended")
     test_values = suggestion_value(rows, pd.read_parquet(data / f"customer_360_{TRAIN}.parquet"))
-    out["backtest"] = backtest(held, test_values, thresholds(ctx))
+    out["backtest"] = backtest(held, test_values, thresholds(ctx), train_date=TRAIN, live_date=LIVE)
     labels = pd.read_parquet(data / "labels.parquet")
-    out["measured_uplift"] = measure_uplift(held, test_values, labels, thresholds(ctx))
+    out["measured_uplift"] = measure_uplift(held, test_values, labels, thresholds(ctx), train_date=TRAIN, live_date=LIVE)
     ctx.save_json(out, "metrics", "business_value.json")
     return {"portfolio": out["portfolio"], "backtest_total": out["backtest"]["total"]}
 

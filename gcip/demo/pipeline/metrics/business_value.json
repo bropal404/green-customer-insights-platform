@@ -260,7 +260,7 @@
     }
   ],
   "backtest": {
-    "note": "held-out test customers, training snapshot (31 Mar 2026), take-up observed 1 Apr - 30 Sep 2026; same number contacted per product by each strategy",
+    "note": "held-out test customers, training snapshot (31 Mar 2026), take-up observed 1 Apr 2026 - 30 Sep 2026; same number contacted per product by each strategy",
     "total": {
       "model": {
         "contacted": 1343.0,
@@ -460,7 +460,7 @@
     }
   },
   "measured_uplift": {
-    "note": "held-out test customers selected by the model on 31 Mar 2026, 10% held back at random, openings from the product system 1 Apr - 30 Sep 2026; the simulator gives contacts no causal effect, so the true uplift is zero",
+    "note": "held-out test customers selected by the model on 31 Mar 2026, 10% held back at random, openings from the product system 1 Apr 2026 - 30 Sep 2026; the simulator gives contacts no causal effect, so the true uplift is zero",
     "treated": {
       "customers": 1204,
       "takeups": 199,

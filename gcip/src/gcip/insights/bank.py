@@ -223,8 +223,9 @@ def build(table: pd.DataFrame, recs: pd.DataFrame, decisions: pd.DataFrame, impa
             "expected_takeups": round(float(recs["propensity"].sum()), 0),
             "expected_co2e_tonnes_per_year": round(float(recs["expected_co2e_kg_per_year"].sum()) / 1000, 1),
             "co2e_tonnes_per_year_if_all_shown_taken_up": round(float(recs["co2e_avoided_kg_per_year"].clip(lower=0).sum()) / 1000, 0),
+            # net of products that cost more to run (e.g. heat pumps at 2026 prices); same as gcip.insights.value
             "customer_savings_gbp_per_year_expected": round(float((-recs["running_cost_change_gbp_per_year"].fillna(0)
-                                                                    * recs["propensity"]).clip(lower=0).sum()), 0),
+                                                                    * recs["propensity"]).sum()), 0),
             "footprint_kg_median": round(float(fp["total_kg"].median()), 0),
             "footprint_tonnes_total": round(float(fp["total_kg"].sum()) / 1000, 0),
         },

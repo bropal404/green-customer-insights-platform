@@ -44,7 +44,8 @@ from gcip.memory.signals import empty_events, events_from_crm, signals  # noqa: 
 from gcip.recommend.engine import recommend  # noqa: E402
 from gcip.serve.documents import clean, document  # noqa: E402
 
-LIVE = "2026-09-30"
+DATES = load_config("pipeline")["as_of"]
+LIVE, TRAIN = str(DATES["live"]), str(DATES["training_cutoff"])
 FEEDBACK = {"clicked", "dismissed", "not_interested", "already_have", "no_response", "viewed"}
 SPEND_CATEGORIES = ["fuel", "electricity", "gas", "public_transport", "home_improvement", "automotive", "utilities", "other"]
 
@@ -104,6 +105,9 @@ class State:
             "gemini_sample": self._json("metrics", "explanations_gemini_sample.json"),
             "business": self._json("metrics", "business_value.json"),
             "business_assumptions": load_config("business"),
+            "dates": {"training_cutoff": TRAIN, "live": LIVE},
+            "config": {"max_per_customer": self.cfg["recommend"]["max_per_customer"], "llm_model": self.cfg["llm"].get("model"),
+                       "llm_provider": self.cfg["llm"].get("provider")},
             "impact_truth_recovery": self._json("metrics", "impact_truth_recovery.json"),
             "impact_sensitivity": pd.read_csv(sens).to_dict("records") if sens.exists() else [],
             "memory_replay": self._json("metrics", "memory_replay.json"),

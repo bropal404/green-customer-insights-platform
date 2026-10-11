@@ -161,8 +161,13 @@ def attribute(suggestions: pd.DataFrame, openings: pd.DataFrame, clicks: pd.Data
     return m.assign(linked_by=how)
 
 
+def _window(train_date: str, live_date: str) -> str:
+    start = pd.Timestamp(train_date) + pd.Timedelta(days=1)
+    return f"{start:%-d %b %Y} - {pd.Timestamp(live_date):%-d %b %Y}"
+
+
 def measure_uplift(heldout: pd.DataFrame, values: pd.DataFrame, labels: pd.DataFrame, thresholds: dict,
-                   cfg: dict | None = None, seed: int = 7) -> dict:
+                   cfg: dict | None = None, seed: int = 7, train_date: str = "2026-03-31", live_date: str = "2026-09-30") -> dict:
     """The measurement a bank would run, on the backtest: our selection of held-out test customers on 31 March 2026,
     a random control group held back, product openings from the product system in the six months after, linked to the
     suggestions, and the uplift (treated take-up rate minus control) with a 95% interval."""
@@ -171,13 +176,15 @@ def measure_uplift(heldout: pd.DataFrame, values: pd.DataFrame, labels: pd.DataF
     test = heldout[heldout["split"] == "test"]
     chosen = pd.concat([g[g["propensity"] >= thresholds[p]["min_propensity"]] for p, g in test.groupby("product")])
     chosen = chosen.assign(group=np.where(rng.random(len(chosen)) < cfg["attribution"]["control_share"], "control", "treated"),
-                           shown_date=pd.Timestamp("2026-03-31"))
-    chosen["suggestion_id"] = "S20260331-" + chosen["customer_id"] + "-" + chosen["product"]
+                           shown_date=pd.Timestamp(train_date))
+    chosen["suggestion_id"] = f"S{pd.Timestamp(train_date):%Y%m%d}-" + chosen["customer_id"] + "-" + chosen["product"]
     opened = labels[labels["took_up"] == 1][["customer_id", "product", "takeup_date"]].rename(columns={"takeup_date": "opened_date"})
     links = attribute(chosen[["suggestion_id", "customer_id", "product", "shown_date", "group"]], opened, None,
-                      window_days=(pd.Timestamp("2026-09-30") - pd.Timestamp("2026-03-31")).days)
-    out = {"note": "held-out test customers selected by the model on 31 Mar 2026, 10% held back at random, openings from the "
-                   "product system 1 Apr - 30 Sep 2026; the simulator gives contacts no causal effect, so the true uplift is zero"}
+                      window_days=(pd.Timestamp(live_date) - pd.Timestamp(train_date)).days)
+    share = cfg["attribution"]["control_share"]
+    out = {"note": f"held-out test customers selected by the model on {pd.Timestamp(train_date):%-d %b %Y}, {share:.0%} held back "
+                   f"at random, openings from the product system {_window(train_date, live_date)}; the simulator gives contacts "
+                   "no causal effect, so the true uplift is zero"}
     rows = {}
     for grp in ("treated", "control"):
         n = int((chosen["group"] == grp).sum())
@@ -205,7 +212,8 @@ def summary(values: pd.DataFrame, names: dict) -> dict:
     return out
 
 
-def backtest(heldout: pd.DataFrame, values: pd.DataFrame, thresholds: dict, cfg: dict | None = None, seed: int = 7) -> dict:
+def backtest(heldout: pd.DataFrame, values: pd.DataFrame, thresholds: dict, cfg: dict | None = None, seed: int = 7,
+             train_date: str = "2026-03-31", live_date: str = "2026-09-30") -> dict:
     """Same contact budget per product (the number of test customers above our threshold), chosen three ways."""
     cfg = cfg or load_config("business")
     test = heldout[heldout["split"] == "test"].merge(
@@ -229,8 +237,8 @@ def backtest(heldout: pd.DataFrame, values: pd.DataFrame, thresholds: dict, cfg:
                          "customer_npv_gbp": round(float(chosen.loc[took, "customer_npv_gbp"].fillna(0).sum()), 0)})
     t = pd.DataFrame(rows)
     total = t.groupby("strategy")[["contacted", "takeups", "co2e_t_lifetime", "bank_value_gbp", "customer_npv_gbp"]].sum()
-    out = {"note": "held-out test customers, training snapshot (31 Mar 2026), take-up observed 1 Apr - 30 Sep 2026; "
-                   "same number contacted per product by each strategy",
+    out = {"note": f"held-out test customers, training snapshot ({pd.Timestamp(train_date):%-d %b %Y}), take-up observed "
+                   f"{_window(train_date, live_date)}; same number contacted per product by each strategy",
            "total": {s: {k: float(v) for k, v in row.items()} for s, row in total.iterrows()},
            "products": t.to_dict("records")}
     if "model" in out["total"] and "random" in out["total"] and out["total"]["random"]["takeups"]:

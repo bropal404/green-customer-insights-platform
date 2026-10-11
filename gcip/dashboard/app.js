@@ -34,6 +34,9 @@ function chart(canvas, config) {
 const PALETTE = ["#1d4ed8", "#15803d", "#b45309", "#7c3aed", "#0f766e", "#b91c1c", "#64748b", "#334155", "#db2777", "#0891b2"];
 const chartBox = (id, title, sub = "", h = 260) => `<div class="card"><div class="card-h"><h3>${title}</h3>${sub ? `<span class="sub">${sub}</span>` : ""}</div><div class="card-b"><div class="chart-box" style="height:${h}px"><canvas id="${id}"></canvas></div></div></div>`;
 const moneyTick = (v) => (v < 0 ? "−£" : "£") + (Math.abs(v) >= 1e6 ? num(Math.abs(v) / 1e6, 1) + "m" : Math.abs(v) >= 1e3 ? num(Math.abs(v) / 1e3, 0) + "k" : num(Math.abs(v)));
+const fmtDay = (iso) => iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "";
+const windowText = () => { const d = state.overview.dates || {}; const s = new Date(d.training_cutoff); s.setDate(s.getDate() + 1); return `${fmtDay(s)} – ${fmtDay(d.live)}`; };
+const afterCutoff = (m) => m > (state.overview.dates?.training_cutoff || "").slice(0, 7);
 const monthLabel = (m) => { const [y, mm] = m.split("-"); return new Date(+y, +mm - 1, 1).toLocaleString("en-GB", { month: "short", year: "2-digit" }); };
 function plot(id, type, labels, datasets, o = {}) {
   const el = document.getElementById(id); if (!el) return;
@@ -90,9 +93,9 @@ window.addEventListener("hashchange", route);
 
 /* ---------- overview ---------- */
 const STEPS = [
-  ["Ingest", "FR1 · 7 source systems", "data"], ["Categorise", "FR2 · 8 categories", "data"], ["Features", "Customer 360 + features", "data"],
-  ["Propensity", "FR3 · LightGBM", "propensity"], ["Impact", "FR4 · carbon + money", "impact"], ["Recommend", "FR5–7 · top 3", "recommend"],
-  ["Explain", "FR5 · template + local LLM", "explain"], ["Insights", "FR6 · bank view", "insights"],
+  ["Ingest", "FR1 · source systems", "data"], ["Categorise", "FR2 · 8 categories", "data"], ["Features", "Customer 360 + features", "data"],
+  ["Propensity", "FR3 · LightGBM", "propensity"], ["Impact", "FR4 · carbon + money", "impact"], ["Recommend", "FR5–7 · thresholds + memory", "recommend"],
+  ["Explain", "FR5 · template + LLM rewrite", "explain"], ["Insights", "FR6 · bank view", "insights"], ["Value", "customer + bank return", "value"],
 ];
 function stepper(done) {
   return `<div class="stepper">${STEPS.map(([name, what, key], i) => {
@@ -116,13 +119,13 @@ function renderOverview() {
       </div>
     </div>
     <div class="grid g-4" style="margin-bottom:24px">
-      ${kpi("Customers with a suggestion", num(ov.customers_with_a_recommendation), `${num(ov.recommendations)} suggestions, at most 3 each`)}
+      ${kpi("Customers with a suggestion", num(ov.customers_with_a_recommendation), `${num(ov.recommendations)} suggestions, at most ${num(o.config?.max_per_customer)} each`)}
       ${kpi("Expected take-ups", num(ov.expected_takeups), "sum of calibrated propensities", "blue")}
       ${kpi("Expected CO2e avoided", num(ov.expected_co2e_tonnes_per_year, 0) + " t/yr", `${num(ov.co2e_tonnes_per_year_if_all_shown_taken_up)} t/yr if every suggestion were taken up`, "good")}
-      ${kpi("Expected customer savings", gbp(ov.customer_savings_gbp_per_year_expected) + "/yr", "running costs at today's prices")}
+      ${kpi("Expected customer savings", gbp(o.business?.portfolio?.customer?.expected_saving_gbp_per_year ?? ov.customer_savings_gbp_per_year_expected) + "/yr", "running costs at today's prices, net of any increases")}
     </div>
     <div class="grid g-2" style="margin-bottom:24px">${chartBox("c-sugg", "Suggestions by product", "shown + human review")}${chartBox("c-co2", "Expected CO2e avoided by product", "tonnes a year · propensity × avoided emissions")}</div>
-    ${chartBox("c-takeups", "Green product take-ups per month", "new green products opened · observed window 1 Apr – 30 Sep 2026", 240)}
+    ${chartBox("c-takeups", "Green product take-ups per month", `new green products opened · observed window ${windowText()}`, 240)}
     ${chartBox("c-funnel", "Why products were or were not shown", "first rule that decided each customer × product", 300)}
     <div class="grid g-2" style="margin-bottom:24px">${chartBox("c-seg", "Customer segments", "share of customers")}${chartBox("c-segco2", "Expected CO2e avoided by segment", "tonnes a year")}</div>
     <div class="grid g-3">${ins.segments.map(segmentCard).join("")}</div>
@@ -133,7 +136,7 @@ function renderOverview() {
   const names = products.map((p) => p.name);
   plot("c-sugg", "doughnut", names, [{ data: products.map((p) => p.shown + p.human_review), label: "suggestions" }], { colors: Object.values(PRODUCT_COLOURS) });
   plot("c-co2", "bar", names, [{ data: products.map((p) => p.expected_co2e_tonnes_per_year), label: "t CO2e/yr", color: "#15803d" }], { fmt: (v) => num(v) + " t" });
-  const win = t.months.map((m, i) => [m, i]).filter(([m]) => m >= "2026-04");
+  const win = t.months.map((m, i) => [m, i]).filter(([m]) => afterCutoff(m));
   if (t.takeups) plot("c-takeups", "bar", win.map(([m]) => monthLabel(m)), Object.entries(t.takeups).map(([k, v], i) => ({ label: k, data: win.map(([, j]) => v[j]), color: Object.values(PRODUCT_COLOURS)[i] })), { stacked: true });
   const keys = Object.keys(FUNNEL_COLOURS);
   plot("c-funnel", "bar", ins.funnel.map((f) => o.products[f.product]), keys.map((k) => ({ label: k, data: ins.funnel.map((f) => f[k] || 0), color: FUNNEL_COLOURS[k] })), { stacked: true, horizontal: true });
@@ -191,7 +194,7 @@ async function renderCustomer(id, tab = "recs", doc = null) {
   const names = state.overview.products;
   view.innerHTML = pageHead(`Customer ${esc(id)}`, `${num(who.age)}-year-old in ${esc(where.la_name)} (${esc(where.region)}). ${cap(label(who.declared_employment_status))}, ${label(who.declared_residential_status)}, with the bank ${num(who.customer_tenure_years, 1)} years. Data up to ${esc(doc.as_of)}.`,
     `<span style="display:flex;gap:8px"><a class="btn link" href="app/#${esc(id)}" style="display:inline-flex;align-items:center">Open customer's view ↗</a><a class="btn link" href="#/customers" style="display:inline-flex;align-items:center">← Back to customers</a></span>`) + `
-    <div class="card"><div class="status"><div class="led" style="background:${doc.recommendations.length ? "var(--green)" : "var(--faint)"}"></div><div><b>${doc.recommendations.length ? `${doc.recommendations.length} green suggestion${doc.recommendations.length > 1 ? "s" : ""}` : "No suggestion today"}</b><span>${doc.recommendations.length ? "Ranked by propensity × confidence" : "See “Why not the others”"}</span></div></div>
+    <div class="card"><div class="status"><div class="led" style="background:${doc.recommendations.length ? "var(--green)" : "var(--faint)"}"></div><div><b>${doc.recommendations.length ? `${doc.recommendations.length} green suggestion${doc.recommendations.length > 1 ? "s" : ""}` : "No suggestion today"}</b><span>${doc.recommendations.length ? "Ranked by propensity × confidence × memory weight" : "See “Why not the others”"}</span></div></div>
       <div class="tiles">
         <div class="tile"><div class="k">Income band</div><div class="v">${label(who.declared_income_band)}</div></div>
         <div class="tile"><div class="k">Marketing consent</div><div class="v">${who.marketing_consent ? "yes" : "no"}</div></div>
@@ -306,7 +309,7 @@ function recCard(r) {
 /* ---------- products ---------- */
 function renderProducts() {
   const ins = state.overview.insights, P = ins.products, names = P.map((p) => p.name);
-  view.innerHTML = pageHead("Products", "6 green products · live snapshot") + `
+  view.innerHTML = pageHead("Products", `${P.length} green products · live snapshot ${esc(state.overview.dates?.live || "")}`) + `
     <div class="grid g-2" style="margin-bottom:24px">${chartBox("p-shown", "Suggestions per product", "shown to customers and sent to human review")}${chartBox("p-takeups", "Expected take-ups per product", "sum of calibrated propensities of the suggestions")}</div>
     <div class="grid g-2" style="margin-bottom:24px">${chartBox("p-conf", "Estimate confidence of the suggestions", "how much each impact estimate rests on the customer's own data")}${chartBox("p-elig", "Eligible customers per product", "after the eligibility rules")}</div>
     <div class="grid g-2" style="margin-bottom:24px">${chartBox("p-co2", "CO2e avoided per take-up", "median, kg a year")}${chartBox("p-money", "Running-cost change per take-up", "median, £ a year (negative = saving)")}</div>
@@ -341,7 +344,7 @@ async function renderRegions(region = "") {
     <div class="eyebrow" style="margin:6px 0 10px">Green signals over time · all regions</div>
     <div class="grid g-2" style="margin-bottom:24px">${chartBox("t-ev", "Customers using public EV charging", "customers with an EV charging payment each month")}${chartBox("t-green", "Spend on green travel and home upgrades", "£ a month")}</div>
     <div class="grid g-2" style="margin-bottom:24px">${chartBox("t-fuel", "Road fuel: spend vs litres", "litres = spend ÷ that month's average pump price")}${chartBox("t-energy", "Home energy bills", "£ a month")}</div>
-    ${tr.takeups ? chartBox("t-takeups", "Green product take-ups", "new green products opened per month · observed window 1 Apr – 30 Sep 2026", 240) : ""}
+    ${tr.takeups ? chartBox("t-takeups", "Green product take-ups", `new green products opened per month · observed window ${windowText()}`, 240) : ""}
     <div class="eyebrow" style="margin:6px 0 10px">Regions</div>
     <div class="grid g-2" style="margin-bottom:24px">${chartBox("r-opp", "Expected CO2e avoided per customer", "kg a year, by region", 300)}${chartBox("r-fp", "Median footprint by region", "travel and home energy, CO2e a year", 300)}</div>
     <div class="grid g-2" style="margin-bottom:24px">${chartBox("r-income", "Footprint by income band", "median CO2e a year")}${chartBox("r-dec", "Footprint distribution", "deciles, CO2e a year")}</div>
@@ -356,7 +359,7 @@ async function renderRegions(region = "") {
   plot("t-green", "line", months, ["Energy installers", "Bike and scooter hire", "Rail", "Bus and coach", "Heating oil and LPG"].filter((k) => gs[k]).map((k, i) => ({ label: k, data: gs[k].spend, color: PALETTE[i + 1] })), { fmt: moneyTick });
   if (tr.fuel) plot("t-fuel", "bar", months, [{ label: "spend", data: tr.fuel.spend, color: "#fecaca" }, { type: "line", label: "litres", data: tr.fuel.litres, color: "#b91c1c", yAxisID: "y2" }], { y2: true, fmt: moneyTick, fmt2: (v) => num(v / 1000, 0) + "k l" });
   if (tr.energy_bills) plot("t-energy", "bar", months, Object.entries(tr.energy_bills).map(([k, v], i) => ({ label: k, data: v, color: ["#1d4ed8", "#b45309", "#0f766e"][i] })), { stacked: true, fmt: moneyTick });
-  const win = tr.months.map((m, i) => [m, i]).filter(([m]) => m >= "2026-04");
+  const win = tr.months.map((m, i) => [m, i]).filter(([m]) => afterCutoff(m));
   if (tr.takeups) plot("t-takeups", "bar", win.map(([m]) => monthLabel(m)), Object.entries(tr.takeups).map(([k, v], i) => ({ label: k, data: win.map(([, j]) => v[j]), color: Object.values(PRODUCT_COLOURS)[i] })), { stacked: true });
   plot("r-opp", "bar", R.map((r) => r.region), [{ label: "kg CO2e a year per customer", data: R.map((r) => r.expected_co2e_kg_per_customer), color: "#15803d" }], { horizontal: true, fmt: (v) => num(v) + " kg" });
   const RF = [...ins.regions].sort((a, b) => b.footprint_kg_median - a.footprint_kg_median);
@@ -418,7 +421,7 @@ function renderValue() {
     ${bt.total ? `<div class="eyebrow" style="margin:6px 0 10px">Backtest: who should we contact? · held-out test customers, what really happened</div>
     <div class="grid g-3" style="margin-bottom:10px">${chartBox("bt-take", "Take-ups", "same number contacted per product", 220)}${chartBox("bt-co2", "CO2e avoided", "tonnes over the products' lives", 220)}${chartBox("bt-value", "Bank value", "£, after contact costs", 220)}</div>
     <div class="card"><div class="card-b note">${esc(bt.note || "")}. Model vs random: ${num(bt.uplift_vs_random?.takeups, 1)}× the take-ups, ${num(bt.uplift_vs_random?.co2e_t_lifetime, 1)}× the CO2e. Model vs rules baseline: ${num(bt.uplift_vs_rules?.takeups, 1)}× the take-ups, ${num(bt.uplift_vs_rules?.co2e_t_lifetime, 1)}× the CO2e.</div></div>` : ""}
-    <div class="card"><div class="card-h"><h3>By product</h3><span class="sub">expected values over today's suggestions</span></div><div class="table-wrap"><table><thead><tr><th>Product</th><th class="num">Suggestions</th><th class="num">Take-ups</th><th class="num">Customer saving/yr</th><th class="num">Customer NPV</th><th class="num">Abatement £/t</th><th class="num">New lending</th><th class="num">Bank value at stake</th><th class="num">At stake ÷ cost</th><th class="num">t CO2e per £1k</th></tr></thead><tbody>
+    <div class="card"><div class="card-h"><h3>By product</h3><span class="sub">expected values over today's suggestions</span></div><div class="table-wrap"><table><thead><tr><th>Product</th><th class="num">Suggestions</th><th class="num">Take-ups</th><th class="num">Customer saving/yr</th><th class="num">Customer NPV</th><th class="num">Abatement £/t</th><th class="num">New lending</th><th class="num">Bank value at stake</th><th class="num">(At stake − cost) ÷ cost</th><th class="num">t CO2e per £1k</th></tr></thead><tbody>
     ${P.map((p) => `<tr><td>${esc(p.name)}</td><td class="num mono">${num(p.suggestions)}</td><td class="num mono">${num(p.expected_takeups, 0)}</td><td class="num mono">${gbp(p.customer.expected_saving_gbp_per_year)}</td><td class="num mono">${signed(p.customer.expected_npv_gbp)}</td><td class="num mono">${p.customer.abatement_cost_gbp_per_t == null ? "–" : signed(p.customer.abatement_cost_gbp_per_t)}</td><td class="num mono">${gbp(p.bank.expected_new_lending_gbp)}</td><td class="num mono">${signed(p.bank.expected_net_value_gbp)}</td><td class="num mono">${p.bank.roi == null ? "–" : num(p.bank.roi, 0) + "×"}</td><td class="num mono">${num(p.bank.t_co2e_lifetime_per_1k_campaign, 1)}</td></tr>`).join("")}
     </tbody></table></div></div>
     <div class="card"><div class="card-h"><h3>Assumptions</h3><span class="sub">configs/business.yaml · illustrative, plausible for a UK retail bank in 2026</span></div><div class="card-b chips-row">
@@ -446,10 +449,10 @@ async function renderMemory() {
     ${mem.effect ? `<div class="grid g-4" style="margin-bottom:24px">
       ${kpi("Suggestions without memory", num(mem.effect.suggestions_without_memory), "same engine, empty memory")}
       ${kpi("Hidden by memory", num(mem.effect.hidden_by_memory), "paused, stopped or outranked", "alert")}
-      ${kpi("Shown because of memory", num(mem.effect.shown_because_of_memory), "moved into a customer's top 3", "blue")}
+      ${kpi("Shown because of memory", num(mem.effect.shown_because_of_memory), `moved into a customer's top ${num(state.overview.config?.max_per_customer)}`, "blue")}
       ${kpi("Reordered", num(mem.effect.reordered), "same suggestion, different rank")}
     </div>` : ""}
-    <div class="grid g-2" style="margin-bottom:24px">${chartBox("mem-state", "Memory in force by product", "customers per state")}${chartBox("mem-replay", "Replay: suggestions over 3 months", "shown vs held back as memory builds up")}</div>
+    <div class="grid g-2" style="margin-bottom:24px">${chartBox("mem-state", "Memory in force by product", "customers per state")}${chartBox("mem-replay", `Replay: suggestions over ${m ? m.rounds.length : ""} months`, "shown vs held back as memory builds up")}</div>
     <div class="card"><div class="card-h"><h3>Memory in force today</h3><span class="sub">every contact and response in the last 12 months · ${num(mem.fatigue_contacts)} ignored contacts in a row pause a product</span></div>
     <div class="table-wrap"><table><thead><tr><th>Product</th><th class="num">Customers with history</th><th class="num">Paused · cool-down</th><th class="num">Paused · no interest</th><th class="num">Stopped · already has it</th><th class="num">Priority raised</th><th class="num">Priority lowered</th></tr></thead><tbody>
     ${mem.products.map((r) => `<tr><td>${esc(r.name)}</td><td class="num mono">${num(r.customers_with_history)}</td><td class="num mono">${num(r.paused_cooldown)}</td><td class="num mono">${num(r.paused_no_interest)}</td><td class="num mono">${num(r.stopped_already_have)}</td><td class="num mono">${num(r.priority_raised)}</td><td class="num mono">${num(r.priority_lowered)}</td></tr>`).join("")}
@@ -502,11 +505,11 @@ function renderModels(product = "GP01") {
     <div class="card"><div class="card-h"><h3>FR5 explanations</h3><span class="sub">LLM vs standard wording</span></div><div class="card-b grid g-${o.gemini_sample ? 5 : 4}">
       ${kpi("Template guard pass", `${num(ex.template_guard_pass)}/${num(ex.explanations)}`, "numbers, date, disclaimer, banned claims", "good")}
       ${kpi("LLM guard pass", llm.guard_pass_rate !== undefined ? pct(llm.guard_pass_rate, 0) : "–", llm.items ? `${num(llm.items)} rewrites · ${esc(llm.model)} (local)` : esc(llm.skipped || "not run yet"))}
-      ${o.gemini_sample ? kpi("Gemini guard pass", `${num(o.gemini_sample.passed_guards)}/${num(o.gemini_sample.replies)}`, `${esc(o.gemini_sample.model)} · used for Rewrite`, "good") : ""}
+      ${o.gemini_sample ? kpi("Gemini guard pass", `${num(o.gemini_sample.passed_guards)}/${num(o.gemini_sample.replies)}`, `${esc(Object.keys(o.gemini_sample.models_used || { [o.gemini_sample.model]: 1 }).join(", "))} · used for Rewrite · measured ${esc(o.gemini_sample.measured || "")}`, "good") : ""}
       ${kpi("Reading ease", llm.reading_ease_mean ? `${num(llm.reading_ease_mean.llm, 0)} vs ${num(llm.reading_ease_mean.template, 0)}` : num(ex.reading_ease_mean, 0), "Flesch: LLM vs template (higher is easier)")}
       ${kpi("Length", llm.words_mean ? `${num(llm.words_mean.llm, 0)} vs ${num(llm.words_mean.template, 0)}` : num(ex.words_mean, 0) + " words", "words: LLM vs template")}
     </div></div>
-    <div class="card"><div class="card-h"><h3>FR4 impact inputs vs true usage</h3><span class="sub">31 Mar 2026 · visible spend only</span></div><div class="card-b grid g-${Math.min(recovery.length, 5) || 1}" style="grid-template-columns:repeat(${recovery.length || 1},1fr)">
+    <div class="card"><div class="card-h"><h3>FR4 impact inputs vs true usage</h3><span class="sub">${fmtDay(o.dates?.training_cutoff)} · visible spend only</span></div><div class="card-b grid g-${Math.min(recovery.length, 5) || 1}" style="grid-template-columns:repeat(${recovery.length || 1},1fr)">
       ${recovery.map((k) => kpi(label(k), pct(tr[k].within_20pct, 0), `within ±20% · median error ${num(tr[k].median_abs_pct_error, 1)}% · r = ${num(tr[k].correlation, 2)} · n = ${num(tr[k].customers)}`, tr[k].within_20pct >= 0.7 ? "good" : "")).join("")}
     </div></div>
     <div class="card"><div class="card-h"><h3>FR4 sensitivity</h3><span class="sub">mean per customer · low · base · high</span></div><div class="table-wrap"><table><thead><tr><th>Assumption</th><th>Range</th><th>Product</th><th class="num">CO2e low · base · high (kg/yr)</th><th class="num">Swing</th><th class="num">Money low · base · high (£/yr)</th><th class="num">Swing</th></tr></thead><tbody>

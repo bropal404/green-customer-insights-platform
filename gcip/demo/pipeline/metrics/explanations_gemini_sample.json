@@ -1,10 +1,26 @@
 {
- "model": "gemini-3.8-flash",
- "requests": 360,
- "replies": 17,
- "passed_guards": 16,
- "note": "free-tier key: the daily quota ran out after these replies; the 360-item evaluation uses the local model",
- "failure_reasons_among_replies": [
-  "numbers dropped: ['13003']; numbers not in the facts: ['13033']"
+ "models_used": {
+  "gemini-3.5-flash": 6,
+  "gemini-3.1-flash-lite": 6
+ },
+ "requests": 12,
+ "replies": 12,
+ "passed_guards": 12,
+ "measured": "2026-10-11 07:10",
+ "note": "2 suggestions per product with the current prompt, evidence wording and guards; a free-tier key allows about 20 requests a day per model, so the 360-item evaluation uses the local model",
+ "failures": [],
+ "examples": [
+  {
+   "product": "GP01",
+   "explanation": "You spent \u00a32,574 on road fuel in the last 12 months and drive about 13,884 miles a year, so EV Finance could suit you. A battery-electric car for the same distance could cut about 3.8 tonnes of CO2e a year, or about 15.1 tonnes over 4 years. Running costs could also be about \u00a31,519 a year less at today's prices. These are estimates from your account data up to 2026-09-30; prices and your situation can change."
+  },
+  {
+   "product": "GP01",
+   "explanation": "You spent \u00a31,868 on road fuel in the last 12 months and drive about 10,237 miles a year, so EV Finance could suit you. Switching to a battery-electric car for the same distance could cut about 2.8 tonnes of CO2e a year, or about 11.1 tonnes over 4 years. Your running costs could also be about \u00a31,120 a year less at today's prices. These are estimates from your account data up to 2026-09-30; prices and your situation can change."
+  },
+  {
+   "product": "GP02",
+   "explanation": "You spent \u00a3925 on DIY and tradespeople in the last 12 months, your home has an energy rating (EPC) D and you pay a mortgage, so a Green Home Loan could suit you. Replacing a fossil boiler with an air-source heat pump could cut about 1.5 tonnes of CO2e a year, or about 23.0 tonnes over 15 years. Running costs could be about \u00a391 a year less at today's prices, for an upfront cost of about \u00a34,500. These are estimates from your account data up to 2026-09-30; prices and your situation can change."
+  }
  ]
 }

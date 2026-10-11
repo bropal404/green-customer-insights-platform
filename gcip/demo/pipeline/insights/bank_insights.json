@@ -9,7 +9,7 @@
     "expected_takeups": 914.0,
     "expected_co2e_tonnes_per_year": 1241.6,
     "co2e_tonnes_per_year_if_all_shown_taken_up": 9470.0,
-    "customer_savings_gbp_per_year_expected": 418843.0,
+    "customer_savings_gbp_per_year_expected": 418614.0,
     "footprint_kg_median": 4250.0,
     "footprint_tonnes_total": 144781.0
   },

@@ -200,6 +200,11 @@ class GeminiExplainer:
                     time.sleep(2 ** attempt)
                     continue
                 raise RuntimeError(f"Gemini API error {err.code}: {detail[:200]}") from None
+            except (TimeoutError, urllib.error.URLError, OSError, KeyError, IndexError) as err:  # network or odd reply
+                if attempt < 2:
+                    time.sleep(2 ** attempt)
+                    continue
+                raise RuntimeError(f"Gemini API did not answer: {err}") from None
         raise RuntimeError("Gemini API did not answer")
 
     def rephrase(self, item: dict) -> str:
